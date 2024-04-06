@@ -1,0 +1,38 @@
+.navbar {
+    background-color: #066F64;
+    min-height:130px;
+}
+.caps {
+    text-transform: capitalize;
+}
+.popup-stats-ctn.title {
+    font-size: 1.5em;
+    margin-bottom: 10px;;
+}
+.popup-stats-ctn {
+    font-size: 1em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+.popup-stats-ctn span {
+    display: inline-block;
+}
+.popup-stats-ctn span.details {
+    margin-left: 10px;
+}
+.logo {
+    min-width: 100px;
+    min-height: 100%;
+}
+select, select option {
+    text-transform:capitalize;
+}
+ul.message {
+    display: block;
+    text-align: center;
+    margin-top:25px;
+    padding: 20px 30px;
+    background-color: #000000;
+    color: #ffffff;
+  }
