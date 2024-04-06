@@ -1,3 +1,9 @@
+<script>
+  import UpdateHead from '$lib/UpdateHead.svelte';
+</script>
+
+<UpdateHead title="Admin Profile" description="Driving your Electric Dreams Today" />
+
 <section class="section">
   <h1 class="title">Sign up</h1>
   <form action="/user/updateuser/user_id" method="POST">

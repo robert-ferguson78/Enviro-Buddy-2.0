@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>Brand Search</title> 
+</svelte:head>
+
 <div class="columns">
     <div class="column">
       Pull in filter menu

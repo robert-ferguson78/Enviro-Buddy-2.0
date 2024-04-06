@@ -1,3 +1,9 @@
+<script>
+  import UpdateHead from '$lib/UpdateHead.svelte';
+</script>
+
+<UpdateHead title="About Enviro-Buddy" description="Driving your Electric Dreams Today" />
+
 <section class="section">
   <h1 class="title">Hello from ENVIRO-BUDDY</h1>
   <h2 class="subtitle">Driving Your Electric Dreams Today</h2>

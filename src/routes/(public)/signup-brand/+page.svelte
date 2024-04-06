@@ -1,3 +1,9 @@
+<script>
+  import UpdateHead from '$lib/UpdateHead.svelte';
+</script>
+
+<UpdateHead title="Brand Signup" description="Driving your Electric Dreams Today" />
+
 <section class="section">
   <h1 class="title">Sign up</h1>
   <form action="/registerbrand" method="POST">

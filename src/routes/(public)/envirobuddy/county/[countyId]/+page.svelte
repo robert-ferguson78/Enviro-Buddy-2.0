@@ -1,3 +1,9 @@
+<script>
+  import UpdateHead from '$lib/UpdateHead.svelte';
+</script>
+
+<UpdateHead title="County Search" description="Driving your Electric Dreams Today" />
+
 <div class="columns">
     <div class="column">
       Pull in filter menu
