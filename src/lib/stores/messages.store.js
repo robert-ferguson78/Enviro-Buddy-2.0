@@ -8,7 +8,7 @@ export default {
     showError: function(message = PUBLIC_ERROR_MESSAGE) {
         messageStore.set({ show: true, message, type: 'error'})
     },
-    showSucess: function(message) {
+    showSuccess: function(message) {
         messageStore.set({ show: true, message, type: 'success'})
     },
     hide: function() {

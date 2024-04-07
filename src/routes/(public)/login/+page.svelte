@@ -28,6 +28,7 @@
 <h2>Login With Google</h2>
 <AuthForm on:submit={onLogin} btnName="Login" />
 <LoginWithGoogle />
+<a href="/forgot-password">Forgot Password</a>
 
 <section class="section">
   <h1 class="title">Log in</h1>
