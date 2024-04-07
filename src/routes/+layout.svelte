@@ -1,7 +1,9 @@
 <script>
+  import "../app.css";
   import { headMetadata } from '$lib/headStore';
   import EnviroBrandName from '$lib/envirobuddyBrand.svelte';
   import Menu from '$lib/menu.svelte';
+  import '$lib/firebase/firebase.client';
 </script>
 
 <svelte:head>
