@@ -1,8 +1,12 @@
 <script>
   import UpdateHead from '$lib/UpdateHead.svelte';
+  import LoginWithGoogle from '$lib/components/Auth/LoginWithGoogle.svelte';
 </script>
 
 <UpdateHead title="Login" description="Driving your Electric Dreams Today" />
+
+<h2>Login With Google</h2>
+<LoginWithGoogle />
 
 <section class="section">
   <h1 class="title">Log in</h1>

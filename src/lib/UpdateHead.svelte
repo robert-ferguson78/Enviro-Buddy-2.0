@@ -1,5 +1,5 @@
 <script>
-    import { headMetadata } from './headStore';
+    import { headMetadata } from './stores/headStore';
     export let title = "";
     export let description = "";
   
