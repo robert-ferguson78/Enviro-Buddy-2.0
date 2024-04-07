@@ -1,6 +1,8 @@
-<svelte:head>
-    <title>Body Type Search</title> 
-</svelte:head>
+<script>
+  import UpdateHead from '$lib/UpdateHead.svelte';
+</script>
+
+<UpdateHead title="Car Body Type search" description="Driving your Electric Dreams Today" />
 
 <div class="columns">
     <div class="column">
