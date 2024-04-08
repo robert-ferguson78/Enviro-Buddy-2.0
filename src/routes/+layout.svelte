@@ -1,14 +1,42 @@
-<script>
+<script lang="ts">
   import "../app.css";
   import { headMetadata } from '$lib/stores/headStore';
   import EnviroBrandName from '$lib/envirobuddyBrand.svelte';
   import Menu from '$lib/menu.svelte';
   import '$lib/firebase/firebase.client';
   import messagesStore from '$lib/stores/messages.store';
+	import { onMount } from "svelte";
+	import { sendJWTToken } from "$lib/firebase/auth.client";
+  let timerdId: NodeJS.Timeout;
 
-  function closeMessage() {
-    messagesStore.hide();
+async function sendServerToken() {
+  try {
+    await sendJWTToken();
+  } catch(error) {
+    clearInterval(timerdId);
+    messagesStore.showError();
+    console.log(error);
   }
+}
+
+onMount(() => {
+  sendServerToken().then(() => {
+    timerdId = setInterval(sendServerToken, 1000 * 10 * 60);
+  }).catch(e => {
+    console.log(e);
+    messagesStore.showError();
+  });
+
+  return new Promise(() => {
+    return () => {
+      clearInterval(timerdId);
+    }
+  });
+});
+
+function closeMessage() {
+  messagesStore.hide();
+}
 </script>
 
 <svelte:head>

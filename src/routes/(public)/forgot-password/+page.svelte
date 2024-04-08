@@ -4,9 +4,9 @@
     import { mailResetPasswordEmail } from '$lib/firebase/auth.client';
     import messagesStore from '$lib/stores/messages.store';
 
-    async function onForgotPassword(e) {
+    async function onForgotPassword(e: Event) {
         try {
-            const formData = new FormData(e.target);
+            const formData = new FormData(e.target as HTMLFormElement);
             const email = formData.get('email');
             await mailResetPasswordEmail(email);
             // console.log('email sent');

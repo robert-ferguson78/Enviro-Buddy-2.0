@@ -2,12 +2,12 @@
   import authStore from '$lib/stores/auth.store.js';
   import { logout } from '$lib/firebase/auth.client.js';
   import messagesStore from '$lib/stores/messages.store.js';
-  import { navigate } from 'svelte-routing';
+  import { goto } from '$app/navigation';
 
   async function onLogout() {
     try {
       await logout();
-      navigate('/');
+      goto('/');
     } catch(e) {
       messagesStore.showError();
     }
