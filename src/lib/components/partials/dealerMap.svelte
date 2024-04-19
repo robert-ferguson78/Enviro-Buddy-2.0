@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script>
+  import jQuery from 'jquery';
 // set up deafault size
 const size = 20;
 // set up defaulyt icon options
@@ -62,8 +63,8 @@ let station = new LeafIcon({iconUrl: 'https://cdn.glitch.global/80ce3e4b-d8a6-4f
         // var myScrollDiv = document.getElementById('dealerinfoctn');
 
         // Jquery scroll to the myDiv element
-        $('html, body').animate({
-            scrollTop: $("#dealerinfoctn").offset().top
+        jQuery('html, body').animate({
+            scrollTop: jQuery("#dealerinfoctn").offset().top
         }, 600); // 2000 is the duration of the animation in milliseconds
 
         // Set the clicked block to display: block

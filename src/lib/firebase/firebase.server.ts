@@ -2,8 +2,13 @@ import admin from 'firebase-admin';
 import serviceAccount from '$lib/firebase/firebase-secrets.server.json';
 
 if (admin.apps.length === 0) {
+    const { project_id, client_email, private_key } = serviceAccount;
     admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
+        credential: admin.credential.cert({
+            projectId: project_id,
+            clientEmail: client_email,
+            privateKey: private_key
+        })
     });
 }
 

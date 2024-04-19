@@ -11,19 +11,19 @@ export async function logout() {
     await fetch('/logout')
 }
 
-export async function registerWithEmailandPassword(email, password) {
+export async function registerWithEmailandPassword(email: string, password: string) {
     const auth = getAuth();
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     return userCredential.user;
 }
 
-export async function loginWithEmailandPassword(email, password) {
+export async function loginWithEmailandPassword(email: string, password: string) {
     const auth = getAuth();
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
 }
 
-export async function mailResetPasswordEmail(email) {
+export async function mailResetPasswordEmail(email: string) {
     const auth = getAuth();
     await sendPasswordResetEmail(auth, email);
 }

@@ -4,15 +4,15 @@
 	import LoginWithGoogle from '$lib/components/Auth/LoginWithGoogle.svelte';
   import { registerWithEmailandPassword } from '$lib/firebase/auth.client';
 	import { afterLogin } from '$lib/helpers/route.helper';
-	import messagesStore from '$lib/stores/messages.store';
+	import messagesStore from '$lib/stores/messages.store.js';
   import { page } from '$app/stores';
 
   async function register(e: Event) {
     try {
       const formData = new FormData(e.target as HTMLFormElement);
-      const email = formData.get('email');
-      const password = formData.get('password');
 
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
       const user = await registerWithEmailandPassword(email, password);
       afterLogin($page.url, user.uid);
     } catch (error) {

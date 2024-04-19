@@ -8,6 +8,9 @@
         try {
             const formData = new FormData(e.target as HTMLFormElement);
             const email = formData.get('email');
+            if (email === null || typeof email !== 'string') {
+                throw new Error('Email not found in form data');
+            }
             await mailResetPasswordEmail(email);
             // console.log('email sent');
             messagesStore.showSuccess('Reset Password Email Sent');
