@@ -3,6 +3,7 @@
 	"include": ["src/**/*", "svelte-internal.d.ts"],
 	"exclude": ["node_modules/*", "__sapper__/*", "public/*"],
 	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
 		"moduleResolution": "node",
 		"outDir": "./dist",
