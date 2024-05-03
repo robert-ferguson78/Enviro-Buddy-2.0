@@ -1,6 +1,6 @@
 import { db } from '$lib/firebase/firebase.server';
 
-export async function addUserDetails(uid, name, brand) {
+export async function addUserDetails(formData, userId) {
     const userRef = await db.collection('users').doc(uid)
     // Update the document with the new name and brand
     await userRef.update({

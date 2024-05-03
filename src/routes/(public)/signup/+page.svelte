@@ -3,10 +3,10 @@
   import AuthForm from '$lib/components/Auth/AuthForm.svelte';
 	import LoginWithGoogle from '$lib/components/Auth/LoginWithGoogle.svelte';
   import { registerWithEmailandPassword } from '$lib/firebase/auth.client';
-  import { addUserDetails } from '$lib/firebase/models/user-firestore-store';
 	import { afterLogin } from '$lib/helpers/route.helper';
 	import messagesStore from '$lib/stores/messages.store.js';
   import { page } from '$app/stores';
+  import { setUser } from '$lib/firebase/database.client';
 
   async function register(e: Event) {
     try {
@@ -18,13 +18,13 @@
       let password = formData.get('password') as string;
       let userCred = await registerWithEmailandPassword(email, password);
       let user = {
-        name: name,
-        brand: brand,
-        type: 'brand',
-        user_id: userCred.uid,
+          name: name,
+          brand: brand,
+          type: 'brand',
+          user_id: userCred.uid,
       };
-      addUserDetails(user);
-      afterLogin($page.url, userCred.uid);
+      await setUser(user);
+      afterLogin($page.url);
     } catch (error) {
       // console.log((error as any).code);
       if ((error as any).code === 'auth/email-already-in-use') {

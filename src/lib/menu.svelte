@@ -1,8 +1,20 @@
 <script>
+  import { onMount, onDestroy } from 'svelte';
   import authStore from '$lib/stores/auth.store';
   import { logout } from '$lib/firebase/auth.client';
   import messagesStore from '$lib/stores/messages.store';
   import { goto } from '$app/navigation';
+  import { getUser } from '$lib/firebase/models/user-firestore.store';
+
+  let user;
+
+  const unsubscribe = authStore.subscribe(async value => {
+    if (value && value.isLoggedIn) {
+      user = await getUser(value.userId);
+    } else {
+      user = null;
+    }
+  });
 
   async function onLogout() {
     try {
@@ -12,6 +24,10 @@
       messagesStore.showError();
     }
   }
+
+  onDestroy(() => {
+    unsubscribe();
+  });
 </script>
 
 <nav class="navbar mb-6">
@@ -25,6 +41,9 @@
             <div class="buttons">
               {#if $authStore.isLoggedIn}
                 <a id="envirobuddy" class="button" href="/envirobuddy"> Enviro-Buddy </a>
+              {/if}
+              {#if user && user.type === 'brand'}
+                <a class="button" href="/brand-dashboard"> Brand Dashboard </a>
               {/if}
                 <a id="about" class="button" href="/about"> About </a>
               {#if $authStore.isLoggedIn}
