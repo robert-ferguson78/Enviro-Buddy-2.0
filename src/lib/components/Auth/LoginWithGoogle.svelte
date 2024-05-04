@@ -1,14 +1,17 @@
 <script lang="ts">
     import { loginWithGoogle } from '$lib/firebase/auth.client.js';
     import { afterLoginGoogle } from '$lib/helpers/route.helper.js';
-	import messagesStore from '$lib/stores/messages.store';
+    import messagesStore from '$lib/stores/messages.store';
     import { page } from '$app/stores';
 
     async function loginGoogle() {
         try {
-             const user = await loginWithGoogle();
-             console.log(user, 'this is user');
-            await afterLoginGoogle($page.url, user.uid);
+            const userData = await loginWithGoogle();
+            if (userData) {
+                const url = new URL(window.location.href);
+                console.log('redirect code fired')
+                await afterLoginGoogle(url, userData.user_id);
+            }
         } catch (e) {
             if ((e as any).code == 'auth/popup-closed-by-user') {
                 return

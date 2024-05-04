@@ -6,7 +6,7 @@
 	import { afterLogin } from '$lib/helpers/route.helper';
 	import messagesStore from '$lib/stores/messages.store.js';
   import { page } from '$app/stores';
-  import { setUser } from '$lib/firebase/database.client';
+  import { setUserWithEmail } from '$lib/firebase/database.client';
 
   async function register(e: Event) {
     try {
@@ -16,21 +16,23 @@
       let brand = formData.get('brand') as string;
       let email = formData.get('email') as string;
       let password = formData.get('password') as string;
-      let userCred = await registerWithEmailandPassword(email, password);
+      let userId = await registerWithEmailandPassword(email, password);
+      // console.log(userId); // Log the userId
       let user = {
           name: name,
           brand: brand,
           type: 'brand',
-          user_id: userCred.uid,
+          user_id: userId,
       };
-      await setUser(user);
+      await setUserWithEmail(user);
+      // console.log('User created'); // Log when the user is created
       afterLogin($page.url);
     } catch (error) {
       // console.log((error as any).code);
       if ((error as any).code === 'auth/email-already-in-use') {
         messagesStore.showError('Email has already been registered');
       }
-      console.log(error);
+      // console.log(error);
       messagesStore.showError();
     }
   }

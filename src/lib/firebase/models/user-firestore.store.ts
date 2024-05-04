@@ -10,7 +10,7 @@ export async function getUser(userId: string) {
     if (userSnap.exists()) {
         return userSnap.data();
     } else {
-        console.log("No such user!");
+        // console.log("No such user!");
         return null;
     }
 }
@@ -22,19 +22,19 @@ export async function getAllUsers() {
 }
 
 export async function addUserDetails(user) {
-    console.log("user: ", user);
+    // console.log("user: ", user);
     const userRef = doc(dbUser, "users", user.user_id);
-    console.log("userRef: ", userRef);
+    // console.log("userRef: ", userRef);
     // Update the document with the new name and brand
     await updateDoc(userRef, {
         name: user.name,
         brand: user.brand,
         type: user.type,
     });
-    console.log("userRef2: ", userRef);
+    // console.log("userRef2: ", userRef);
     // Get the updated document
     const docSnap = await getDoc(userRef);
-    console.log("doc: ", docSnap);
+    // console.log("doc: ", docSnap);
     // Return the updated user
     return { _id: docSnap.id, ...docSnap.data() };
 }
