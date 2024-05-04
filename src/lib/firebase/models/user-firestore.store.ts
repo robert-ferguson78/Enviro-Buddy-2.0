@@ -1,10 +1,9 @@
 import { db } from '$lib/firebase/firebase.client';
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, getDocs, setDoc, updateDoc } from "firebase/firestore";
 
 const dbUser = getFirestore();
 
 export async function getUser(userId: string) {
-    // console.log("userId: ", userId);
     const userRef = doc(dbUser, "users", userId);
     const userSnap = await getDoc(userRef);
 
@@ -15,82 +14,42 @@ export async function getUser(userId: string) {
         return null;
     }
 }
-    // Method to get all users
-    export async function getAllUsers() {
-        // Get a snapshot of the 'users' collection
-        const snapshot = await userRef.get();
-        // Map over the documents in the snapshot and return an array of users
-        return snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
-    }
 
-    export async function addUserDetails(user) {
-        console.log("user: ", user);
-        // Get a reference to the document with the given uid
-        const userRef = userRef.doc(user.user_id);
-        console.log("userRef: ", userRef);
-        // Update the document with the new name and brand
-        await userRef.update({
-            name: user.name,
-            brand: user.brand,
-            type: user.type,
-        });
-        console.log("userRef2: ", userRef);
-        // Get the updated document
-        const doc = await userRef.get();
-        console.log("doc: ", doc);
-        // Return the updated user
-        return { _id: doc.id, ...doc.data() };
-    }
+export async function getAllUsers() {
+    const usersCollectionRef = collection(dbUser, "users");
+    const snapshot = await getDocs(usersCollectionRef);
+    return snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+}
 
-    // Method to add a user
-    export async function addUser(user, userType) {
-        // Generate a unique ID for the user if it doesn't have one
-        const uniquId = user._id || v4();
-
-        // Define the data to be stored in the database
-        let data;
-        if (userType === "brand") {
-            // If the user is a brand, store the brand name
-            data = {
-                name: user.name,
-                brandName: user.brandName,
-                email: user.email,
-                password: user.password,
-                type: userType,
-                _id: uniquId,
-            };
-        } else {
-            // If the user is not a brand, store the first and last name
-            data = {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                password: user.password,
-                type: userType,
-                _id: uniquId,
-            };
-        }
-
-        // Add the user to the 'users' collection with the unique ID as the document ID
-        await userRef.doc(uniquId).set(data)
-
-        // Return the stored data
-        return { ...data };
-    }
+export async function addUserDetails(user) {
+    console.log("user: ", user);
+    const userRef = doc(dbUser, "users", user.user_id);
+    console.log("userRef: ", userRef);
+    // Update the document with the new name and brand
+    await updateDoc(userRef, {
+        name: user.name,
+        brand: user.brand,
+        type: user.type,
+    });
+    console.log("userRef2: ", userRef);
+    // Get the updated document
+    const docSnap = await getDoc(userRef);
+    console.log("doc: ", docSnap);
+    // Return the updated user
+    return { _id: docSnap.id, ...docSnap.data() };
+}
 
     // Method to update a user
     export async function updateUser(_id, newData) {
-        // console.log("update user fucntion _id:", _id);
         // Get a reference to the document with the given ID
-        const userRef = userRef.doc(_id);
-            // console.log("userRef: ", userRef);
-
+        const userRef = doc(dbUser, "users", _id);
+    
         // Update the document with the new data
-        await userRef.update(newData);
-
+        await updateDoc(userRef, newData);
+    
         // Get the updated document
-        const updatedDoc = await userRef.get();
-
+        const updatedDoc = await getDoc(userRef);
+    
         // Return the updated data
         return updatedDoc.data();
     }

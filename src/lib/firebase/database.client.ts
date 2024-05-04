@@ -6,3 +6,10 @@ export async function setUser(user: User) {
     const users = collection(db, 'users');
     await setDoc(doc(users, user.user_id), user);
 }
+
+export async function setUserGoogle(userId: string) {
+    const users = collection(db, 'users');
+    await setDoc(doc(users, userId), {
+        user_id: userId
+    })
+}

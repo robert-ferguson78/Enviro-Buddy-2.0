@@ -1,13 +1,14 @@
 <script lang="ts">
     import { loginWithGoogle } from '$lib/firebase/auth.client.js';
-    import { afterLogin } from '$lib/helpers/route.helper.js';
+    import { afterLoginGoogle } from '$lib/helpers/route.helper.js';
 	import messagesStore from '$lib/stores/messages.store';
     import { page } from '$app/stores';
 
     async function loginGoogle() {
         try {
              const user = await loginWithGoogle();
-             await afterLogin($page.url);
+             console.log(user, 'this is user');
+            await afterLoginGoogle($page.url, user.uid);
         } catch (e) {
             if ((e as any).code == 'auth/popup-closed-by-user') {
                 return

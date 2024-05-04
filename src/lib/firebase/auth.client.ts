@@ -1,11 +1,11 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import { setUser } from '$lib/firebase/database.client';
+import { setUserGoogle } from '$lib/firebase/database.client';
 
 export async function loginWithGoogle() {
     const auth = getAuth();
     const userCredential = await signInWithPopup(auth, new GoogleAuthProvider());
     const userId = userCredential.user.uid;
-    await setUser(userId);
+    await setUserGoogle(userId);
     return userCredential.user;
 }
 

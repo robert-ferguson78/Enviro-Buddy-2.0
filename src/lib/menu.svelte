@@ -1,5 +1,5 @@
-<script>
-  import { onMount, onDestroy } from 'svelte';
+<script lang="ts">
+  import { onDestroy } from 'svelte';
   import authStore from '$lib/stores/auth.store';
   import { logout } from '$lib/firebase/auth.client';
   import messagesStore from '$lib/stores/messages.store';
@@ -9,8 +9,10 @@
   let user;
 
   const unsubscribe = authStore.subscribe(async value => {
-    if (value && value.isLoggedIn) {
+    if (value && value.isLoggedIn && value.userId) {
       user = await getUser(value.userId);
+      // console.log(user, 'user object'); // Log the user object
+      // console.log(user.user_id, 'user id here2');
     } else {
       user = null;
     }
@@ -44,6 +46,7 @@
               {/if}
               {#if user && user.type === 'brand'}
                 <a class="button" href="/brand-dashboard"> Brand Dashboard </a>
+                <a class="button" href={`/profile/${user.user_id}`}>Profile</a>
               {/if}
                 <a id="about" class="button" href="/about"> About </a>
               {#if $authStore.isLoggedIn}
