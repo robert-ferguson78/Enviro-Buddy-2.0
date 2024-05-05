@@ -1,100 +1,73 @@
-import { getFirestore, doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, writeBatch, addDoc } from "firebase/firestore";
+import { doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, writeBatch, addDoc } from "firebase/firestore";
+import { db } from '$lib/firebase/firebase.client';
 
 const collectionName = "dealers";
-const dbCounty = getFirestore();
-const countiesRef = collection(dbCounty, collectionName);
+const dealersRef = collection(db, collectionName);
 
-// Reference to the 'dealers' collection in Firestore
-const dealersRef = db.collection("dealers");
-
-// Define the Firestore store for dealers
 export const dealerFirestoreStore = {
-    // Method to get all dealers
     async getAllDealers() {
-        // Get a snapshot of the 'dealers' collection
-        const snapshot = await dealersRef.get();
-        // Map over the documents in the snapshot and return an array of dealers
-        return snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+        const q = query(dealersRef);
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
     },
 
-    // Method to add a dealer
     async addDealer(countyId, dealer) {
-        // Assign the county ID to the dealer
         dealer.countyId = countyId;
-            // console.log("Dealer to be added: ", dealer);
-        // Add the dealer to the 'dealers' collection and get a reference to the document
-        const docRef = await dealersRef.add(dealer);
-        // Return the added dealer
-        return { _id: docRef.id, ...dealer };
+        const docRef = await addDoc(dealersRef, dealer);
+        const dealerId = docRef.id;
+        await updateDoc(docRef, { dealerId: dealerId });
+        return { _id: dealerId, dealerId: dealerId, ...dealer };
     },
 
-    // Method to add an image to a dealer
     async addImageToDealer(id, imageUrl) {
-        // Get the document with the given ID
-        const doc = await dealersRef.doc(id).get();
-        // If the document does not exist, throw an error
-        if (!doc.exists) {
+        const docRef = doc(db, collectionName, id);
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists()) {
             throw new Error("Dealer not found");
         }
-        // Get the dealer data
-        const dealer = doc.data();
-        // If the dealer does not have an 'images' property, initialize it as an empty array
+        const dealer = docSnap.data();
         if (!dealer.images) {
             dealer.images = [];
         }
-        // Add the image URL to the 'images' array
         dealer.images.push(imageUrl);
-        // Update the dealer document with the new data
-        await dealersRef.doc(id).update(dealer);
+        await updateDoc(docRef, dealer);
     },
 
-    // Method to get dealers by county ID
     async getDealersByCountyId(id) {
-        // Get a snapshot of the documents where 'countyId' is equal to the given ID
-        const snapshot = await dealersRef.where("countyId", "==", id).get();
-        // Map over the documents in the snapshot and return an array of dealers
-        return snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+        const q = query(dealersRef, where("countyId", "==", id));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
     },
 
-    // Method to get a dealer by its ID
     async getDealerById(id) {
-        // Get the document with the given ID
-        const doc = await dealersRef.doc(id).get();
-        // If the document exists, return the dealer, otherwise return null
-        return doc.exists ? { _id: doc.id, ...doc.data() } : null;
+        const docRef = doc(db, collectionName, id);
+        const docSnap = await getDoc(docRef);
+        return docSnap.exists() ? { _id: docSnap.id, ...docSnap.data() } : null;
     },
 
-    // Method to delete a dealer by its ID
     async deleteDealer(id) {
-        // Get a snapshot of the documents where '_id' is equal to the given ID
-        const snapshot = await dealersRef.where("_id", "==", id).get();
-        // If the snapshot is not empty, delete the first document
-        if (!snapshot.empty) {
-            const doc = snapshot.docs[0];
-            await doc.ref.delete();
+        const q = query(dealersRef, where("dealerId", "==", id));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+            const docRef = doc(db, collectionName, querySnapshot.docs[0].id);
+            await deleteDoc(docRef);
         } else {
-            // If the snapshot is empty, log a message
-            console.log(`No dealer found with _id: ${id}`);
+            console.log(`No dealer found with dealerId: ${id}`);
         }
     },
 
-    // Method to delete all dealers
     async deleteAllDealers() {
-        // Get a snapshot of the 'dealers' collection
-        const snapshot = await dealersRef.get();
-        // Initialize a batch
-        const batch = db.batch();
-        // For each document in the snapshot, add a delete operation to the batch
-        snapshot.docs.forEach((doc) => {
-            batch.delete(doc.ref);
+        const querySnapshot = await getDocs(dealersRef);
+        const batch = writeBatch(db);
+        querySnapshot.docs.forEach((doc) => {
+            const docRef = doc(db, collectionName, doc.id);
+            batch.delete(docRef);
         });
-        // Commit the batch
         await batch.commit();
     },
 
-    // Method to update a dealer
     async updateDealer(id, updatedDealer) {
-        // Update the document with the given ID with the updated dealer data
-        await dealersRef.doc(id).update(updatedDealer);
+        const docRef = doc(db, collectionName, id);
+        await updateDoc(docRef, updatedDealer);
     },
 };

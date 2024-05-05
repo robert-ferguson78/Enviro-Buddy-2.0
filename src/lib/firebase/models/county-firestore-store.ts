@@ -1,8 +1,8 @@
-import { getFirestore, doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, writeBatch, addDoc } from "firebase/firestore";
+import { doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, writeBatch, addDoc } from "firebase/firestore";
+import { db } from '$lib/firebase/firebase.client';
 
 const collectionName = "counties";
-const dbCounty = getFirestore();
-const countiesRef = collection(dbCounty, collectionName);
+const countiesRef = collection(db, collectionName);
 
 // Import the dealer Firestore store
 // import { dealerFirestoreStore } from "$lib/firebase/models/dealer-firestore-store.js";
@@ -60,7 +60,7 @@ export const countyFirestoreStore = {
             return null;
         }
         // Get the document with the given ID
-        const docRef = doc(dbCounty, collectionName, id);
+        const docRef = doc(db, collectionName, id);
         const docSnap = await getDoc(docRef);
         // If the document exists, return the county, otherwise return null
         const county = docSnap.exists() ? { _id: docSnap.id, ...docSnap.data() } : null;
@@ -163,7 +163,7 @@ export const countyFirestoreStore = {
     // Method to delete a county by its ID
     async deleteCountyById(_id) {
         // Create a reference to the document with the given _id
-        const docRef = doc(dbCounty, collectionName, _id);
+        const docRef = doc(db, collectionName, _id);
         // Delete the document
         await deleteDoc(docRef);
     },

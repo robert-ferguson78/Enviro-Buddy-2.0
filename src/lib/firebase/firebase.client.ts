@@ -13,12 +13,13 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_PUBLIC_MEASUREMENT_ID
 };
 
+let app;
 if (getApps().length == 0) {
-    const app = initializeApp(firebaseConfig);
+    app = initializeApp(firebaseConfig);
     if (is_client) {
         getAnalytics(app);
     }
 }
 
-export const db = getFirestore();
+export const db = getFirestore(app);
 console.log('Firebase client initialized');
