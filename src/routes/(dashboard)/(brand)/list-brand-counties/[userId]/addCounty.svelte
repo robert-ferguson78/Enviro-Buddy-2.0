@@ -1,9 +1,54 @@
-<form action="/county/addcounty" method="POST">
-    <div class="field">
+<script lang="ts">
+  import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
+  import { getUser } from '$lib/firebase/models/user-firestore.store';
+  import messagesStore from '$lib/stores/messages.store';
+  import authStore from '$lib/stores/auth.store';
+  import type { NewCounty } from "$lib/types/enviro-buddy-types.ts";
+  import { createEventDispatcher } from 'svelte';
+
+  let user;
+
+  const dispatch = createEventDispatcher();
+
+  const unsubscribe = authStore.subscribe(async value => {
+    if (value && value.isLoggedIn && value.userId) {
+      user = await getUser(value.userId);
+      // console.log(user, 'user object'); // Log the user object
+      // console.log(user.user_id, 'user id here2');
+    } else {
+      user = null;
+    }
+  });
+
+  let county = "County";
+
+  async function createCounty() {
+    if (county) {
+        try {
+            const existingCounty = await countyFirestoreStore.getCheckForCounty(county, user.user_id);
+            if (existingCounty) {
+                messagesStore.showError('County already exists!');
+            } else {
+                const newCounty: NewCounty = {
+                    county: county,
+                };
+                const createdCounty = await countyFirestoreStore.addCounty(newCounty, user.user_id);
+                messagesStore.showSuccess('County successfully added!');
+                dispatch('add');
+            }
+        } catch (error) {
+            messagesStore.showError('Error adding county!');
+        }
+    }
+  }
+</script>
+
+    <form on:submit|preventDefault={createCounty}>
+      <div class="field">
         <label class="label" for="county-select">Select County</label>
         <div class="control">
           <div class="select is-fullwidth">
-            <select name="county">
+            <select bind:value={county} class="input" id="county" name="county">
               <option value="antrim">Antrim</option>
               <option value="armagh">Armagh</option>
               <option value="carlow">Carlow</option>
@@ -40,6 +85,9 @@
           </div>
         </div>
     </div>
-      <button class="button is-link">Add County</button>
+      <div class="field">
+        <div class="control">
+          <button class="button is-success is-fullwidth">Add County</button>
+        </div>
+      </div>
     </form>
-    

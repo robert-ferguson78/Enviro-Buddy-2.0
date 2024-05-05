@@ -1,3 +1,13 @@
+<script context="module">
+  // This function runs on the server before the page is sent to the client
+  export async function load({ page, fetch, session }) {
+      // The returned props are passed to the component
+      return {
+        props: {}
+      };
+    }
+</script>
+
 <script>
   import UpdateHead from '$lib/UpdateHead.svelte';
 </script>

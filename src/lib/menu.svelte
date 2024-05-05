@@ -45,7 +45,7 @@
                 <a id="envirobuddy" class="button" href="/envirobuddy"> Enviro-Buddy </a>
               {/if}
               {#if user && user.type === 'brand'}
-                <a class="button" href="/brand-dashboard"> Brand Dashboard </a>
+                <a class="button" href={`/brand-dashboard/${user.user_id}`}> Brand Dashboard </a>
                 <a class="button" href={`/profile/${user.user_id}`}>Profile</a>
               {/if}
                 <a id="about" class="button" href="/about"> About </a>

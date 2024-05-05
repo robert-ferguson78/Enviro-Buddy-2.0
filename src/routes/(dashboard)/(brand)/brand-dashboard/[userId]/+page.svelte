@@ -1,5 +1,12 @@
 <script>
   import UpdateHead from '$lib/UpdateHead.svelte';
+  import authStore from '$lib/stores/auth.store';
+
+  let userId;
+
+  const unsubscribe = authStore.subscribe(value => {
+    userId = value.userId;
+  });
 </script>
 
 <UpdateHead title="Dashboard" description="Driving your Electric Dreams Today" />
@@ -10,7 +17,7 @@
       <p>Mange all Offical dealers of your car brand here by Selcting counties to add. Then group all your dealerships together under these counties</p>
     </div>
     <div class="block">
-      <a href="/counties" class="button is-info">
+      <a href={`/list-brand-counties/${userId}`} class="button is-info">
         Manage Counties and Dealerships
       </a>
     </div>

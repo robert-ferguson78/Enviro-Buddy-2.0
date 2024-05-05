@@ -3,14 +3,22 @@
     import { afterLoginGoogle } from '$lib/helpers/route.helper.js';
     import messagesStore from '$lib/stores/messages.store';
     import { page } from '$app/stores';
+    import type { UserData } from '$lib/types/enviro-buddy-types';
+
+     interface UserData {
+        user_id: string;
+        user_name: string;
+    }
 
     async function loginGoogle() {
         try {
-            const userData = await loginWithGoogle();
+            const userData: UserData = await loginWithGoogle();
             if (userData) {
                 const url = new URL(window.location.href);
                 console.log('redirect code fired')
-                await afterLoginGoogle(url, userData.user_id);
+                let userId = userData.user_id;
+                let userName = userData.user_name;
+                await afterLoginGoogle(url, userId, userName);
             }
         } catch (e) {
             if ((e as any).code == 'auth/popup-closed-by-user') {

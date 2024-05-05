@@ -27,7 +27,7 @@ export async function afterLoginGoogle(url: URL, userId: string, userName: strin
             console.error('Error calling setUser:', error);
         }
     } else {
-        console.error('userId is empty');
+        // console.error('userId is empty');
     }
     // console.log('setUser completed');
     

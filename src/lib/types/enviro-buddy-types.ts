@@ -16,6 +16,9 @@ export interface Counties {
     county: string;
     userid: string;
 }
+export interface NewCounty {
+  county: string;
+}
 export interface Dealers {
     address: string;
     countyId: string;
@@ -26,6 +29,10 @@ export interface Dealers {
     phone: string;
     userid: string;
     website: string;
+}
+export interface UserData {
+  user_id: string;
+  user_name: string;
 }
 export interface AuthUser {
     email: string;

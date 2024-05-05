@@ -1,5 +1,8 @@
-// Import the Firestore database connection
-import { db } from './firebase.client.ts';
+import { getFirestore, doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, writeBatch, addDoc } from "firebase/firestore";
+
+const collectionName = "dealers";
+const dbCounty = getFirestore();
+const countiesRef = collection(dbCounty, collectionName);
 
 // Reference to the 'dealers' collection in Firestore
 const dealersRef = db.collection("dealers");

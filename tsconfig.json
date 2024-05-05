@@ -10,7 +10,7 @@
 		"target": "es2020",
 		"module": "es2020",
 		"lib": ["es2020", "DOM"],
-		"types": ["svelte"],
+		"types": ["svelte", "@sveltejs/kit"],
 		"allowJs": true,
 		"sourceMap": true
 	}

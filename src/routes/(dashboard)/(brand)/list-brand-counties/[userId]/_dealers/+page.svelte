@@ -1,7 +1,6 @@
 <script>
   import UpdateHead from '$lib/UpdateHead.svelte';
   import AddCounty from './addCounty.svelte';
-  import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
   export let data;
   let counties = data?.props?.counties;
   // console.log('Props in Svelte component:', $$props);
@@ -16,16 +15,9 @@
   }, 1000);
 }
 
-async function deleteCounty(countyId) {
-  console.log('Deleting county', countyId);
-    await countyFirestoreStore.deleteCountyById(countyId);
-    console.log('County deleted');
-    location.reload();
-  }
-
 </script>
 
-<UpdateHead title="Counties" description="Driving your Electric Dreams Today" />
+<UpdateHead title="Dealer" description="Driving your Electric Dreams Today" />
 
 <section class="section">
   <AddCounty on:add={addCounty} />
@@ -39,14 +31,14 @@ async function deleteCounty(countyId) {
           <h2 class="title">
             <span class="caps">{county.county}</span> Car Dealers
           </h2>
-            <a href={`/list-brand-counties/${county._id}/dealers`} class="button">
+            <a href="/county/idHere" class="button">
               <span class="icon is-small">
                 <i class="fa-sharp fa-solid fa-location-pen"></i>
               </span>
             </a>
-            <button class="button" on:click={() => deleteCounty(county._id)}>
+            <a href="/county/deletecounty/idHere" class="button">
               <i class="fa-solid fa-trash-xmark"></i>
-            </button>
+            </a>
         </div>
       </div>
     {/each}
