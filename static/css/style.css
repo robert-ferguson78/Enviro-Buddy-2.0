@@ -36,3 +36,17 @@ ul.message {
     background-color: #000000;
     color: #ffffff;
   }
+.has-brand-green {
+    color: #066F64;
+}
+.has-brand-green-background {
+    background-color: #066f64;
+    color: #ffffff;
+}
+.has-deep-red {
+    color: #ec3454;
+}
+.has-deep-red-background {
+    background-color: #ec3454;
+    color: #ffffff;
+}
