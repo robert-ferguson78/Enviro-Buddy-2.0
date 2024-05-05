@@ -39,7 +39,7 @@ async function deleteCounty(countyId) {
           <h2 class="title">
             <span class="caps">{county.county}</span> Car Dealers
           </h2>
-            <a href={`/list-brand-counties/${county._id}/dealers`} class="button">
+            <a href={`/list-brand-counties/county/${county._id}`} class="button">
               <span class="icon is-small">
                 <i class="fa-sharp fa-solid fa-location-pen"></i>
               </span>
