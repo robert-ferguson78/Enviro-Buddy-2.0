@@ -1,6 +1,6 @@
 <script>
   import UpdateHead from '$lib/UpdateHead.svelte';
-  import AddCounty from './addCounty.svelte';
+  import AddCounty from './addDealer.svelte';
   export let data;
   let counties = data?.props?.counties;
   // console.log('Props in Svelte component:', $$props);

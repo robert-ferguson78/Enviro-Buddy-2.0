@@ -20,9 +20,15 @@
     }
   });
 
-  let county = "County";
+  let name = "";
+  let address = "";
+  let phone = "";
+  let email = "";
+  let website = "";
+  let latitude = 0.1;
+  let longitude = 0.1;
 
-  async function createCounty() {
+  async function createDealer() {
     if (county) {
         try {
             const existingCounty = await countyFirestoreStore.getCheckForCounty(county, user.user_id);
@@ -43,51 +49,34 @@
   }
 </script>
 
-    <form on:submit|preventDefault={createCounty}>
-      <div class="field">
-        <label class="label" for="county-select">Select County</label>
-        <div class="control">
-          <div class="select is-fullwidth">
-            <select bind:value={county} class="input" id="county" name="county">
-              <option value="antrim">Antrim</option>
-              <option value="armagh">Armagh</option>
-              <option value="carlow">Carlow</option>
-              <option value="cavan">Cavan</option>
-              <option value="clare">Clare</option>
-              <option value="cork">Cork</option>
-              <option value="derry">Derry</option>
-              <option value="donegal">Donegal</option>
-              <option value="down">Down</option>
-              <option value="dublin">Dublin</option>
-              <option value="fermanagh">Fermanagh</option>
-              <option value="galway">Galway</option>
-              <option value="kerry">Kerry</option>
-              <option value="kildare">Kildare</option>
-              <option value="kilkenny">Kilkenny</option>
-              <option value="laois">Laois</option>
-              <option value="leitrim">Leitrim</option>
-              <option value="limerick">Limerick</option>
-              <option value="longford">Longford</option>
-              <option value="louth">Louth</option>
-              <option value="mayo">Mayo</option>
-              <option value="meath">Meath</option>
-              <option value="monaghan">Monaghan</option>
-              <option value="offaly">Offaly</option>
-              <option value="roscommon">Roscommon</option>
-              <option value="sligo">Sligo</option>
-              <option value="tipperary">Tipperary</option>
-              <option value="tyrone">Tyrone</option>
-              <option value="waterford">Waterford</option>
-              <option value="westmeath">Westmeath</option>
-              <option value="wexford">Wexford</option>
-              <option value="wicklow">Wicklow</option>
-            </select>
+    <form on:submit|preventDefault={createDealer}>
+    <form class="box" action="/county/countyId/adddealer" method="POST">
+      <label for="dealer-details">Enter Dealer Details:</label>
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <div class="field">
+            <input bind:value={name} class="input" type="text" placeholder="Dealer Name" name="name">
+          </div>
+          <div class="field">
+            <input bind:value={address} class="input" type="text" placeholder="Dealer Address" name="address">
+          </div>
+          <div class="field">
+            <input bind:value={phone} class="input" type="text" placeholder="Phone" name="phone">
+          </div>
+          <div class="field">
+            <input bind:value={email} class="input" type="email" placeholder="Email" name="email">
+          </div>
+          <div class="field">
+            <input bind:value={website} class="input" type="text" placeholder="Website" name="website">
+          </div>
+          <div class="field">
+            <input bind:value={Latidude} id="latitude" class="input" type="number" step=".0000001" placeholder="Latidude" name="latitude">
+          </div>
+          <div class="field">
+            <input bind:value={longitude} id="longitude" class="input" type="number" step=".0000001" placeholder="Longitude" name="longitude">
           </div>
         </div>
-    </div>
-      <div class="field">
-        <div class="control">
-          <button class="button is-success is-fullwidth">Add County</button>
-        </div>
       </div>
+      <button class="button is-primary">Add Dealer</button>
     </form>
+    
