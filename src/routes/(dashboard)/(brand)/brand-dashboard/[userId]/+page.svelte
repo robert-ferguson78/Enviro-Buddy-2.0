@@ -27,7 +27,7 @@
       <p>Mange all your Electric car models in one place which will be available to all your Offical dealerships automatically</p>
     </div>
     <div class="block">
-      <a href="/cartype" class="button is-info">
+      <a href={`/list-brand-car-types/${userId}`} class="button is-info">
         Manage Car Types
       </a>
     </div>

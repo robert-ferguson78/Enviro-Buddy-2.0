@@ -20,7 +20,7 @@
     }
   });
 
-  let county = "County";
+  let county = "";
 
   async function createCounty() {
     if (county) {
@@ -45,10 +45,11 @@
 
     <form on:submit|preventDefault={createCounty}>
       <div class="field">
-        <label class="label" for="county-select">Select County</label>
+        <label class="label" for="county-select">Add County</label>
         <div class="control">
           <div class="select is-fullwidth">
             <select bind:value={county} class="input" id="county" name="county">
+              <option value="" disabled>Select county</option>
               <option value="antrim">Antrim</option>
               <option value="armagh">Armagh</option>
               <option value="carlow">Carlow</option>

@@ -2,6 +2,7 @@
     import UpdateHead from '$lib/UpdateHead.svelte';
     import AddDealer from './addDealer.svelte';
     import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';
+    import 'leaflet/dist/leaflet.css';
     export let data;
     let dealers = data?.props?.dealers;
 

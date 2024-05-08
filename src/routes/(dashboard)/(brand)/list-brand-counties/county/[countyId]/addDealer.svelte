@@ -6,6 +6,7 @@
   import { createEventDispatcher } from 'svelte';
   import { page } from '$app/stores';
   import { onDestroy } from 'svelte';
+  import LeafletMap from './LeafletMap.svelte';
 
   let user;
 
@@ -36,6 +37,11 @@
     unsubscribePage();
   });
 
+  function setCoordinates({ lat, lng }) {
+    latitude = lat;
+    longitude = lng;
+  }
+
   async function createDealer() {
     if (user && user.user_id) {
         try {
@@ -59,6 +65,8 @@
     }
   }
 </script>
+
+<LeafletMap {setCoordinates} />
 
     <form on:submit|preventDefault={createDealer}>
       <label for="dealer-details">Enter Dealer Details:</label>

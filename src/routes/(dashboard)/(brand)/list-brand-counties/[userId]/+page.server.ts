@@ -14,10 +14,13 @@ export const load: PageServerLoad = async ({ locals }) => {
             // console.log('Returning props from load function:', props);
             return { props };
         } else {
-            throw new Error('Could not load data');
+            // throw new Error('Could not load data');
+            console.log('No counties found in load function');
+            const props = { counties: [] };
+            return { props };
         }
     } catch (error) {
         // console.error('Error in load function:', error);
-        return { status: 500, error };
+        return { status: 500, error: error.message };
     }
 }

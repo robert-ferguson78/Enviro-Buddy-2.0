@@ -12,7 +12,10 @@ export const load: PageServerLoad = async ({ params, locals }) => {
             const props = { dealers };
             return { props };
         } else {
-            throw new Error('Could not load data');
+            // throw new Error('Could not load data');
+            console.log('No dealers found in load function');
+            const props = { dealers: [] };
+            return { props };
         }
     } catch (error) {
         return { status: 500, error };
