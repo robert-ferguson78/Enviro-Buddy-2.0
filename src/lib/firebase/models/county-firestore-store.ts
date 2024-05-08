@@ -1,4 +1,4 @@
-import { doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, writeBatch, addDoc } from "firebase/firestore";
+import { doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, addDoc } from "firebase/firestore";
 import { db } from '$lib/firebase/firebase.client';
 
 const collectionName = "counties";
