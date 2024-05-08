@@ -2,6 +2,7 @@ import { is_client } from 'svelte/internal';
 import { getApps, initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_PUBLIC_API_KEY,
@@ -13,9 +14,12 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_PUBLIC_MEASUREMENT_ID
 };
 
-let app;
+export let app;
+export let auth;
+
 if (getApps().length == 0) {
     app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
     if (is_client) {
         getAnalytics(app);
     }
