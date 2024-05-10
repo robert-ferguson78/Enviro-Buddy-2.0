@@ -7,17 +7,19 @@ export const load: PageServerLoad = async ({ params, locals }) => {
             throw new Error('User not logged in');
         }
         const countyId = params.countyId;
+        console.log('County ID:', countyId); // Debug statement
         const dealers = await dealerFirestoreStore.getDealersByCountyId(countyId)
+        console.log('Dealers:', dealers); // Debug statement
         if (dealers.length > 0) {
             const props = { dealers };
             return { props };
         } else {
-            // throw new Error('Could not load data');
-            console.log('No dealers found in load function');
+            console.log('No dealers found in load function'); // Debug statement
             const props = { dealers: [] };
             return { props };
         }
     } catch (error) {
+        console.error('Error:', error); // Debug statement
         return { status: 500, error };
     }
 }
