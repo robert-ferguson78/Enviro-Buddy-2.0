@@ -7,8 +7,20 @@ export async function POST({ request, cookies }) {
         const { token, email } = await request.json();
         console.log('Received token:', token); // Debug statement
 
-        const verfiedToken = await auth.verifyIdToken(token ?? '', true);
+        // If token is not provided, return an error
+        if (!token) {
+            console.log('No token provided'); // Debug statement
+            return json({ message: 'No token provided' }, { status: 400 });
+        }
+
+        const verfiedToken = await auth.verifyIdToken(token, true);
         console.log('Verified token:', verfiedToken); // Debug statement
+
+        // If the token is not verified, return an error
+        if (!verfiedToken) {
+            console.log('Token not verified'); // Debug statement
+            return json({ message: 'Token not verified' }, { status: 403 });
+        }
 
         if (verfiedToken.email === email) {
             cookies.set('jwt', token, {
