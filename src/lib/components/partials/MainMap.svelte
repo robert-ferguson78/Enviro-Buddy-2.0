@@ -11,6 +11,8 @@
     let lastOpenedPopupDealer = null;
     let isPopupOpen = false;
     let currentButton = null;
+    let customIcon;
+    let customShadow;
 
     let map;
     let L;
@@ -25,6 +27,17 @@
 
             // Dynamically import the 'leaflet-groupedlayercontrol' library
             await import('leaflet-groupedlayercontrol');
+            
+            // Define custom icon and shadow
+            customIcon = L.icon({
+                iconUrl: '/images/map-car-marker.png',
+                shadowUrl: '/images/map-car-marker-shadow.png',
+                iconSize: [52, 60], // size of the icon
+                shadowSize: [52, 60], // size of the shadow
+                iconAnchor: [26, 60], // anchor at half width and full height to position the bottom center of the icon at the marker's location
+                shadowAnchor: [26, 60], // anchor the shadow at the same point
+                popupAnchor: [0, -60] // open the popup just above the icon
+            });
 
             // Create a map
             map = L.map('map', { zoomSnap: 0, doubleClickZoom: false }).setView([53.340610, -7.673507], 7.1);
@@ -82,8 +95,8 @@
                 const user = users.find(user => user.user_id === dealer.userId);
                 // If a matching user is found and it has valid latitude and longitude
                 if (user && dealer.latitude !== undefined && dealer.longitude !== undefined) {
-                    // Create a marker for the dealer
-                    const marker = L.marker([dealer.latitude, dealer.longitude]);
+                    // Create a marker for the dealer with custom map marker
+                    const marker = L.marker([dealer.latitude, dealer.longitude], {icon: customIcon});
 
                     // Find the car types associated with the dealer
                     const dealerCarTypes = userIdToCarTypes[dealer.userId] || [];
