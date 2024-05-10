@@ -5,27 +5,26 @@
     import { page } from '$app/stores';
     import type { UserData } from '$lib/types/enviro-buddy-types';
 
-     interface UserData {
+    interface UserData {
         user_id: string;
         user_name: string;
     }
 
     async function loginGoogle() {
-        try {
-            const userData: UserData = await loginWithGoogle();
-            if (userData) {
-                const url = new URL(window.location.href);
-                console.log('redirect code fired')
-                let userId = userData.user_id;
-                let userName = userData.user_name;
-                await afterLoginGoogle(url, userId, userName);
+    try {
+        const userData = await loginWithGoogle();
+        console.log('loginGoogle: userData:', userData);
+        if (userData && userData.uid && userData.displayName) {
+            const url = new URL(window.location.href);
+            afterLoginGoogle(url, userData.uid, userData.displayName);
+        } else {
+            console.error('loginGoogle: userData is null or undefined, or uid/displayName is missing');
+        }
+        } catch (error) {
+            console.error('loginGoogle: error:', error);
+            if (error.code !== 'auth/popup-closed-by-user') {
+                messagesStore.showError("There was an issue With sign in, please try again");
             }
-        } catch (e) {
-            if ((e as any).code == 'auth/popup-closed-by-user') {
-                return
-            }
-            // console.log(e);
-            messagesStore.showError("There was an issue With sign in, please try again");
         }
     }
 </script>

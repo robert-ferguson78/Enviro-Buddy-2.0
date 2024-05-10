@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { getUser, updateUser } from '$lib/firebase/models/user-firestore.store'; // import your getUser function
+    import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store'; // import your getUser function
     import messagesStore from '$lib/stores/messages.store';
 
     export let btnName: string;
@@ -10,7 +10,7 @@
     let brand = '';
 
     onMount(async () => {
-        const user = await getUser(userId);
+        const user = await userFirestoreStore.getUser(userId);
         if (user) {
             name = user.name;
             brand = user.brand;
@@ -20,7 +20,7 @@
     async function onSubmit() {
         const user = { name, brand };
         try {
-            await updateUser(userId, user);
+            await userFirestoreStore.updateUser(userId, user);
             messagesStore.showSuccess('User profile has been updated successfully.'); // set success message
         } catch (error) {
             messagesStore.showError('An error occurred while updating the user profile.'); // set error message

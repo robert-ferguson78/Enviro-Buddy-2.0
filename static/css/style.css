@@ -50,3 +50,6 @@ ul.message {
     background-color: #ec3454;
     color: #ffffff;
 }
+.car-type-popup {
+    min-width:300px;
+    }

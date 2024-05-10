@@ -1,11 +1,12 @@
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { app } from '$lib/firebase/firebase.client' // import your initialized firebase app
 import { getAuth } from 'firebase/auth';
+
 /**
  * @param {File} file
  * @param {string} destination
  */
-export async function saveFileToBucket(file, destination) {
+export async function saveFileToBucket(file: File, destination: string): Promise<string> {
     console.log("Path: ", destination); // Log the path
     console.log("File name: ", file.name); // Log the file name
 
@@ -13,7 +14,7 @@ export async function saveFileToBucket(file, destination) {
     const user = auth.currentUser; // Get the currently signed-in user
 
     if (user) {
-        console.log("User is signed in with uid: ", user.uid);
+        console.log("User is signed in with uid client: ", user.uid);
     } else {
         console.log("No user is signed in.");
         throw new Error("No user is signed in."); // Throw an error if no user is signed in
@@ -52,7 +53,7 @@ export async function saveFileToBucket(file, destination) {
 /**
  * @param {string} filePath
  */
-export async function deleteFileFromBucket(filePath) {
+export async function deleteFileFromBucket(filePath: string): Promise<void> {
     const storage = getStorage(app);
     const fileRef = ref(storage, filePath);
 

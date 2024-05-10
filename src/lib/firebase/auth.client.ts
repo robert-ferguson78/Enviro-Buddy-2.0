@@ -1,6 +1,6 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { setUser } from '$lib/firebase/database.client';
-import { getUser } from '$lib/firebase/models/user-firestore.store';
+import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
 
 export async function loginWithGoogle() {
     try {
@@ -15,17 +15,16 @@ export async function loginWithGoogle() {
         // console.log('LoginWithGoogle fired');
 
         // Get user data from Firestore using getUser function
-        const userData = await getUser(userId);
-        if (userData) {
-            // User data exists in Firestore, return userId
-            return userId;
-        } else {
-            // No user data in Firestore, create user with setUser
+        const userData = await userFirestoreStore.getUser(userId);
+        if (!userData) {
             await setUser(userId, userName);
-            // console.log('After setUser');
-            // Return userId
-            return userId;
         }
+
+        // Always return an object with uid and displayName properties
+        return {
+            uid: userId,
+            displayName: userName
+        };
     } catch (error) {
         console.error('Error in loginWithGoogle', error);
         throw error;

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';
-  import { getUser } from '$lib/firebase/models/user-firestore.store';
+  import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
   import messagesStore from '$lib/stores/messages.store';
   import authStore from '$lib/stores/auth.store';
   import { createEventDispatcher } from 'svelte';
@@ -14,7 +14,7 @@
 
   const unsubscribe = authStore.subscribe(async value => {
     if (value && value.isLoggedIn && value.userId) {
-      user = await getUser(value.userId);
+      user = await userFirestoreStore.getUser(value.userId);
     } else {
       user = null;
     }

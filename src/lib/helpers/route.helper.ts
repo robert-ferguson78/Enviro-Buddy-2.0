@@ -4,38 +4,36 @@ import { setUser } from '$lib/firebase/database.client';
 
 export async function afterLogin(url: URL) {
     const route = url.searchParams.get('redirect') || '/';
-    // await setUser(userId);
+    console.log('afterLogin: route:', route);
     await sendJWTToken();
+    console.log('afterLogin: sendJWTToken called');
     await goto(route);
+    console.log('afterLogin: goto called with route:', route);
 }
 
 export async function afterLoginGoogle(url: URL, userId: string, userName: string) {
-    // console.log('afterLoginGoogle called with url:', url, 'and userId:', userId);
+    console.log('afterLoginGoogle: called with url:', url, 'userId:', userId, 'userName:', userName);
     
-    // Create a user object with a user_id field
-    const user = { user_id: userId };
-
     const route = url.searchParams.get('redirect') || '/';
-    // console.log('Redirect route:', route);
+    console.log('afterLoginGoogle: route:', route);
     
-    // console.log('Calling setUser...');
     if (userId) {
         try {
-            await setUser(user, userName); // Pass the userName parameter to setUser
-            // console.log('setUser completed');
+            console.log('afterLoginGoogle: calling setUser with userId:', userId, 'userName:', userName);
+            await setUser(userId, userName); // Pass userId as a parameter, not as a property of an object
+            console.log('afterLoginGoogle: setUser completed');
         } catch (error) {
-            console.error('Error calling setUser:', error);
+            console.error('afterLoginGoogle: error calling setUser:', error);
         }
     } else {
-        // console.error('userId is empty');
+        console.error('afterLoginGoogle: userId is empty');
     }
-    // console.log('setUser completed');
     
-    // console.log('Calling sendJWTToken...');
+    console.log('afterLoginGoogle: calling sendJWTToken');
     await sendJWTToken();
-    // console.log('sendJWTToken completed');
+    console.log('afterLoginGoogle: sendJWTToken completed');
     
-    // console.log('Calling goto...');
+    console.log('afterLoginGoogle: calling goto with route:', route);
     await goto(route);
-    // console.log('goto completed');
+    console.log('afterLoginGoogle: goto completed');
 }

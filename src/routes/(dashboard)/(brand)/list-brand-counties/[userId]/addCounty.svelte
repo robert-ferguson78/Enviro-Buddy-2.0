@@ -1,6 +1,6 @@
 <script lang="ts">
   import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
-  import { getUser } from '$lib/firebase/models/user-firestore.store';
+  import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
   import messagesStore from '$lib/stores/messages.store';
   import authStore from '$lib/stores/auth.store';
   import type { NewCounty } from "$lib/types/enviro-buddy-types.ts";
@@ -12,7 +12,7 @@
 
   const unsubscribe = authStore.subscribe(async value => {
     if (value && value.isLoggedIn && value.userId) {
-      user = await getUser(value.userId);
+      user = await userFirestoreStore.getUser(value.userId);
       // console.log(user, 'user object'); // Log the user object
       // console.log(user.user_id, 'user id here2');
     } else {

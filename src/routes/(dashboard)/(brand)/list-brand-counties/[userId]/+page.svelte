@@ -3,9 +3,16 @@
   import AddCounty from './addCounty.svelte';
   import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
   export let data;
+  // let counties = [];
   let counties = data?.props?.counties;
-  // console.log('Props in Svelte component:', $$props);
+  // console.log('Props in Svelte component:', $props);
   // console.log('Counties in Svelte component:', counties);
+
+  $: {
+    if (data?.props?.counties) {
+      counties = data.props.counties;
+    }
+  }
 
   function addCounty() {
   console.log('addCounty function called');

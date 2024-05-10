@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals }) => {
             return { props };
         } else {
             // throw new Error('Could not load data');
-            console.log('No counties found in load function');
+            // console.log('No counties found in load function');
             const props = { counties: [] };
             return { props };
         }

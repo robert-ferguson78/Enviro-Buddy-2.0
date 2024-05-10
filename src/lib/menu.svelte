@@ -4,13 +4,13 @@
   import { logout } from '$lib/firebase/auth.client';
   import messagesStore from '$lib/stores/messages.store';
   import { goto } from '$app/navigation';
-  import { getUser } from '$lib/firebase/models/user-firestore.store';
+  import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
 
   let user;
 
   const unsubscribe = authStore.subscribe(async value => {
     if (value && value.isLoggedIn && value.userId) {
-      user = await getUser(value.userId);
+      user = await userFirestoreStore.getUser(value.userId);
       // console.log(user, 'user object'); // Log the user object
       // console.log(user.user_id, 'user id here2');
     } else {
@@ -41,9 +41,7 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              {#if $authStore.isLoggedIn}
-                <a id="envirobuddy" class="button" href="/envirobuddy"> Enviro-Buddy </a>
-              {/if}
+                <a id="envirobuddy" class="button" href="/"> Enviro-Buddy </a>
               {#if user && user.type === 'brand'}
                 <a class="button" href={`/brand-dashboard/${user.user_id}`}> Brand Dashboard </a>
                 <a class="button" href={`/profile/${user.user_id}`}>Profile</a>
