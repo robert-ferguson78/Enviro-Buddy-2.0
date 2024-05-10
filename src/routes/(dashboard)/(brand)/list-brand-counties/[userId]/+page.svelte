@@ -38,6 +38,7 @@ async function deleteCounty(countyId) {
   <AddCounty on:add={addCounty} />
 </section>
 
+{#if counties}
 {#each Array(Math.ceil(counties.length / 3)) as _, i}
   <div class="columns">
     {#each counties.slice(i * 3, i * 3 + 3) as county (county._id)}
@@ -59,3 +60,4 @@ async function deleteCounty(countyId) {
     {/each}
   </div>
 {/each}
+{/if}
