@@ -59,7 +59,7 @@ export const carTypeFirestoreStore = {
                 // Create a new filename with the timestamp
                 const newFilename = `${filename}-${timestamp}.${extension}`;
 
-                let destination = `images/${newFilename}`;
+                const destination = `images/${newFilename}`;
                 carType.image = await saveFileToBucket(carType.image, destination);
             } catch (error) {
                 console.error('Error uploading image:', error);
@@ -96,7 +96,7 @@ export const carTypeFirestoreStore = {
                 // Create a new filename with the timestamp
                 const newFilename = `${filename}-${timestamp}.${extension}`;
     
-                let destination = `images/${newFilename}`;
+                const destination = `images/${newFilename}`;
                 updatedCarType.image = await saveFileToBucket(imageFile, destination);
             } catch (error) {
                 console.error('Error uploading image:', error);
