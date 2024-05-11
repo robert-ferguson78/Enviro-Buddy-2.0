@@ -12,6 +12,7 @@
   let image;
 
   let defaultImage = '/images/enviro-buddy-image-preview.jpg';
+  let additionalImages = [];
 
   const dispatch = createEventDispatcher();
 
@@ -37,6 +38,7 @@
       carRange,
       carType,
       image,
+      additionalImages,
       userId: user.user_id // include the userId in the carTypeObject
     };
 
@@ -50,13 +52,22 @@
       messagesStore.showError('Car not added, please contact support!');
     }
 
-    console.log({ carName, carRange, carType, image, userId: user.user_id });
+    console.log({ carName, carRange, carType, image, additionalImages, userId: user.user_id });
   }
 
   function handleFileChange(event) {
     image = event.target.files[0];
     const preview = document.getElementById('preview');
     preview.src = URL.createObjectURL(image);
+  }
+
+  function handleAdditionalFilesChange(event) {
+    additionalImages = [];
+    additionalImages = Array.from(event.target.files);
+    additionalImages.forEach((image, index) => {
+      const preview = document.getElementById(`additional-preview-${index}`);
+      preview.src = URL.createObjectURL(image);
+    });
   }
 </script>
 
@@ -109,6 +120,31 @@
         <label class="label" for="preview">Image Preview</label>
         <img id="preview" src={image ? URL.createObjectURL(image) : defaultImage} alt="Vehicle Preview" />
       </div>
+    </div>
+  </div>
+  <div class="control pt-5">
+    <div class="file has-name">
+      <label class="file-label">
+        <input class="file-input" type="file" name="additionalImages" on:change={handleAdditionalFilesChange} multiple>
+        <span class="file-cta">
+          <span class="file-icon">
+            <i class="fas fa-upload"></i>
+          </span>
+          <span class="file-label">
+            Choose Additional Vehicle Images…
+          </span>
+        </span>
+        <span class="file-name">
+          Additional Image Names
+        </span>
+      </label>
+    </div>
+  </div>
+  <div class="column is-one-third">
+    <div class="additional-previews">
+      {#each additionalImages as image, index (image)}
+        <img id={`additional-preview-${index}`} src={URL.createObjectURL(image)} alt={`Additional Image ${index + 1}`} />
+      {/each}
     </div>
   </div>
   <div class="columns">

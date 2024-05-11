@@ -241,7 +241,9 @@ lastOpenedPopupDealer = dealer;
     }
 </style>
 
-<h1>Map for end user</h1>    
-<div id="map"></div>
-<button bind:this={button}>Add Marker</button>
-<SecondaryMainMap bind:mapActions={secondaryMapActions} />
+<div class="cell">  
+    <div id="map"></div>
+</div>
+<div class="cell">
+    <SecondaryMainMap bind:mapActions={secondaryMapActions} />
+</div>

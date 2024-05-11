@@ -45,24 +45,30 @@ export const carTypeFirestoreStore = {
     },
 
     // Method to create a new car type
-    async createCarType(carType) {
-        console.log('createCarType', carType);
-        // If there's an image, upload it and replace the image property with the URL
-        if (carType.image) {
-            try {
-                // Get the current timestamp
-                const timestamp = Date.now();
-                // Get the file extension
-                const extension = carType.image.name.split('.').pop();
-                // Get the filename without the extension
-                const filename = carType.image.name.substring(0, carType.image.name.length - extension.length - 1);
-                // Create a new filename with the timestamp
-                const newFilename = `${filename}-${timestamp}.${extension}`;
+    // Method to create a new car type
+async createCarType(carType) {
+    console.log('createCarType', carType);
+    // If there's an image, upload it and replace the image property with the URL
+    if (carType.image) {
+        try {
+            carType.image = await uploadImage(carType.image);
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            throw error; // re-throw the error so it can be handled by the caller
+        }
+    }
 
-                const destination = `images/${newFilename}`;
-                carType.image = await saveFileToBucket(carType.image, destination);
+        // If there are additional images, upload them and replace the additionalImages property with the URLs
+        if (carType.additionalImages && carType.additionalImages.length > 0) {
+            try {
+                const additionalImageUrls = [];
+                for (const image of carType.additionalImages) {
+                    const imageUrl = await uploadImage(image);
+                    additionalImageUrls.push(imageUrl);
+                }
+                carType.additionalImages = additionalImageUrls;
             } catch (error) {
-                console.error('Error uploading image:', error);
+                console.error('Error uploading additional images:', error);
                 throw error; // re-throw the error so it can be handled by the caller
             }
         }
@@ -76,38 +82,61 @@ export const carTypeFirestoreStore = {
     },
 
     // Method to update a car type
-    async updateCarType(id, updatedCarType, imageFile) {
+    async updateCarType(id, updatedCarType, imageFiles, additionalImageFiles) {
+        console.log('imageFiles:', imageFiles); // Add this line
         // Get the document with the given ID
         const docSnap = await getDoc(doc(db, collectionName, id));
         // If the document does not exist, throw an error
         if (!docSnap.exists()) {
             throw new Error("CarType not found");
         }
-    
-        // If there's an image file, upload it and replace the image property with the URL
-        if (imageFile && imageFile instanceof File) {
+
+        // Function to upload an image file and return the URL
+        const uploadImage = async (imageFile) => {
+            if (!imageFile || !imageFile.name) {
+                throw new Error('Invalid image file');
+            }
+        
+            // Get the current timestamp
+            const timestamp = Date.now();
+            // Get the file extension
+            const extension = imageFile.name.split('.').pop();
+            // Get the filename without the extension
+            const filename = imageFile.name.substring(0, imageFile.name.length - extension.length - 1);
+            // Create a new filename with the timestamp
+            const newFilename = `${filename}-${timestamp}.${extension}`;
+        
+            const destination = `images/${newFilename}`;
+            const imageUrl = await saveFileToBucket(imageFile, destination);
+            return imageUrl;
+        };
+
+        // If there is a main image file, upload it and replace the image property with the URL
+        if (imageFiles && imageFiles.length > 0) {
             try {
-                // Get the current timestamp
-                const timestamp = Date.now();
-                // Get the file extension
-                const extension = imageFile.name.split('.').pop();
-                // Get the filename without the extension
-                const filename = imageFile.name.substring(0, imageFile.name.length - extension.length - 1);
-                // Create a new filename with the timestamp
-                const newFilename = `${filename}-${timestamp}.${extension}`;
-    
-                const destination = `images/${newFilename}`;
-                updatedCarType.image = await saveFileToBucket(imageFile, destination);
+                const imageUrl = await uploadImage(imageFiles[0]);
+                updatedCarType.image = imageUrl;
             } catch (error) {
-                console.error('Error uploading image:', error);
+                console.error('Error uploading main image:', error);
                 throw error; // re-throw the error so it can be handled by the caller
             }
         }
-    
-        // Update the car type in Firestore
-        const carTypeRef = doc(db, collectionName, id);
-        await updateDoc(carTypeRef, updatedCarType);
+
+        // If there are additional image files, upload them and replace the additionalImages property with the URLs
+        if (additionalImageFiles && additionalImageFiles.length > 0) {
+            try {
+                const additionalImageUrls = await Promise.all(additionalImageFiles.map(uploadImage));
+                updatedCarType.additionalImages = additionalImageUrls;
+            } catch (error) {
+                console.error('Error uploading additional images:', error);
+                throw error; // re-throw the error so it can be handled by the caller
+            }
+        }
+
+        // Update the document in the Firestore database
+        await updateDoc(doc(db, collectionName, id), updatedCarType);
     },
+
     async deleteCarTypeById(id) {
         // Get the document with the given ID
         const docRef = doc(db, collectionName, id);
@@ -135,3 +164,18 @@ export const carTypeFirestoreStore = {
         await deleteDoc(docRef);
     }
 };
+
+ // Helper function to upload an image and return its URL
+ async function uploadImage(image) {
+    // Get the current timestamp
+    const timestamp = Date.now();
+    // Get the file extension
+    const extension = image.name.split('.').pop();
+    // Get the filename without the extension
+    const filename = image.name.substring(0, image.name.length - extension.length - 1);
+    // Create a new filename with the timestamp
+    const newFilename = `${filename}-${timestamp}.${extension}`;
+
+    const destination = `images/${newFilename}`;
+    return await saveFileToBucket(image, destination);
+}

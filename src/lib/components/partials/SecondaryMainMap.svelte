@@ -8,6 +8,9 @@
     let dealer = writable(null); // Make dealer a writable store
     let customIcon; // Define customIcon variable
 
+    export let carType;
+    console.log('carType:', carType);
+
     onMount(async () => {
         if (typeof window !== 'undefined') {
             const module = await import('leaflet');
@@ -45,10 +48,10 @@
 
                 // Use customIcon when creating the marker
                 currentMarker = L.marker([$dealer.latitude, $dealer.longitude], {icon: customIcon}).addTo(map); // Use $dealer to access the value of the dealer store
-                map.flyTo([currentMarker.getLatLng().lat, currentMarker.getLatLng().lng], 16); // Animate the transition to the new marker
+                map.flyTo([currentMarker.getLatLng().lat, currentMarker.getLatLng().lng], 16, { duration: 2.2 }); // Animate the transition to the new marker
             }
         }
     };
 </script>
 
-<div id="secondary-map" style="height: 600px;"></div>
+<div id="secondary-map" style="height: 300px;"></div>
