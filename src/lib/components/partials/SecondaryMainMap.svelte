@@ -1,15 +1,15 @@
 <script>
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store'; // Import writable store
+    import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
+    import GalleryImages from '$lib/components/partials/GalleryImages.svelte';
+    let carTypes = [];
 
     let map;
     let L;
     let currentMarker = null; // Add this line to keep a reference to the current marker
     let dealer = writable(null); // Make dealer a writable store
     let customIcon; // Define customIcon variable
-
-    export let carType;
-    console.log('carType:', carType);
 
     onMount(async () => {
         if (typeof window !== 'undefined') {
@@ -37,10 +37,21 @@
     // Add this reactive statement
     $: $dealer && mapActions.addMarker($dealer); // Use $dealer to access the value of the dealer store
 
+    async function updateCarTypes() {
+        carTypes = await carTypeFirestoreStore.getCarTypesByBrandId($dealer.userId); // Update carTypes when dealer changes
+        console.log('carTypes for dealer', carTypes); // Log carTypes
+    }
+
+    $: if ($dealer) {
+        mapActions.addMarker($dealer); // Use $dealer to access the value of the dealer store
+        updateCarTypes();
+    }
+
     export let mapActions = {
         addMarker(newDealer) {
             dealer.set(newDealer); // Update the dealer object using set method
 
+            console.log('newDealer', newDealer);
             if (L) {
                 if (currentMarker) {
                     map.removeLayer(currentMarker);
@@ -54,4 +65,5 @@
     };
 </script>
 
-<div id="secondary-map" style="height: 300px;"></div>
+<div id="secondary-map" style="height: 150px;"></div>
+<GalleryImages {carTypes} />

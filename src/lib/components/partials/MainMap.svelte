@@ -154,8 +154,6 @@
 
 // Store the dealer of the last opened popup
 lastOpenedPopupDealer = dealer;
-// Store the dealer of the last opened popup
-lastOpenedPopupDealer = dealer;
 
                     // Check if the county layer exists
                     if (countyLayers[countyName]) {
@@ -241,9 +239,9 @@ lastOpenedPopupDealer = dealer;
     }
 </style>
 
-<div class="cell">  
+<div class="column is-three-fifths">  
     <div id="map"></div>
 </div>
-<div class="cell">
+<div class="column">
     <SecondaryMainMap bind:mapActions={secondaryMapActions} />
 </div>

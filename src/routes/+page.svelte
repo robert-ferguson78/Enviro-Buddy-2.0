@@ -3,6 +3,6 @@
 </script>
     
 <h1>Intro home page</h1>
-<div class="grid">
+<div class="columns">
     <MainMap />
 </div>

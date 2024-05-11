@@ -39,6 +39,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@react2svelte/image-gallery": "^1.0.1",
 		"busboy": "^1.6.0",
 		"leaflet": "^1.9.4",
 		"leaflet-groupedlayercontrol": "^0.6.1",
