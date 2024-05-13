@@ -2,7 +2,7 @@ import { doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, w
 import { db } from '$lib/firebase/firebase.client';
 
 const collectionName = "users";
-const usersRef = collection(db, collectionName);
+// const userRef = collection(db, collectionName);
 
 export const userFirestoreStore = {
     getUser: async function(userId: string) {

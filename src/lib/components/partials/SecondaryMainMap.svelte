@@ -1,8 +1,13 @@
 <script>
     import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
     import { writable } from 'svelte/store'; // Import writable store
     import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
+    import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
     import GalleryImages from '$lib/components/partials/GalleryImages.svelte';
+    import authStore from '$lib/stores/auth.store';
+    import { chatIdStore } from '$lib/stores/chatIdStore';
+
     let carTypes = [];
 
     let map;
@@ -63,7 +68,24 @@
             }
         }
     };
+
+    console.log("auth store data: ", authStore);
+
+    async function startNewChat() {
+        const chatId = await chatsFirestoreStore.createChat($dealer.userId, $authStore.userId, $dealer.name, $authStore.userName);
+        console.log('chatId:', chatId); // Log chatId
+        chatIdStore.set({
+            chatId: chatId,
+            dealerUserId: $dealer.userId,
+            authUserId: $authStore.userId
+        });
+        let url = `/chat/${chatId}`;
+console.log('Navigating to:', url);
+goto(url);
+    };
+
 </script>
 
 <div id="secondary-map" style="height: 150px;"></div>
+<button on:click={startNewChat}>Start new chat</button>
 <GalleryImages {carTypes} />

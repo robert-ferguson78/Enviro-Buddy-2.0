@@ -1,4 +1,4 @@
-import { doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, writeBatch, addDoc } from "firebase/firestore";
+import { doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, addDoc } from "firebase/firestore";
 import { db } from '$lib/firebase/firebase.client';
 
 const collectionName = "dealers";
@@ -56,15 +56,15 @@ export const dealerFirestoreStore = {
         }
     },
 
-    async deleteAllDealers() {
-        const querySnapshot = await getDocs(dealersRef);
-        const batch = writeBatch(db);
-        querySnapshot.docs.forEach((doc) => {
-            const docRef = doc(db, collectionName, doc.id);
-            batch.delete(docRef);
-        });
-        await batch.commit();
-    },
+    // async deleteAllDealers() {
+    //     const querySnapshot = await getDocs(dealersRef);
+    //     const batch = writeBatch(db);
+    //     querySnapshot.docs.forEach((doc) => {
+    //         const docRef = doc(db, collectionName, doc.id);
+    //         batch.delete(docRef);
+    //     });
+    //     await batch.commit();
+    // },
 
     async updateDealer(id, updatedDealer) {
         const docRef = doc(db, collectionName, id);
