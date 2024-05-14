@@ -19,8 +19,7 @@
 
 </script>
 
-<h1>All Chats</h1>
-
+<h1 class="title">My Chats</h1>
 <ChatList />
 <!-- <ChatList {selectChat} /> -->
 <!-- <ChatWindow {activeChat} /> -->

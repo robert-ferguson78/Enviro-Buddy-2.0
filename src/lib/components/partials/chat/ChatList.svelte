@@ -51,11 +51,14 @@
     return chat.userNames[chat.userNames.length - 1 - userIdIndex];
 }
 </script>
-
-{#each chats as chat (chat.id)}
-    <div>
-        <h3>Chat with {getDealerName(chat)}</h3>
-        <p>{formatDate(chat.timestamp)}</p>
-        <button on:click={() => selectChat(chat)}>Go to chat</button>
+<div class="columns is-multiline">
+    {#each chats as chat (chat.id)}
+    <div class="column is-one-third">
+        <div class="box">
+            <h3>Chat with: <b>{getDealerName(chat)}</b></h3>
+            <p>{formatDate(chat.timestamp)}</p>
+            <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background" on:click={() => selectChat(chat)}>Go to chat</button>
+        </div>
     </div>
-{/each}
+    {/each}
+</div>

@@ -110,14 +110,19 @@
     console.log("value to check ", userIdToName);
 </script>
 
-<div>
-    <h1 class="title">Chat with {otherUserName}</h1>
-    {#each messages as message (message.timestamp)}
-    <div>
-        <strong>{message.senderName}:</strong> {message.text}
+<h1 class="title has-text-centered">Chat with {otherUserName}</h1>
+<div class="container-max-width">
+    <div class="message-container">
+       {#each messages as message (message.timestamp)}
+        <div class={message.senderName === userIdToName[user.userId] ? 'my-message' : 'your-message'}>
+            <strong>
+                {message.senderName}<br/>
+                {message.text}
+            </strong> 
+        </div>
+    {/each}
     </div>
-{/each}
-    <input class="type-message" type="text" placeholder="Type a message...Hit ENTER to send" style="width: 300px;"
+    <input class="input is-rounded mt-3" type="text" placeholder="Type a message...Hit ENTER to send" 
     bind:value={newMessage} 
     on:keydown={(e) => {
         if (e.key === 'Enter') {
@@ -129,8 +134,32 @@
 </div>
 
 <style>
-    .type-message {
-        border: solid 1px grey;
-        border-radius: 5px;
+    .container-max-width {
+        max-width:450px;
+        margin: auto;
+    }
+    .message-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .message-container strong {
+        display: block;
+        color: #fff;
+        width: 250px;
+    }
+    .my-message, .your-message {
+        border-radius: 8px;
+        padding: 4px 8px;
+        min-width:250px;
+        margin-bottom: 15px;
+    }
+    .my-message {
+        align-self: flex-start;
+        background-color: green;
+    }
+    .your-message {
+        align-self: flex-end;
+        background-color: grey;
     }
 </style>

@@ -87,5 +87,5 @@ goto(url);
 </script>
 
 <div id="secondary-map" style="height: 150px;"></div>
-<button on:click={startNewChat}>Start new chat</button>
+<button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background" on:click={startNewChat}>Test Drive Chat</button>
 <GalleryImages {carTypes} />
