@@ -31,16 +31,19 @@
 </script>
 
 <!-- Use #each block to loop over carData and display the name and image -->
-<div class="columns">
-{#each carData as car (car.carName)}
-<div class="column">
-    <h2>{car.carName}</h2>
-    <img src={car.carImage} on:click={() => handleClick(car)}>
-</div>
-{/each}
-</div>
+<div class="box">
+    <h2 class="subtitle has-text-centered">Select Dealer on Map for Car Models</h2>
+    <div class="columns">
+        {#each carData as car (car.carName)}
+            <div class="column">
+                <h2>{car.carName}</h2>
+                <img src={car.carImage} on:click={() => handleClick(car)}>
+            </div>
+        {/each}
+    </div>
 
-<!-- Display ImageGallery for selected car -->
-{#if selectedCar}
-<ImageGallery items={imageUrls} />
-{/if}
+    <!-- Display ImageGallery for selected car -->
+    {#if selectedCar}
+        <ImageGallery items={imageUrls} />
+    {/if}
+</div>

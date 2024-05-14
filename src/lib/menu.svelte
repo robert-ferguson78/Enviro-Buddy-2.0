@@ -46,6 +46,9 @@
                 <a class="button" href={`/brand-dashboard/${user.user_id}`}> Brand Dashboard </a>
                 <a class="button" href={`/profile/${user.user_id}`}>Profile</a>
               {/if}
+              {#if user}
+                <a class="button" href="/messages">Messages</a>
+              {/if}
                 <a id="about" class="button" href="/about"> About </a>
               {#if $authStore.isLoggedIn}
                 <a on:click={onLogout} class="button" id="logout" href="/"> Log out </a>
