@@ -7,6 +7,7 @@
     import GalleryImages from '$lib/components/partials/GalleryImages.svelte';
     import authStore from '$lib/stores/auth.store';
     import { chatIdStore } from '$lib/stores/chatIdStore';
+    import { getWeatherIcon } from '$lib/utils/weather.ts';
 
     let carTypes = [];
 
@@ -20,17 +21,6 @@
         if (typeof window !== 'undefined') {
             const module = await import('leaflet');
             L = module.default;
-
-            // Define custom icon
-            customIcon = L.icon({
-                iconUrl: '/images/map-car-marker.png',
-                shadowUrl: '/images/map-car-marker-shadow.png',
-                iconSize: [52, 60], // size of the icon
-                shadowSize: [52, 60], // size of the shadow
-                iconAnchor: [26, 60], // anchor at half width and full height to position the bottom center of the icon at the marker's location
-                shadowAnchor: [26, 60], // anchor the shadow at the same point
-                popupAnchor: [0, -60] // open the popup just above the icon
-            });
 
             map = L.map('secondary-map', { zoomSnap: 0, doubleClickZoom: false }).setView([53.340610, -7.673507], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -53,7 +43,7 @@
     }
 
     export let mapActions = {
-        addMarker(newDealer) {
+        async addMarker(newDealer) {
             dealer.set(newDealer); // Update the dealer object using set method
 
             console.log('newDealer', newDealer);
@@ -61,6 +51,21 @@
                 if (currentMarker) {
                     map.removeLayer(currentMarker);
                 }
+
+            // Get weather icon
+            const weather = await getWeatherIcon($dealer.latitude, $dealer.longitude, 'filled');
+            const iconUrl = weather ? weather.icon : '/images/map-car-marker.png';
+
+                // Use customIcon when creating the marker
+            customIcon = L.icon({
+                iconUrl: iconUrl,
+                shadowUrl: '/images/map-weathersvg-shadow4.png',
+                iconSize: [52, 60], // size of the icon
+                shadowSize: [52, 60], // size of the shadow
+                iconAnchor: [26, 60], // anchor at half width and full height to position the bottom center of the icon at the marker's location
+                shadowAnchor: [26, 60], // anchor the shadow at the same point
+                popupAnchor: [0, -60] // open the popup just above the icon
+            });
 
                 // Use customIcon when creating the marker
                 currentMarker = L.marker([$dealer.latitude, $dealer.longitude], {icon: customIcon}).addTo(map); // Use $dealer to access the value of the dealer store
