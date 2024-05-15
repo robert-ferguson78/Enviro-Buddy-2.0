@@ -52,25 +52,17 @@ export const countyFirestoreStore = {
     },
 
     // Method to get a county by its ID
-    // async getCountyById(id) {
-    //     // Check if the ID is a non-empty string
-    //     if (typeof id !== "string" || id.trim() === "") {
-    //         // Log an error message and return null if the ID is invalid
-    //         console.error(`Invalid id: ${id}`);
-    //         return null;
-    //     }
-    //     // Get the document with the given ID
-    //     const docRef = doc(db, collectionName, id);
-    //     const docSnap = await getDoc(docRef);
-    //     // If the document exists, return the county, otherwise return null
-    //     const county = docSnap.exists() ? { _id: docSnap.id, ...docSnap.data() } : null;
-    //     // If the county exists, get its dealers
-    //     if (county) {
-    //         county.dealers = await dealerFirestoreStore.getDealersByCountyId(county._id);
-    //     }
-    //     // Return the county
-    //     return county;
-    // },
+    async getCountyById(id) {
+        const docRef = doc(db, collectionName, id);
+        const docSnap = await getDoc(docRef);
+    
+        if (docSnap.exists()) {
+            return { _id: docSnap.id, ...docSnap.data() };
+        } else {
+            console.log("No such document!");
+            return null;
+        }
+    },
 
     // Method to check for a county
     async getCheckForCounty(county, userId) {
