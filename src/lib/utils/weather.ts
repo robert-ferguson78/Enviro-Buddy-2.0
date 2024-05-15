@@ -62,7 +62,7 @@ const weatherConditions = new Map();
 
 export async function getWeatherIcon(latitude: number, longitude: number, fillType: 'icon' | 'filled'): Promise<{icon: string | null, description: string | null}> {
     try {
-        const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHERMAP_API_KEY}`);
+        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHERMAP_API_KEY}`);
         const weatherCode = response.data.weather[0].id;
         const weatherCondition = weatherConditions.get(weatherCode);
 
