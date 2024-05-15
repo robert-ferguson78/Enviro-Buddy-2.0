@@ -22,10 +22,10 @@ export const load: PageServerLoad = async () => {
             };
         }));
 
-        console.log('Dealers in load function:', dealersWithExtraInfo); // Log carTypes
+        // console.log('Dealers in load function:', dealersWithExtraInfo); // Log carTypes
         if (dealersWithExtraInfo.length > 0) {
             const props = { dealers: dealersWithExtraInfo };
-            console.log('Returning props from load function:', props); // Log props
+            // console.log('Returning props from load function:', props); // Log props
             return { props };
         } else {
             throw new Error('Could not load data');

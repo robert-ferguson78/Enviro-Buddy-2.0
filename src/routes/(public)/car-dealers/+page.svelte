@@ -17,7 +17,7 @@
     );
 
     function selectDealer(dealerId) {
-        goto(`/car-dealer/${dealerId}`);
+        goto(`/car-dealers/${dealerId}`);
     }
   
 </script>
