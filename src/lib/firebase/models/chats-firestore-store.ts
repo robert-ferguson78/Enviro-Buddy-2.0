@@ -1,4 +1,4 @@
-import { doc, collection, updateDoc, query, where, getDocs, deleteDoc, addDoc, collectionGroup, orderBy, Timestamp, getDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
+import { doc, collection, query, where, getDocs, addDoc, orderBy, Timestamp, getDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
 import { db } from '$lib/firebase/firebase.client';
 
 const collectionName = "chats";

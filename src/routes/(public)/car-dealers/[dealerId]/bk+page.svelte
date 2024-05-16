@@ -80,27 +80,26 @@
 <UpdateHead title="Electric Car Dealer {dealer.name}" description="Driving your Electric Dreams Today" />
 
 <h1 class="title has-text-centered">Car Dealer: {dealer.name}</h1>
-<div class="columns">
+<div class="columns is-multiline">
     <div class="column is-two-thirds">
-        <div id="map" style="height: 300px;"></div>
-        <div class="box box-link-hover-shadow">
-            <h2 class="title">
-                Contact details
-            </h2>
-            <img src={dealer.image} alt={dealer.carName}>
-            <h3 class="subtitle">
-                <b>Phone:</b> {dealer.phone}<br/>
-                <b>Email:</b> {dealer.email}<br/>
-                <b>Website:</b> {dealer.website}<br/>
-                <b>Adress:</b><br/>{dealer.address}<br/>
-                <b>County:</b> {dealer.county}<br/>
-                <b>Car Brand:</b> {dealer.brand}<br/>
-            </h3>
+        <div id="map" style="height: 350px;"></div>
+    </div>
+        <div class="column is-one-third">
+            <div class="box box-link-hover-shadow">
+                <h2 class="title">
+                    Contact details
+                </h2>
+                <img src={dealer.image} alt={dealer.carName}>
+                <h3 class="subtitle">
+                    <b>Phone:</b> {dealer.phone}<br/>
+                    <b>Email:</b> {dealer.email}<br/>
+                    <b>Website:</b> {dealer.website}<br/>
+                    <b>Adress:</b><br/>{dealer.address}<br/>
+                    <b>County:</b> {dealer.county}<br/>
+                    <b>Car Brand:</b> {dealer.brand}<br/>
+                </h3>
+            </div>
         </div>
-    </div>
-    <div class="column is-one-thirds">
-            <Reviews dealerId={dealer._id} />
-    </div>
 </div>
 <h2 class="subtitle has-text-centered">Weather for test drive at {dealer.name} for next 5 days</h2>
 <div class="columns is-multiline">
@@ -120,3 +119,4 @@
         </div>
     {/each}
 </div>
+<Reviews activeReview={activeReview} dealerId={dealerId} />

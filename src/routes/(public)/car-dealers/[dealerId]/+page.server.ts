@@ -6,6 +6,7 @@ import type { PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ( { params } ) => {
     try {
         const dealersId = params.dealerId;
+        // console.log('Dealer ID:', dealersId);
         const dealer = await dealerFirestoreStore.getDealerById(dealersId);
 
         // Fetch user data
@@ -20,9 +21,9 @@ export const load: PageServerLoad = async ( { params } ) => {
             county: countyData.county
         };
 
-        console.log('Dealer in load function:', dealerWithExtraInfo);
+        // console.log('Dealer in load function:', dealerWithExtraInfo);
         const props = { dealer: dealerWithExtraInfo };
-        console.log('Returning props from load function:', props);
+        // console.log('Returning props from load function:', props);
         return { props };
     } catch (error) {
         console.error('Error in load function:', error.message);

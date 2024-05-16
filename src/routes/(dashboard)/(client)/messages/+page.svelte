@@ -21,5 +21,3 @@
 
 <h1 class="title">My Chats</h1>
 <ChatList />
-<!-- <ChatList {selectChat} /> -->
-<!-- <ChatWindow {activeChat} /> -->
