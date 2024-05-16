@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { onMount } from 'svelte';
     import UpdateHead from '$lib/UpdateHead.svelte';
     import { goto } from '$app/navigation';
@@ -6,15 +6,19 @@
     import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
     import authStore from '$lib/stores/auth.store';
     import { chatIdStore } from '$lib/stores/chatIdStore';
+    import { getWeatherForecast } from '$lib/utils/weather';
 
     export let data;
     let dealer = data?.props?.dealer || [];
     let map;
     let customIcon;
+    let forecast = [];
+    let dealerLat = dealer.latitude;
+    let dealerLong = dealer.longitude;
 
     onMount(async () => {
         const L = (await import('leaflet')).default;
-        map = L.map('map').setView([dealer.latitude, dealer.longitude], 13);
+        map = L.map('map').setView([dealerLat, dealerLong], 13);
 
         customIcon = L.icon({
                 iconUrl: '/images/map-car-marker.png',
@@ -30,7 +34,7 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        const marker = L.marker([dealer.latitude, dealer.longitude], {icon: customIcon}).addTo(map);
+        const marker = L.marker([dealerLat, dealerLong], {icon: customIcon}).addTo(map);
 
         const popupContent = createPopupHTML(dealer);
         const popup = L.popup().setContent(popupContent);
@@ -43,6 +47,10 @@
             const button = document.querySelector('.start-chat-button');
             button.addEventListener('click', startNewChat);
         }, 0);
+
+        const forecastData = await getWeatherForecast(dealerLat, dealerLong, "icon");
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+        forecast = forecastData.filter(day => day.date > currentTimeInSeconds).slice(0, 5);
     });
 
     function createPopupHTML(dealer) {
@@ -91,4 +99,22 @@
                 </h3>
             </div>
         </div>
+</div>
+<h2 class="subtitle has-text-centered">Weather for test drive at {dealer.name} for next 5 days</h2>
+<div class="columns is-multiline">
+    {#each forecast as day (day.date)}
+        <div class="column is-one-fifth">
+            <div class="card">
+                <div class="card-content">
+                    <p class="title">{new Date(day.date * 1000).toLocaleDateString(undefined, { weekday: 'long' })}
+                        {new Date(day.date * 1000).toLocaleTimeString()}</p>
+                    <p class="subtitle">{day.temp}°C</p>
+                    <figure class="image is-64x64">
+                        <img src={day.icon} alt={day.description}>
+                    </figure>
+                    <p>{day.description}</p>
+                </div>
+            </div>
+        </div>
+    {/each}
 </div>

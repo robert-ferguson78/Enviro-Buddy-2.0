@@ -86,3 +86,46 @@ export async function getWeatherIcon(latitude: number, longitude: number, fillTy
         };
     }
 }
+
+export async function getWeatherForecast(latitude: number, longitude: number, fillType: 'icon' | 'filled'): Promise<Array<{icon: string | null, description: string | null, temp: number | null, date: number | null}>> {
+    try {
+        const response = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHERMAP_API_KEY}&units=metric`);
+        const forecastList = response.data.list;
+
+        const currentHour = new Date().getHours();
+
+        // Include the first forecast and filter the rest of the list to only include forecasts where the hour is within 1 hour of the current hour
+        const dailyForecasts = [forecastList[0], ...forecastList.slice(1).filter((forecast: any) => {
+            const forecastHour = new Date(forecast.dt * 1000).getHours();
+
+            return Math.abs(forecastHour - currentHour) <= 1;
+        })];
+
+        return dailyForecasts.map((forecast: any) => {
+            const weatherCode = forecast.weather[0].id;
+            const weatherCondition = weatherConditions.get(weatherCode);
+            const temp = forecast.main.temp;
+            const dt = forecast.dt;
+
+            if (weatherCondition) {
+                return {
+                    icon: weatherCondition[fillType],
+                    description: weatherCondition.description,
+                    temp: temp,
+                    date: dt
+                };
+            } else {
+                console.log(`Weather code ${weatherCode} not found in weatherConditions map.`);
+                return {
+                    icon: null,
+                    description: null,
+                    temp: null,
+                    date: null
+                };
+            }
+        });
+    } catch (error) {
+        console.error(`Failed to get weather forecast: ${error}`);
+        return [];
+    }
+}
