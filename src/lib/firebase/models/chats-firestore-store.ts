@@ -6,17 +6,24 @@ const collectionName = "chats";
 // Define the Firestore store for chats
 export const chatsFirestoreStore = {
     getMessagesRealtime: function(chatId: string, callback: (messages: any[]) => void) {
-        console.log(`Setting up real-time listener for chatId: ${chatId}`);
+        // console.log(`Setting up real-time listener for chatId: ${chatId}`);
         const messagesRef = collection(doc(db, collectionName, chatId), 'messages');
         const messagesQuery = query(messagesRef, orderBy('timestamp'));
         const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
             const messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            console.log(`Received ${messages.length} real-time messages:`, messages);
+            // console.log(`Received ${messages.length} real-time messages:`, messages);
             callback(messages);
         }, (error) => {
             console.error(`Error setting up real-time listener:`, error);
         });
         return unsubscribe;
+    },
+
+    getUnreadNotificationsCount: async function(chatId: string, userId: string) {
+        const notificationsRef = collection(doc(db, collectionName, chatId), 'notifications');
+        const notificationsQuery = query(notificationsRef, where('read', '==', false), where('receiverId', '==', userId));
+        const notificationsSnapshot = await getDocs(notificationsQuery);
+        return notificationsSnapshot.size;
     },
 
     getMessages(chatId, callback) {
@@ -41,16 +48,26 @@ export const chatsFirestoreStore = {
             receiverId: receiverId,
             senderName: senderName
         });
+
+        // Add a new notification
+        const notificationsRef = collection(db, 'notifications');
+        await addDoc(notificationsRef, {
+            chatId: chatId,
+            receiverId: senderId,
+            senderName: senderName,
+            timestamp: Timestamp.now(),
+            read: false
+        });
     },
 
     getChats: async function(userId: string) {
-        console.log('getChats called with userId:', userId); // Log the userId
+        // console.log('getChats called with userId:', userId); // Log the userId
         const chatsRef = collection(db, collectionName);
         const chatsQuery = query(chatsRef, where('userIds', 'array-contains', userId));
         const chatsSnap = await getDocs(chatsQuery);
-        console.log('chatsSnap:', chatsSnap); // Log the snapshot
+        // console.log('chatsSnap:', chatsSnap); // Log the snapshot
         const chats = chatsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        console.log('chats:', chats); // Log the chats
+        // console.log('chats:', chats); // Log the chats
         return chats;
     },
 
@@ -65,11 +82,11 @@ export const chatsFirestoreStore = {
     },
 
     createChat: async function(userId1: string, userId2: string, userName1: string, userName2: string) {
-        console.log('userId1:', userId1);
-        console.log('userId2:', userId2);
-        console.log('userName1:', userName1);
-        console.log('userName2:', userName2);
-        console.log('timestamp:', serverTimestamp());
+        // console.log('userId1:', userId1);
+        // console.log('userId2:', userId2);
+        // console.log('userName1:', userName1);
+        // console.log('userName2:', userName2);
+        // console.log('timestamp:', serverTimestamp());
     
         const chatData = {
             userIds: [userId1, userId2],

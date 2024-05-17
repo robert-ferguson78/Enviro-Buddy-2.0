@@ -13,7 +13,7 @@
     async function loginGoogle() {
     try {
         const userData = await loginWithGoogle();
-        console.log('loginGoogle: userData:', userData);
+        // console.log('loginGoogle: userData:', userData);
         if (userData && userData.uid && userData.displayName) {
             const url = new URL(window.location.href);
             afterLoginGoogle(url, userData.uid, userData.displayName);

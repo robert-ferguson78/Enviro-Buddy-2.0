@@ -23,10 +23,10 @@
 
     // Function to handle click on a car
     function handleClick(car) {
-    console.log('Selected car:', car);  // Log the selected car
+    // console.log('Selected car:', car);  // Log the selected car
     selectedCar = car;
     imageUrls = selectedCar.images; // Assign images object to imageUrls
-    console.log('Image URLs:', imageUrls);  // Log the image URLs
+    // console.log('Image URLs:', imageUrls);  // Log the image URLs
 }
 </script>
 

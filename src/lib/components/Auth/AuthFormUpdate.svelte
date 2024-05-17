@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store'; // import your getUser function
+    import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store'; // import your getUser function
     import messagesStore from '$lib/stores/messages.store';
 
     export let btnName: string;

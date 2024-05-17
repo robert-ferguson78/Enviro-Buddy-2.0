@@ -34,7 +34,7 @@
 
     async function updateCarTypes() {
         carTypes = await carTypeFirestoreStore.getCarTypesByBrandId($dealer.userId); // Update carTypes when dealer changes
-        console.log('carTypes for dealer', carTypes); // Log carTypes
+        // console.log('carTypes for dealer', carTypes); // Log carTypes
     }
 
     $: if ($dealer) {
@@ -46,7 +46,7 @@
         async addMarker(newDealer) {
             dealer.set(newDealer); // Update the dealer object using set method
 
-            console.log('newDealer', newDealer);
+            // console.log('newDealer', newDealer);
             if (L) {
                 if (currentMarker) {
                     map.removeLayer(currentMarker);
@@ -74,20 +74,21 @@
         }
     };
 
-    console.log("auth store data: ", authStore);
+    // console.log("auth store data: ", authStore);
 
     async function startNewChat() {
         const chatId = await chatsFirestoreStore.createChat($dealer.userId, $authStore.userId, $dealer.name, $authStore.userName);
-        console.log('chatId:', chatId); // Log chatId
+        // console.log('chatId:', chatId); // Log chatId
         chatIdStore.set({
             chatId: chatId,
             dealerUserId: $dealer.userId,
             authUserId: $authStore.userId
         });
+        
         let url = `/chat/${chatId}`;
-console.log('Navigating to:', url);
-goto(url);
-    };
+        // console.log('Navigating to:', url);
+        goto(url);
+        };
 
 </script>
 

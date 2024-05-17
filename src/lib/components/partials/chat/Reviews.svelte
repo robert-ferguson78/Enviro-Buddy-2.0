@@ -1,13 +1,13 @@
 <script>
 import { onMount } from 'svelte';
 import { reviewsFirestoreStore } from '$lib/firebase/models/reviews-firestore-store';
-import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
+import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
 import auth from '$lib/stores/auth.store';
 
 let user;
     auth.subscribe(value => {
     user = value;
-    console.log('user object:', user);
+    // console.log('user object:', user);
 });
 
 export let dealerId;
@@ -20,9 +20,9 @@ onMount(async () => {
     if (user && user.userId) {
         let userdetails = await userFirestoreStore.getUser(user.userId);
         userName = userdetails.name;
-        console.log('user name here:', userName);
+        // console.log('user name here:', userName);
         userId = user.userId;
-        console.log('user Id here:', userId);
+        // console.log('user Id here:', userId);
     }
 
     const dealerExists = await reviewsFirestoreStore.checkForDealer(dealerId);

@@ -72,7 +72,7 @@ export async function getWeatherIcon(latitude: number, longitude: number, fillTy
                 description: weatherCondition.description
             };
         } else {
-            console.log(`Weather code ${weatherCode} not found in weatherConditions map.`);
+            // console.log(`Weather code ${weatherCode} not found in weatherConditions map.`);
             return {
                 icon: null,
                 description: null

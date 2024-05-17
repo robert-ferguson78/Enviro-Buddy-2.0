@@ -9,14 +9,14 @@
     dealers = dealers.map(dealer => ({ ...dealer, isEditing: false }));
 
     function addDealer() {
-        console.log('addDealer function called');
+        // console.log('addDealer function called');
         setTimeout(() => {
             location.reload();
         }, 1000);
     }
 
     async function deleteDealer(dealerId) {
-        console.log('Deleting dealer', dealerId);
+        // console.log('Deleting dealer', dealerId);
         await dealerFirestoreStore.deleteDealer(dealerId);
         console.log('Dealer deleted');
         location.reload();

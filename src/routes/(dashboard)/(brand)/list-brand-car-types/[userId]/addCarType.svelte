@@ -1,6 +1,6 @@
 <script lang="ts">
   import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
-  import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
+  import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
   import messagesStore from '$lib/stores/messages.store';
   import authStore from '$lib/stores/auth.store';
   import { createEventDispatcher } from 'svelte';

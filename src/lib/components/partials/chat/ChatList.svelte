@@ -4,14 +4,22 @@
     import { goto } from '$app/navigation'; 
     import { onMount } from 'svelte';
     import authStore from '$lib/stores/auth.store';
-    import { chatIdStore } from '$lib/stores/chatIdStore'; // Import the chatIdStore
+    import { chatIdStore } from '$lib/stores/chatIdStore';
+    import { notificaionFirestoreStore } from '$lib/firebase/models/notifications-firestore-store';
+
     let chats = [];
 
     const chatsStore = writable([]);
 
     authStore.subscribe(async $authStore => {
         if ($authStore.userId) {
-            const chats = await chatsFirestoreStore.getChats($authStore.userId);
+            let chats = await chatsFirestoreStore.getChats($authStore.userId);
+            for (let chat of chats) {
+                notificaionFirestoreStore.getUnreadNotificationsForChat($authStore.userId, chat.id, (notifications) => {
+                    chat.unreadCount = notifications.length;
+                    chatsStore.set(chats); 
+                });
+            }
             chats.sort((a, b) => a.timestamp.toDate() - b.timestamp.toDate());
             chatsStore.set(chats);
         }
@@ -32,6 +40,7 @@
                 dealerUserId: chat.userIds.find(id => id !== $authStore.userId) // Assuming the other user in the chat is the dealer
             };
         });
+        notificaionFirestoreStore.markNotificationsAsRead($authStore.userId, chat.id); // Mark the notifications as read
         goto('/chat/' + chat.id);
     }
 
@@ -57,6 +66,7 @@
         <div class="box">
             <h3>Chat with: <b>{getDealerName(chat)}</b></h3>
             <p>{formatDate(chat.timestamp)}</p>
+            <p>Unread notifications: {chat.unreadCount}</p>
             <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background" on:click={() => selectChat(chat)}>Go to chat</button>
         </div>
     </div>

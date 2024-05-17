@@ -7,10 +7,10 @@
     import { chatIdStore } from '$lib/stores/chatIdStore';
 
     onMount(async () => {
-        console.log('chatId here:', $chatIdStore); // Log chatId
+        // console.log('chatId here:', $chatIdStore); // Log chatId
         if ($chatIdStore && $chatIdStore.chatId) {
             const chat = await chatsFirestoreStore.getChat($chatIdStore.chatId);
-            console.log('chat:', chat); // Log chat
+            // console.log('chat:', chat); // Log chat
             if (chat) {
                 activeChat.set(chat);
             }

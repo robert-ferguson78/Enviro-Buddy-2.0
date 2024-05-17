@@ -10,7 +10,7 @@
     let user;
     auth.subscribe(value => {
         user = value;
-        console.log('user:', user.userId);
+        // console.log('user:', user.userId);
     });
 
     let messages = [];
@@ -68,7 +68,7 @@
         const authUserId = activeChat.userIds[0];
         const dealerUserId = activeChat.userIds[1];
 
-        console.log('authUserId here:', authUserId);
+        // console.log('authUserId here:', authUserId);
 
         // Update chatIdStore with fetched data
         chatIdStore.set({
@@ -92,11 +92,11 @@
 
             // Check if senderId is the same as the ID of the logged in user
             if (user.userId === authUserId) {
-                console.log('Swapping senderId and receiverId', authUserId);
+                // console.log('Swapping senderId and receiverId', authUserId);
                 // Swap receiverId and senderId
                 [authUserId, dealerUserId] = [dealerUserId, authUserId];
-                console.log('Swapped senderId ', authUserId);
-                console.log('Swapped receiverId', dealerUserId);
+                // console.log('Swapped senderId ', authUserId);
+                // console.log('Swapped receiverId', dealerUserId);
             }
 
             await chatsFirestoreStore.sendMessage(activeChat.id, newMessage, authUserId, dealerUserId, user.userName)
@@ -107,7 +107,7 @@
             newMessage = '';
         }
     }
-    console.log("value to check ", userIdToName);
+    // console.log("value to check ", userIdToName);
 </script>
 
 <h1 class="title has-text-centered">Chat with {otherUserName}</h1>

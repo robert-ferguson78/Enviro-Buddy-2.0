@@ -7,8 +7,8 @@ import { getAuth } from 'firebase/auth';
  * @param {string} destination
  */
 export async function saveFileToBucket(file: File, destination: string): Promise<string> {
-    console.log("Path: ", destination); // Log the path
-    console.log("File name: ", file.name); // Log the file name
+    // console.log("Path: ", destination); // Log the path
+    // console.log("File name: ", file.name); // Log the file name
 
     const auth = getAuth(app); // Initialize auth
     const user = auth.currentUser; // Get the currently signed-in user
@@ -29,7 +29,7 @@ export async function saveFileToBucket(file: File, destination: string): Promise
       uploadTask.on('state_changed',
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('Upload is ' + progress + '% done');
+          // console.log('Upload is ' + progress + '% done');
         },
         (error) => {
           // Handle unsuccessful uploads
@@ -39,7 +39,7 @@ export async function saveFileToBucket(file: File, destination: string): Promise
         () => {
           // Handle successful uploads on complete
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log('File successfully uploaded. Download URL: ', downloadURL); // Log the download URL
+            // console.log('File successfully uploaded. Download URL: ', downloadURL); // Log the download URL
             resolve(downloadURL);
           }).catch((error) => {
             console.log('Failed to get download URL with error: ', error); // Log the error

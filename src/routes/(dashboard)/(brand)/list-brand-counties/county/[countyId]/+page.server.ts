@@ -7,9 +7,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
             throw new Error('User not logged in');
         }
         const countyId = params.countyId;
-        console.log('County ID:', countyId); // Debug statement
+        // console.log('County ID:', countyId); // Debug statement
         const dealers = await dealerFirestoreStore.getDealersByCountyId(countyId)
-        console.log('Dealers:', dealers); // Debug statement
+        // console.log('Dealers:', dealers); // Debug statement
         if (dealers.length > 0) {
             const props = { dealers };
             return { props };

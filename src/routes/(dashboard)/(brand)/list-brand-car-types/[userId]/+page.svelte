@@ -15,16 +15,16 @@
   }));
   
   function addCarType() {
-      console.log('addCarType function called');
+      // console.log('addCarType function called');
       setTimeout(() => {
           location.reload();
       }, 1000);
   }
 
   async function deleteCarType(id) {
-      console.log('deleteCarType function called with id:', id);
+      // console.log('deleteCarType function called with id:', id);
       await carTypeFirestoreStore.deleteCarTypeById(id);
-      console.log('Car type deleted');
+      // console.log('Car type deleted');
       location.reload();
   }
 

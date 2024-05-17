@@ -1,5 +1,5 @@
 import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';
-import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
+import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
 import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
 import type { PageServerLoad } from "./$types";
 

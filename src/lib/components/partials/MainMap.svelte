@@ -2,7 +2,7 @@
     import { onMount, afterUpdate } from 'svelte';
     import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
     import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';
-    import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
+    import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
     import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
     import SecondaryMainMap from '$lib/components/partials/SecondaryMainMap.svelte';
 
@@ -174,10 +174,10 @@ lastOpenedPopupDealer = dealer;
                         }
                         // Add the marker to the appropriate brand layer
                         if (brandLayers[user.brand] && brandLayers[user.brand] instanceof L.Layer) {
-                            console.log('Adding marker for dealer with countyId:', dealer.countyId);
+                            // console.log('Adding marker for dealer with countyId:', dealer.countyId);
                             // Add the layer to the map
                             marker.addTo(brandLayers[user.brand]);
-                            console.log('Added marker to brand layer:', user.brand);
+                            // console.log('Added marker to brand layer:', user.brand);
                         }
                     }
                 }

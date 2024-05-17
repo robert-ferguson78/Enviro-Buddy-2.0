@@ -1,6 +1,6 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { setUser } from '$lib/firebase/database.client';
-import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
+import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
 
 export async function loginWithGoogle() {
     try {

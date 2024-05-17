@@ -1,6 +1,6 @@
 <script lang="ts">
   import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
-  import { userFirestoreStore } from '$lib/firebase/models/user-firestore.store';
+  import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
   import messagesStore from '$lib/stores/messages.store';
   import authStore from '$lib/stores/auth.store';
   import type { NewCounty } from "$lib/types/enviro-buddy-types.ts";

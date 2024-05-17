@@ -2,24 +2,24 @@ import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store'
 import { Timestamp } from 'firebase/firestore';
 
 export async function load({ params }) {
-    console.log('load function running');
+    // console.log('load function running');
     const chatId = params.chatId;
-    console.log('id:', chatId); // Log id
+    // console.log('id:', chatId); // Log id
     try {
         const chat = await chatsFirestoreStore.getChat(chatId);
-        console.log('chat:', chat); // Log chat
+        // console.log('chat:', chat); // Log chat
         if (chat) {
             // Convert timestamp to string if it's a Firestore Timestamp
             if (chat.timestamp instanceof Timestamp) {
                 chat.timestamp = chat.timestamp.toDate().toISOString();
             }
-            console.log('server id:', chatId);
-            console.log('server chat:', chat);
+            // console.log('server id:', chatId);
+            // console.log('server chat:', chat);
             const props = { 
                 chatId: chatId, 
                 chat: chat 
             };
-            console.log('props:', props); // Log props
+            // console.log('props:', props); // Log props
             return { props: props };
         } else {
             console.error('Chat not found:', chatId);

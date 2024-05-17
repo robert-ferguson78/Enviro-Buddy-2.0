@@ -65,14 +65,14 @@
 
     async function startNewChat() {
         const chatId = await chatsFirestoreStore.createChat(dealer.userId, $authStore.userId, dealer.name, $authStore.userName);
-        console.log('chatId:', chatId); // Log chatId
+        // console.log('chatId:', chatId); // Log chatId
         reviewIdStore.set({
             chatId: chatId,
             dealerUserId: dealer.userId,
             authUserId: $authStore.userId
         });
         let url = `/chat/${chatId}`;
-        console.log('Navigating to:', url);
+        // console.log('Navigating to:', url);
         goto(url);
     };
 </script>

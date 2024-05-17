@@ -47,7 +47,7 @@ export const carTypeFirestoreStore = {
     // Method to create a new car type
     // Method to create a new car type
 async createCarType(carType) {
-    console.log('createCarType', carType);
+    // console.log('createCarType', carType);
     // If there's an image, upload it and replace the image property with the URL
     if (carType.image) {
         try {
