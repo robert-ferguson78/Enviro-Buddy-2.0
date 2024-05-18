@@ -154,8 +154,8 @@
                         }
                     });
 
-// Store the dealer of the last opened popup
-lastOpenedPopupDealer = dealer;
+                    // Store the dealer of the last opened popup
+                    lastOpenedPopupDealer = dealer;
 
                     // Check if the county layer exists
                     if (countyLayers[countyName]) {

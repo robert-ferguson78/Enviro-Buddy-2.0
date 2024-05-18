@@ -5,22 +5,27 @@
     import { page } from '$app/stores';
     import type { UserData } from '$lib/types/enviro-buddy-types';
 
+    // Define the UserData interface
     interface UserData {
         user_id: string;
         user_name: string;
     }
 
+    // Function to log in with Google
     async function loginGoogle() {
-    try {
-        const userData = await loginWithGoogle();
-        // console.log('loginGoogle: userData:', userData);
-        if (userData && userData.uid && userData.displayName) {
-            const url = new URL(window.location.href);
-            afterLoginGoogle(url, userData.uid, userData.displayName);
-        } else {
-            console.error('loginGoogle: userData is null or undefined, or uid/displayName is missing');
-        }
+        try {
+            // Call the loginWithGoogle function and get the user data
+            const userData = await loginWithGoogle();
+            // If the user data is valid, call the afterLoginGoogle function
+            if (userData && userData.uid && userData.displayName) {
+                const url = new URL(window.location.href);
+                afterLoginGoogle(url, userData.uid, userData.displayName);
+            } else {
+                // If the user data is not valid, log an error
+                console.error('loginGoogle: userData is null or undefined, or uid/displayName is missing');
+            }
         } catch (error) {
+            // If there's an error, log it and show an error message if the popup wasn't closed by the user
             console.error('loginGoogle: error:', error);
             if (error.code !== 'auth/popup-closed-by-user') {
                 messagesStore.showError("There was an issue With sign in, please try again");
@@ -29,6 +34,7 @@
     }
 </script>
 
+<!-- HTML and Svelte markup for the component -->
 <div class="row">
         <button class="button is-success is-active has-text-white mt-3" on:click={loginGoogle}>
             <span class="icon">

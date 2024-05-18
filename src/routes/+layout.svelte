@@ -1,67 +1,84 @@
 <script lang="ts">
-  import "../app.css";
-  import { headMetadata } from '$lib/stores/headStore';
-  import EnviroBrandName from '$lib/envirobuddyBrand.svelte';
-  import Menu from '$lib/menu.svelte';
-  import '$lib/firebase/firebase.client';
-  import messagesStore from '$lib/stores/messages.store';
-	import { onMount } from "svelte";
-	import { sendJWTToken } from "$lib/firebase/auth.client";
-  let timerdId: NodeJS.Timeout;
+    import "../app.css";
+    import { headMetadata } from '$lib/stores/headStore';
+    import EnviroBrandName from '$lib/envirobuddyBrand.svelte';
+    import Menu from '$lib/menu.svelte';
+    import '$lib/firebase/firebase.client';
+    import messagesStore from '$lib/stores/messages.store';
+    import { onMount } from "svelte";
+    import { sendJWTToken } from "$lib/firebase/auth.client";
 
-async function sendServerToken() {
-  try {
-    await sendJWTToken();
-  } catch(error) {
-    clearInterval(timerdId);
-    messagesStore.showError();
-    console.log(error);
-  }
-}
+    // Variable to hold the timer ID
+    let timerdId: NodeJS.Timeout;
 
-onMount(() => {
-  sendServerToken().then(() => {
-    timerdId = setInterval(sendServerToken, 1000 * 10 * 60);
-  }).catch(e => {
-    console.log(e);
-    messagesStore.showError();
-  });
-
-  return new Promise(() => {
-    return () => {
-      clearInterval(timerdId);
+    // Function to send server token
+    async function sendServerToken() {
+        try {
+            await sendJWTToken();
+        } catch(error) {
+            // Clear the interval if there's an error
+            clearInterval(timerdId);
+            // Show error message
+            messagesStore.showError();
+            console.log(error);
+        }
     }
-  });
-});
 
-function closeMessage() {
-  messagesStore.hide();
-}
+    // On mount, send server token and set an interval to keep sending it
+    onMount(() => {
+        sendServerToken().then(() => {
+            timerdId = setInterval(sendServerToken, 1000 * 10 * 60);
+        }).catch(e => {
+            console.log(e);
+            messagesStore.showError();
+        });
+
+        // Clear the interval when the component is unmounted
+        return new Promise(() => {
+            return () => {
+                clearInterval(timerdId);
+            }
+        });
+    });
+
+    // Function to close the message
+    function closeMessage() {
+        messagesStore.hide();
+    }
 </script>
 
 <svelte:head>
-  <title>{$headMetadata.title}</title>
-  <meta name="description" content={$headMetadata.description}>
+    <!-- Setting the title and description of the page -->
+    <title>{$headMetadata.title}</title>
+    <meta name="description" content={$headMetadata.description}>
 </svelte:head>
 
+<!-- Including the Menu and EnviroBrandName components -->
 <Menu>
-  <EnviroBrandName />
+    <EnviroBrandName />
 </Menu>
+
+<!-- Main content of the page -->
 <div class="container">
-  {#if $messagesStore.show} 
-  <article 
-    class:is-danger={$messagesStore.type === 'error'}
-    class:is-success={$messagesStore.type === 'success'}
-    class="message"
-    role="alert">
-    <div class="message-header">
-      <p>{$messagesStore.type === 'error' ? 'Error' : 'Success'}</p>
-      <button on:click={closeMessage} class="delete" aria-label="delete"></button>
-    </div>
-    <div class="message-body">
-      {$messagesStore.message}
-    </div>
-  </article>
-  {/if}
-  <slot />
+    <!-- Show a message if there's one in the store -->
+    {#if $messagesStore.show} 
+    <article 
+        class:is-danger={$messagesStore.type === 'error'}
+        class:is-success={$messagesStore.type === 'success'}
+        class="message"
+        role="alert">
+        <div class="message-header">
+            <!-- Show the type of the message -->
+            <p>{$messagesStore.type === 'error' ? 'Error' : 'Success'}</p>
+            <!-- Button to close the message -->
+            <button on:click={closeMessage} class="delete" aria-label="delete"></button>
+        </div>
+        <!-- Show the message -->
+        <div class="message-body">
+            {$messagesStore.message}
+        </div>
+    </article>
+    {/if}
+    <!-- Slot to include child components -->
+    <slot />
 </div>

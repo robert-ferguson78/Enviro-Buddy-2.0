@@ -3,15 +3,19 @@ import { app } from '$lib/firebase/firebase.client' // import your initialized f
 import { getAuth } from 'firebase/auth';
 
 /**
- * @param {File} file
- * @param {string} destination
+ * Asynchronously save a file to a Firebase storage bucket.
+ *
+ * @param {File} file - The file to be saved.
+ * @param {string} destination - The path where the file will be saved.
+ * @returns {Promise<string>} - A promise that resolves with the download URL of the saved file.
  */
 export async function saveFileToBucket(file: File, destination: string): Promise<string> {
     // console.log("Path: ", destination); // Log the path
     // console.log("File name: ", file.name); // Log the file name
 
-    const auth = getAuth(app); // Initialize auth
-    const user = auth.currentUser; // Get the currently signed-in user
+    // Initialize Firebase auth and get the currently signed-in user
+    const auth = getAuth(app);
+    const user = auth.currentUser;
 
     if (user) {
         console.log("User is signed in with uid client: ", user.uid);
@@ -20,11 +24,14 @@ export async function saveFileToBucket(file: File, destination: string): Promise
         throw new Error("No user is signed in."); // Throw an error if no user is signed in
     }
   
+    // Get a reference to the Firebase storage service and the specified destination
     const storage = getStorage(app);
     const storageRef = ref(storage, destination);
   
+    // Start the resumable upload
     const uploadTask = uploadBytesResumable(storageRef, file);
   
+    // Return a promise that resolves with the download URL of the uploaded file
     return new Promise((resolve, reject) => {
       uploadTask.on('state_changed',
         (snapshot) => {
@@ -51,13 +58,18 @@ export async function saveFileToBucket(file: File, destination: string): Promise
   }
 
 /**
- * @param {string} filePath
+ * Asynchronously delete a file from a Firebase storage bucket.
+ *
+ * @param {string} filePath - The path of the file to be deleted.
+ * @returns {Promise<void>} - A promise that resolves when the file is deleted.
  */
 export async function deleteFileFromBucket(filePath: string): Promise<void> {
+  // Get a reference to the Firebase storage service and the specified file
     const storage = getStorage(app);
     const fileRef = ref(storage, filePath);
 
     try {
+        // Delete the file
         await deleteObject(fileRef);
         console.log('File successfully deleted.');
     } catch (error) {

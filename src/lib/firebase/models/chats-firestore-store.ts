@@ -8,6 +8,7 @@ const collectionName = "chats";
 
 // Define the Firestore store for chats
 export const chatsFirestoreStore = {
+    // Function to get real-time updates of messages for a specific chat
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getMessagesRealtime: function(chatId: string, callback: (messages: any[]) => void) {
         // console.log(`Setting up real-time listener for chatId: ${chatId}`);
@@ -23,6 +24,7 @@ export const chatsFirestoreStore = {
         return unsubscribe;
     },
 
+    // Function to get the count of unread notifications for a specific chat and user
     getUnreadNotificationsCount: async function(chatId: string, userId: string) {
         const notificationsRef = collection(doc(db, collectionName, chatId), 'notifications');
         const notificationsQuery = query(notificationsRef, where('read', '==', false), where('receiverId', '==', userId));
@@ -30,6 +32,7 @@ export const chatsFirestoreStore = {
         return notificationsSnapshot.size;
     },
 
+    // Function to get messages for a specific chat
     getMessages(chatId, callback) {
         const messagesRef = collection(doc(db, collectionName, chatId), 'messages');
         const messagesQuery = query(messagesRef, orderBy('timestamp'));
@@ -43,6 +46,7 @@ export const chatsFirestoreStore = {
         });
     },
 
+    // Function to send a message in a specific chat
     sendMessage: async function(chatId: string, message: string, senderId: string, receiverId: string, senderName: string) {
         const messagesRef = collection(doc(db, collectionName, chatId), 'messages');
         await addDoc(messagesRef, {
@@ -64,6 +68,7 @@ export const chatsFirestoreStore = {
         });
     },
 
+    // Function to get all chats for a specific user
     getChats: async function(userId: string): Promise<Chat[]> {
         // console.log('getChats called with userId:', userId); // Log the userId
         const chatsRef = collection(db, collectionName);
@@ -75,6 +80,7 @@ export const chatsFirestoreStore = {
         return chats;
     },
 
+    // Function to get a chat by its ID
     getChat: async function(chatId: string) {
         const chatRef = doc(db, collectionName, chatId);
         const chatSnap = await getDoc(chatRef);
@@ -85,6 +91,7 @@ export const chatsFirestoreStore = {
         }
     },
 
+    // Function to create a new chat between two users
     createChat: async function(userId1: string, userId2: string, userName1: string, userName2: string) {
         // console.log('userId1:', userId1);
         // console.log('userId2:', userId2);

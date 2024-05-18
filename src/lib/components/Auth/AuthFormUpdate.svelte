@@ -1,34 +1,39 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store'; // import your getUser function
-    import messagesStore from '$lib/stores/messages.store';
+    import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store'; // Import the userFirestoreStore
+    import messagesStore from '$lib/stores/messages.store'; // Import the messagesStore
 
-    export let btnName: string;
-    export let userId; // pass the user id as a prop
+    // Declare exported variables
+    export let btnName: string; // Button name passed as a prop
+    export let userId; // User ID passed as a prop
 
-    let name = '';
-    let brand = '';
+    // Declare local variables
+    let name = ''; // User's name
+    let brand = ''; // User's car brand
 
+    // When the component mounts, get the user's data and set the name and brand
     onMount(async () => {
-        const user = await userFirestoreStore.getUser(userId);
+        const user = await userFirestoreStore.getUser(userId); // Get the user's data
         if (user) {
-            name = user.name;
-            brand = user.brand;
+            name = user.name; // Set the name
+            brand = user.brand; // Set the brand
         }
     });
 
+    // Function to handle form submission
     async function onSubmit() {
-        const user = { name, brand };
+        const user = { name, brand }; // Create a user object
         try {
-            await userFirestoreStore.updateUser(userId, user);
-            messagesStore.showSuccess('User profile has been updated successfully.'); // set success message
+            await userFirestoreStore.updateUser(userId, user); // Update the user's data
+            messagesStore.showSuccess('User profile has been updated successfully.'); // Show a success message
         } catch (error) {
-            messagesStore.showError('An error occurred while updating the user profile.'); // set error message
+            messagesStore.showError('An error occurred while updating the user profile.'); // Show an error message
         }
     }
 </script>
 
-<form on:submit|preventDefault={onSubmit}>
+<!-- HTML and Svelte markup for the component -->
+<form on:submit|preventDefault={onSubmit}> <!-- Form with onSubmit event handler -->
     <div class="field">
         <label class="label" for="name">Name</label>
         <input class="input" type="text" bind:value={name} id="name" name="name">

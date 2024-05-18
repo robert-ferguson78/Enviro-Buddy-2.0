@@ -4,8 +4,8 @@
     import ImageGallery from '@react2svelte/image-gallery';
 
     let carData = []; // Initialize carData
-    let selectedCar = null; // Initialize selectedCar]
-    let imageUrls = [];
+    let selectedCar = null; // Initialize selectedCar
+    let imageUrls = []; // Initialize imageUrls
 
     // Whenever carTypes changes, update carData
     $: if (carTypes && carTypes.length > 0) {

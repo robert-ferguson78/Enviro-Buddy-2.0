@@ -1,50 +1,55 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
-    import messagesStore from '$lib/stores/messages.store';
+    import { createEventDispatcher } from 'svelte'; // Import the createEventDispatcher function from Svelte
+    import messagesStore from '$lib/stores/messages.store'; // Import the messagesStore
 
-    const dispatch = createEventDispatcher();
+    // Create an event dispatcher
+    const dispatch = createEventDispatcher(); // Create an event dispatcher for dispatching custom events
 
-    export let btnName: string;
-    export let forgotPassword = false;
+    // Exported variables
+    export let btnName: string; // Button name passed as a prop
+    export let forgotPassword = false; // Boolean indicating whether the user is in the "forgot password" state, default is false
 
-    let name = '';
-    let email = '';
-    let password = '';
+    // Local variables
+    let name = ''; // Name input field value
+    let email = ''; // Email input field value
+    let password = ''; // Password input field value
 
+    // Function to validate the form
     const validateForm = () => {
-        let errors = [];
+        let errors = []; // Array to store the errors
 
-        if (!name) {
-            errors.push('Name is required');
-        }
+        // Check if the name and email are valid
+        if (!name) errors.push('Name is required'); // If name is empty, add an error
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Valid email is required'); // If email is empty or not valid, add an error
 
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            errors.push('Valid email is required');
-        }
-
+        // If the user is not in the "forgot password" state, check if the password is valid
         if (!forgotPassword && (!password || !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{9,}$/.test(password))) {
-            errors.push('Password must be minimum 9 characters and contain letters and numbers');
+            errors.push('Password must be minimum 9 characters and contain letters and numbers'); // If password is empty or not valid, add an error
         }
 
+        // If there are errors, show an error message and return false
         if (errors.length > 0) {
-            messagesStore.showError(`There was an issue with registration: ${errors.join(', ')}`);
-            return false;
+            messagesStore.showError(`There was an issue with registration: ${errors.join(', ')}`); // Show an error message
+            return false; // Return false
         }
 
-        return true;
+        // If there are no errors, return true
+        return true; // Return true
     };
 
+    // Function to handle form submission
     const handleSubmit = (e: Event) => {
-        e.preventDefault();
-        if (validateForm()) {
-            console.log({ name, email, password });
-            // Dispatch the submit event to the parent component
-            dispatch('submit', { name, email, password });
+        e.preventDefault(); // Prevent the default form submission
+        if (validateForm()) { // If the form is valid
+            console.log({ name, email, password }); // Log the form data
+            // Dispatch the submit event to the parent component with the form data
+            dispatch('submit', { name, email, password }); // Dispatch the submit event
         }
     };
 </script>
 
-<form on:submit|preventDefault={handleSubmit}>
+<!-- HTML and Svelte markup for the component -->
+<form on:submit|preventDefault={handleSubmit}> <!-- Form with onSubmit event handler -->
     <div class="field">
         <label class="label" for="name">Name</label>
         <input class="input" type="text" placeholder="Enter Name" id="name" name="name" bind:value={name}>

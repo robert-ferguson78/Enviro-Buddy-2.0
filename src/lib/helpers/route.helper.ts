@@ -3,6 +3,7 @@ import { sendJWTToken } from '$lib/firebase/auth.client';
 import { setUser } from '$lib/firebase/database.client';
 
 export async function afterLogin(url: URL) {
+    // Get the 'redirect' search parameter from the URL, or default to the root route
     const route = url.searchParams.get('redirect') || '/';
     // console.log('afterLogin: route:', route);
     await sendJWTToken();
@@ -14,12 +15,14 @@ export async function afterLogin(url: URL) {
 export async function afterLoginGoogle(url: URL, userId: string, userName: string) {
     // console.log('afterLoginGoogle: called with url:', url, 'userId:', userId, 'userName:', userName);
     
+    // Get the 'redirect' search parameter from the URL, or default to the root route
     const route = url.searchParams.get('redirect') || '/';
     // console.log('afterLoginGoogle: route:', route);
     
     if (userId) {
         try {
             // console.log('afterLoginGoogle: calling setUser with userId:', userId, 'userName:', userName);
+            // Set the user in the database
             await setUser(userId, userName); // Pass userId as a parameter, not as a property of an object
             // console.log('afterLoginGoogle: setUser completed');
         } catch (error) {
@@ -30,6 +33,7 @@ export async function afterLoginGoogle(url: URL, userId: string, userName: strin
     }
     
     // console.log('afterLoginGoogle: calling sendJWTToken');
+    // Send a JWT token
     await sendJWTToken();
     // console.log('afterLoginGoogle: sendJWTToken completed');
     

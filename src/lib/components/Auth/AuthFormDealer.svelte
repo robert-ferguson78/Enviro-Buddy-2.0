@@ -2,8 +2,10 @@
     import { createEventDispatcher } from 'svelte';
     import messagesStore from '$lib/stores/messages.store';
 
+    // Create an event dispatcher
     const dispatch = createEventDispatcher();
 
+     // Exported variables
     export let btnName: string;
     export let forgotPassword = false;
 
@@ -12,38 +14,36 @@
     let email = '';
     let password = '';
 
+    // Function to validate the form
     const validateForm = () => {
-        let errors = [];
+        let errors = []; // Array to store the errors
 
-        if (!name) {
-            errors.push('Name is required');
-        }
+        // Check if the name, brand, and email are valid
+        if (!name) errors.push('Name is required');
+        if (!brand) errors.push('Brand is required');
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Valid email is required');
 
-        if (!brand) {
-            errors.push('Brand is required');
-        }
-
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            errors.push('Valid email is required');
-        }
-
+        // If the user is not in the "forgot password" state, check if the password is valid
         if (!forgotPassword && (!password || !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{9,}$/.test(password))) {
             errors.push('Password must be minimum 9 characters and contain letters and numbers');
         }
 
+        // If there are errors, show an error message and return false
         if (errors.length > 0) {
             messagesStore.showError(`There was an issue with registration: ${errors.join(', ')}`);
             return false;
         }
 
+        // If there are no errors, return true
         return true;
     };
 
+    // Function to handle form submission
     const handleSubmit = (e: Event) => {
-        e.preventDefault();
-        if (validateForm()) {
-            console.log({ name, brand, email, password });
-            // Dispatch the submit event to the parent component
+        e.preventDefault(); // Prevent the default form submission
+        if (validateForm()) { // If the form is valid
+            console.log({ name, brand, email, password }); // Log the form data
+            // Dispatch the submit event to the parent component with the form data
             dispatch('submit', { name, brand, email, password });
         }
     };

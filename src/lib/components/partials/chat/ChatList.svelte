@@ -8,24 +8,29 @@
     import { notificaionFirestoreStore } from '$lib/firebase/models/notifications-firestore-store';
     import type { Chat } from '$lib/types/enviro-buddy-types';
 
+    // Initialize an empty array for chats and a writable store for chats
     let chats = [];
-
     const chatsStore = writable([]);
 
+    // Subscribe to the auth store
     authStore.subscribe(async $authStore => {
+        // If the user is logged in, get their chats
         if ($authStore.userId) {
             let chats = await chatsFirestoreStore.getChats($authStore.userId);
+            // For each chat, get the unread notifications and set the unread count
             for (let chat of chats) {
                 notificaionFirestoreStore.getUnreadNotificationsForChat($authStore.userId, chat.id, (notifications) => {
                     chat.unreadCount = notifications.length;
                     chatsStore.set(chats); 
                 });
             }
+            // Sort the chats by timestamp and set the chats store
             chats.sort((a, b) => a.timestamp.toDate().getTime() - b.timestamp.toDate().getTime());
             chatsStore.set(chats);
         }
     });
 
+    // When the component mounts, subscribe to the chats store
     onMount(async () => {
         chatsStore.subscribe(value => {
             chats = value;
@@ -33,7 +38,9 @@
         });
     });
 
+    // Function to select a chat
     function selectChat(chat) {
+        // Update the chat ID and dealer user ID in the chat ID store
         chatIdStore.update(state => {
             return {
                 ...state,
@@ -41,10 +48,13 @@
                 dealerUserId: chat.userIds.find(id => id !== $authStore.userId) // Assuming the other user in the chat is the dealer
             };
         });
-        notificaionFirestoreStore.markNotificationsAsRead($authStore.userId, chat.id); // Mark the notifications as read
+        // Mark the notifications as read
+        notificaionFirestoreStore.markNotificationsAsRead($authStore.userId, chat.id);
+        // Navigate to the chat
         goto('/chat/' + chat.id);
     }
 
+    // Function to format a timestamp
     function formatDate(timestamp) {
         const date = new Date(timestamp.toDate());
         const day = ("0" + date.getDate()).slice(-2);
@@ -55,12 +65,15 @@
         return `Date: ${day}/${month}/${year} Time: ${hours}:${minutes}`;
     }
 
+    // Function to get the dealer's name
     function getDealerName(chat) {
-    const reversedUserIds = [...chat.userIds].reverse();
-    const userIdIndex = reversedUserIds.findIndex(id => id === $authStore.userId);
-    return chat.userNames[chat.userNames.length - 1 - userIdIndex];
-}
+        const reversedUserIds = [...chat.userIds].reverse();
+        const userIdIndex = reversedUserIds.findIndex(id => id === $authStore.userId);
+        return chat.userNames[chat.userNames.length - 1 - userIdIndex];
+    }
 </script>
+
+<!-- HTML and Svelte markup for the component -->
 <div class="columns is-multiline">
     {#each chats as chat (chat.id)}
     <div class="column is-one-third">

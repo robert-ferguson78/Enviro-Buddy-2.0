@@ -5,6 +5,7 @@ const collectionName = "users";
 // const userRef = collection(db, collectionName);
 
 export const userFirestoreStore = {
+    // Function to get a user by their ID
     getUser: async function(userId: string) {
         const userRef = doc(db, collectionName, userId);
         const userSnap = await getDoc(userRef);
@@ -16,12 +17,14 @@ export const userFirestoreStore = {
         }
     },
 
+     // Function to get all users in the collection
     getAllUsers: async function() {
         const usersCollectionRef = collection(db, collectionName);
         const snapshot = await getDocs(usersCollectionRef);
         return snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
     },
 
+    // Function to add details to a user document
     addUserDetails: async function(user) {
         const userRef = doc(db, collectionName, user.user_id);
         await updateDoc(userRef, {
@@ -33,6 +36,7 @@ export const userFirestoreStore = {
         return { _id: docSnap.id, ...docSnap.data() };
     },
 
+    // Function to update a user document with new data
     updateUser: async function(_id, newData) {
         const userRef = doc(db, collectionName, _id);
         await updateDoc(userRef, newData);
@@ -40,6 +44,7 @@ export const userFirestoreStore = {
         return updatedDoc.data();
     },
 
+    // Function to update a user document with new data as an admin
     adminUpdateUser: async function(_id, newData) {
         const userRef = doc(db, collectionName, _id);
         await updateDoc(userRef, newData);
@@ -47,12 +52,14 @@ export const userFirestoreStore = {
         return updatedDoc.data();
     },
 
+    // Function to get a user by their ID
     getUserById: async function(_id) {
         const userRef = doc(db, collectionName, _id);
         const docSnap = await getDoc(userRef);
         return docSnap.exists() ? docSnap.data() : null;
     },
 
+    // Function to get a user by their email
     getUserByEmail: async function(email) {
         const usersCollectionRef = collection(db, collectionName);
         const q = query(usersCollectionRef, where("email", "==", email));
@@ -60,6 +67,7 @@ export const userFirestoreStore = {
         return snapshot.empty ? null : { _id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
     },
 
+    // Function to get all brand names in the collection
     getAllBrandNames: async function() {
         const usersCollectionRef = collection(db, collectionName);
         const q = query(usersCollectionRef, where("type", "==", "brand"));
@@ -68,11 +76,13 @@ export const userFirestoreStore = {
         return brandNames;
     },
 
+    // Function to delete a user by their ID
     deleteUserById: async function(id) {
         const userRef = doc(db, collectionName, id);
         await deleteDoc(userRef);
     },
 
+     // Function to delete all users in the collection
     deleteAll: async function() {
         const usersCollectionRef = collection(db, collectionName);
         const snapshot = await getDocs(usersCollectionRef);

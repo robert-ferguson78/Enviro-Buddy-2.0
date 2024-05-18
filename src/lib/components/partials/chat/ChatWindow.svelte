@@ -133,6 +133,7 @@
 />
 </div>
 
+<!-- Add some styles to make the chat window look better -->
 <style>
     .container-max-width {
         max-width:450px;

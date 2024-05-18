@@ -5,12 +5,19 @@ import { db } from '$lib/firebase/firebase.client';
 const collectionName = "reviews";
 
 export const reviewsFirestoreStore = {
+    // Function to get real-time updates of reviews for a specific dealer
     getReviewsRealtime: function(dealerId: string, callback: (reviews: Review[]) => void) {
+        // Create a query to get the 'messages' collection within the document with the specified dealer ID
         const q = query(collection(doc(db, collectionName, dealerId), 'messages'));
+    
+        // Set up a real-time listener for the query
         const unsubscribe = onSnapshot(q, (snapshot) => {
+            // Map each document in the snapshot to a review object
             const reviews = snapshot.docs.map((doc) => {
+                // Get the document's data
                 const data = doc.data();
                 if (data) {
+                    // If the document has data, return a review object with the document's ID and data
                     return {
                         id: doc.id,
                         userId: data.userId,
@@ -20,13 +27,19 @@ export const reviewsFirestoreStore = {
                     };
                 }
             });
+    
+            // Call the callback function with the array of review objects
             callback(reviews);
         }, (error) => {
+            // If there's an error setting up the real-time listener, log the error
             console.error(`Error setting up real-time listener:`, error);
         });
+    
+        // Return the unsubscribe function for the real-time listener
         return unsubscribe;
     },
     
+    // Function to create a new review for a specific dealer
     createReview: async function(dealerId: string, userId: string, userName: string, message: string) {
         const reviewData = {
             userId: userId,
@@ -39,6 +52,7 @@ export const reviewsFirestoreStore = {
         return reviewRef.id;
     },
 
+    // Function to check if a dealer exists in the collection
     checkForDealer: async function(dealerId: string) {
         const dealerDoc = await getDoc(doc(db, collectionName, dealerId));
         return dealerDoc.exists;

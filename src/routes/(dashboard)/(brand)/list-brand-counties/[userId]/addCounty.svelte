@@ -22,6 +22,7 @@
 
   let county = "";
 
+  // Add county but check if it exists first to stop duplicste county entries
   async function createCounty() {
     if (county) {
         try {

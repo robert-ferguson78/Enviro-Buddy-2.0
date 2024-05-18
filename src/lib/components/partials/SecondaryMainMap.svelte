@@ -25,7 +25,7 @@
 
     let map;
     let L;
-    let currentMarker = null; // Add this line to keep a reference to the current marker
+    let currentMarker = null; // reference to the current marker
     let dealer = writable(null); // Make dealer a writable store
     let customIcon; // Define customIcon variable
 
@@ -68,7 +68,7 @@
             const weather = await getWeatherIcon($dealer.latitude, $dealer.longitude, 'filled');
             const iconUrl = weather ? weather.icon : '/images/map-car-marker.png';
 
-                // Use customIcon when creating the marker
+            // Use customIcon when creating the marker
             customIcon = L.icon({
                 iconUrl: iconUrl,
                 shadowUrl: '/images/map-weathersvg-shadow4.png',

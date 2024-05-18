@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// Import OpenWeatherMap API key from .env file
 const OPENWEATHERMAP_API_KEY = import.meta.env.VITE_OPENWEATHERMAP_API_KEY;
 
+// Weather Conditions map for icon, filled icon, and description
 const weatherConditions = new Map();
     weatherConditions.set(804, { description: "overcast clouds: 85-100%", icon: "/svg/cloudy.svg", filled: "/svg-filled/filled-cloudy.svg" });
     weatherConditions.set(803, { description: "broken clouds: 51-84%", icon: "/svg/partly-cloudy-day.svg", filled: "/svg-filled/filled-partly-cloudy-day.svg" });
@@ -59,26 +61,31 @@ const weatherConditions = new Map();
     weatherConditions.set(201, { description: "thunderstorm with rain", icon: "/svg/thunderstorms-rain.svg", filled: "/svg-filled/filled-thunderstorms-rain.svg" });
     weatherConditions.set(200, { description: "thunderstorm with light rain", icon: "/svg/thunderstorms-rain.svg", filled: "/svg-filled/filled-thunderstorms-rain.svg" });
 
-
+// Function to get the weather icon and description based on the latitude and longitude
 export async function getWeatherIcon(latitude: number, longitude: number, fillType: 'icon' | 'filled'): Promise<{icon: string | null, description: string | null}> {
     try {
+        // Make a GET request to the OpenWeatherMap API
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHERMAP_API_KEY}`);
+        // Extract the weather code from the response
         const weatherCode = response.data.weather[0].id;
+        // Get the weather condition based on the weather code
         const weatherCondition = weatherConditions.get(weatherCode);
 
         if (weatherCondition) {
+            // If the weather condition is found, return the icon and description
             return {
                 icon: weatherCondition[fillType],
                 description: weatherCondition.description
             };
         } else {
-            // console.log(`Weather code ${weatherCode} not found in weatherConditions map.`);
+            // If the weather condition is not found, return null for the icon and description
             return {
                 icon: null,
                 description: null
             };
         }
     } catch (error) {
+        // Log the error and return null for the icon and description if the request fails
         console.error(`Failed to get weather data: ${error}`);
         return {
             icon: null,
@@ -87,14 +94,18 @@ export async function getWeatherIcon(latitude: number, longitude: number, fillTy
     }
 }
 
+// Function to get the weather forecast based on the latitude and longitude
 export async function getWeatherForecast(latitude: number, longitude: number, fillType: 'icon' | 'filled'): Promise<Array<{icon: string | null, description: string | null, temp: number | null, date: number | null}>> {
     try {
+        // Make a GET request to the OpenWeatherMap API
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHERMAP_API_KEY}&units=metric`);
+        // Extract the forecast list from the response
         const forecastList = response.data.list;
 
+        // Get the current hour
         const currentHour = new Date().getHours();
 
-        // Include the first forecast and filter the rest of the list to only include forecasts where the hour is within 1 hour of the current hour
+        // Filter the forecast list to only include forecasts where the hour is within 1 hour of the current hour
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const dailyForecasts = [forecastList[0], ...forecastList.slice(1).filter((forecast: any) => {
             const forecastHour = new Date(forecast.dt * 1000).getHours();
@@ -102,6 +113,7 @@ export async function getWeatherForecast(latitude: number, longitude: number, fi
             return Math.abs(forecastHour - currentHour) <= 1;
         })];
 
+        // Map the filtered forecast list to an array of objects containing the icon, description, temperature, and date
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return dailyForecasts.map((forecast: any) => {
             const weatherCode = forecast.weather[0].id;
@@ -110,6 +122,7 @@ export async function getWeatherForecast(latitude: number, longitude: number, fi
             const dt = forecast.dt;
 
             if (weatherCondition) {
+                // If the weather condition is found, return the icon, description, temperature, and date
                 return {
                     icon: weatherCondition[fillType],
                     description: weatherCondition.description,
@@ -117,7 +130,8 @@ export async function getWeatherForecast(latitude: number, longitude: number, fi
                     date: dt
                 };
             } else {
-                console.log(`Weather code ${weatherCode} not found in weatherConditions map.`);
+                // If the weather condition is not found, return null for the icon, description, temperature, and date
+                // console.log(`Weather code ${weatherCode} not found in weatherConditions map.`);
                 return {
                     icon: null,
                     description: null,
@@ -127,6 +141,7 @@ export async function getWeatherForecast(latitude: number, longitude: number, fi
             }
         });
     } catch (error) {
+        // Log the error and return an empty array if the request fails
         console.error(`Failed to get weather forecast: ${error}`);
         return [];
     }

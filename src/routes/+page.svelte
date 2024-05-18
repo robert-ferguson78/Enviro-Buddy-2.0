@@ -3,5 +3,6 @@
 </script>
 
 <div class="columns">
+    <!-- Including the MainMap component -->
     <MainMap />
 </div>

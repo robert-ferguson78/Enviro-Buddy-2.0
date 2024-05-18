@@ -4,6 +4,8 @@
 
   let userId;
 
+  // Subscribe to the authStore
+  // When the authStore's value changes, update the userId variable
   const unsubscribe = authStore.subscribe(value => {
     userId = value.userId;
   });
