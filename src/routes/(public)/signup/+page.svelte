@@ -7,33 +7,35 @@
 	import messagesStore from '$lib/stores/messages.store.js';
   import { page } from '$app/stores';
   import { setUserWithEmail } from '$lib/firebase/database.client';
-  import type { User } from "$lib/types/enviro-buddy-types";
+  import type { SignUpUser } from "$lib/types/enviro-buddy-types";
 
-  async function register(e: Event) {
+  // Define a new interface for the custom event
+  interface CustomEvent extends Event {
+    detail: SignUpUser;
+  }
+
+  async function register(e: CustomEvent) {
     try {
-      const formData = new FormData(e.target as HTMLFormElement);
-
-      let name = formData.get('name') as string;
-      let brand = formData.get('brand') as string;
-      let email = formData.get('email') as string;
-      let password = formData.get('password') as string;
+      let name = e.detail.name as string;
+      let email = e.detail.email as string;
+      let password = e.detail.password as string;
       let userId = await registerWithEmailandPassword(email, password);
-      // console.log(userId); // Log the userId
+      console.log(userId); // Log the userId
       let user = {
           name: name,
-          brand: brand,
-          type: 'brand',
+          brand: 'none',
+          type: 'client',
           user_id: userId,
       };
       await setUserWithEmail(user);
-      // console.log('User created'); // Log when the user is created
+      console.log('User created'); // Log when the user is created
       afterLogin($page.url);
     } catch (error) {
-      // console.log((error as any).code);
+      console.log((error as any).code);
       if ((error as any).code === 'auth/email-already-in-use') {
         messagesStore.showError('Email has already been registered');
       }
-      // console.log(error);
+      console.log(error);
       messagesStore.showError();
     }
   }

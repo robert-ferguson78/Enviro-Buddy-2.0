@@ -1,58 +1,62 @@
 <script lang="ts">
   import UpdateHead from '$lib/UpdateHead.svelte';
+  import AuthFormDealership from '$lib/components/Auth/AuthFormDealer.svelte';
+  import { registerWithEmailandPassword } from '$lib/firebase/auth.client';
+	import { afterLogin } from '$lib/helpers/route.helper';
+	import messagesStore from '$lib/stores/messages.store.js';
+  import { page } from '$app/stores';
+  import { setUserWithEmail } from '$lib/firebase/database.client';
+  import type { SignUpUser } from "$lib/types/enviro-buddy-types";
+
+  // Define a new interface for the custom event
+  interface CustomEvent extends Event {
+    detail: SignUpUser;
+  }
+
+  async function register(e: CustomEvent) {
+    try {
+      // console.log(e.detail); // Log the event target
+
+      let name = e.detail.name as string;
+      let brand = e.detail.brand as string;
+      let email = e.detail.email as string;
+      let password = e.detail.password as string;
+      // console.log({ name, brand, email, password });
+
+      let userId = await registerWithEmailandPassword(email, password);
+      // console.log(userId);
+
+      if (!userId) {
+        console.error('User ID is undefined');
+        return;
+      }
+
+      let user = {
+          name: name,
+          brand: brand,
+          type: 'client',
+          user_id: userId,
+      };
+      await setUserWithEmail(user);
+      // console.log('User created'); // Log when the user is created
+
+      afterLogin($page.url);
+    } catch (error) {
+      console.log((error as any).code);
+      console.log(error.message);
+
+      if ((error as any).code === 'auth/email-already-in-use') {
+        messagesStore.showError('Email has already been registered');
+      }
+      // console.log(error);
+      messagesStore.showError();
+    }
+  }
 </script>
 
 <UpdateHead title="Brand Signup" description="Driving your Electric Dreams Today" />
 
 <section class="section">
-  <h1 class="title">Sign up</h1>
-  <form action="/registerbrand" method="POST">
-    <div class="field-body">
-      <div class="field">
-        <label class="label" for="contactName">Contact Name</label> <input class="input" type="text" placeholder="Full name" name="name" id="contactName">
-          <label class="label" for="brandName">Brand Name</label>
-          <div class="select is-fullwidth">
-            <select name="brandName">
-              <option value="audi">Audi</option>
-              <option value="bmw">BMW</option>
-              <option value="citroen">Citroen</option>
-              <option value="dacia">Dacia</option>
-              <option value="fiat">Fiat</option>
-              <option value="ford">Ford</option>
-              <option value="honda">Honda</option>
-              <option value="hyundai">Hyundai</option>
-              <option value="jaguar">Jaguar</option>
-              <option value="kia">Kia</option>
-              <option value="land_rover">Land Rover</option>
-              <option value="lexus">Lexus</option>
-              <option value="mazda">Mazda</option>
-              <option value="mercedes_benz">Mercedes-Benz</option>
-              <option value="mini">Mini</option>
-              <option value="mitsubishi">Mitsubishi</option>
-              <option value="nissan">Nissan</option>
-              <option value="opel">Opel</option>
-              <option value="peugeot">Peugeot</option>
-              <option value="renault">Renault</option>
-              <option value="seat">SEAT</option>
-              <option value="skoda">Skoda</option>
-              <option value="subaru">Subaru</option>
-              <option value="suzuki">Suzuki</option>
-              <option value="tesla">Tesla</option>
-              <option value="toyota">Toyota</option>
-              <option value="volkswagen">Volkswagen</option>
-              <option value="volvo">Volvo</option>
-            </select>
-        </div>
-      </div>
-    </div>
-    <div class="field">
-    <label class="label" for="emailInput">Email</label> <input class="input" type="text" placeholder="Enter email" name="email" id="emailInput">
-    </div>
-    <div class="field">
-    <label class="label" for="passwordInput">Password</label> <input class="input" type="password" placeholder="Enter Password" name="password" id="passwordInput">
-    </div>
-    <div class="field is-grouped">
-      <button class="button is-link">Submit</button>
-    </div>
-  </form>
+  <h1 class="title">Brand Dealership Sign up</h1>
+  <AuthFormDealership on:submit={register} btnName="Dealer Brand Sign up" />
 </section>

@@ -117,8 +117,8 @@
               </div>
             </div>
           </div>
-          <button on:click={() => saveCarType(carType.id, carType)}>Save</button>
-          <button on:click={() => toggleEdit(carType)}>Cancel</button>
+          <button class="button is-fullwidth has-brand-green-background" on:click={() => saveCarType(carType.id, carType)}>Save</button>
+          <button class="button is-fullwidth info" on:click={() => toggleEdit(carType)}>Cancel</button>
       </div>
     </div>
       {:else}
@@ -132,15 +132,12 @@
                   Car Type: {carType.carType}<br/>
                   Car Range: {carType.carRange}
               </h3>
-              <a href={`/cartype/${carType.id}`} class="button">
-                  <span class="icon is-small">
-                      <i class="fa-sharp fa-solid fa-location-pen"></i>
-                  </span>
-              </a>
-              <button class="button" on:click={() => deleteCarType(carType.id)}>
-                  <i class="fa-solid fa-trash-xmark"></i>
+              <button class="button is-fullwidth has-brand-green-background" on:click={() => toggleEdit(carType)}>
+                <i class="fa-sharp fa-solid fa-location-pen"></i><span class="pl-3">Edit</span>
               </button>
-              <button on:click={() => toggleEdit(carType)}>Edit</button>
+              <button class="button is-fullwidth has-deep-red-background" on:click={() => deleteCarType(carType.id)}>
+                  <i class="fa-solid fa-trash-xmark"></i><span class="pl-3">Delete</span>
+              </button>
           </div>
       </div>
       {/if}

@@ -1,6 +1,13 @@
 import 'firebase/firestore';
 import { Timestamp } from '@firebase/firestore';
 
+export interface SignUpUser {
+    name: string;
+    brand: string;
+    type: string;
+    email: string;
+    password: string;
+}
 export interface User {
     name: string;
     brand: string;
