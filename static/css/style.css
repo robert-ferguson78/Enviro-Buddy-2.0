@@ -53,3 +53,17 @@ ul.message {
 .car-type-popup {
     min-width:300px;
     }
+    body {
+        position:relative;
+        padding-bottom: 150px;
+        min-height: 100VH;
+    }
+.footer {
+    position: absolute;
+    z-index: 9999999;
+    left: 0;
+    bottom: 0;
+    right:0;
+    background-color: #066F64;
+    color: #ffffff;
+}

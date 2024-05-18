@@ -65,4 +65,3 @@ function closeMessage() {
   {/if}
   <slot />
 </div>
-<section class="footer is-size-6 has-text-centered"><b>Copyright Enviro-Buddy@2024</b></section>
