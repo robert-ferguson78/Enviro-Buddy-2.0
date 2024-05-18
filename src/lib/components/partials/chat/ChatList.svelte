@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { writable, get } from 'svelte/store';
     import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
     import { goto } from '$app/navigation'; 
@@ -6,6 +6,7 @@
     import authStore from '$lib/stores/auth.store';
     import { chatIdStore } from '$lib/stores/chatIdStore';
     import { notificaionFirestoreStore } from '$lib/firebase/models/notifications-firestore-store';
+    import type { Chat } from '$lib/types/enviro-buddy-types';
 
     let chats = [];
 
@@ -20,7 +21,7 @@
                     chatsStore.set(chats); 
                 });
             }
-            chats.sort((a, b) => a.timestamp.toDate() - b.timestamp.toDate());
+            chats.sort((a, b) => a.timestamp.toDate().getTime() - b.timestamp.toDate().getTime());
             chatsStore.set(chats);
         }
     });

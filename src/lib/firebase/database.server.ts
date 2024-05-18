@@ -1,4 +1,4 @@
-import { db } from '$lib/firebase/firebase.server';
+// import { db } from '$lib/firebase/firebase.server';
 
 // export async function addUserDetails(formData, userId) {
 //     const userRef = await db.collection('users').doc(uid)

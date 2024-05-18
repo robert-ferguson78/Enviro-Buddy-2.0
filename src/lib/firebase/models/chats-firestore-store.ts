@@ -1,10 +1,14 @@
 import { doc, collection, query, where, getDocs, addDoc, orderBy, Timestamp, getDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
+import type { Chat } from '$lib/types/enviro-buddy-types';
 import { db } from '$lib/firebase/firebase.client';
 
 const collectionName = "chats";
 
+
+
 // Define the Firestore store for chats
 export const chatsFirestoreStore = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getMessagesRealtime: function(chatId: string, callback: (messages: any[]) => void) {
         // console.log(`Setting up real-time listener for chatId: ${chatId}`);
         const messagesRef = collection(doc(db, collectionName, chatId), 'messages');
@@ -30,7 +34,7 @@ export const chatsFirestoreStore = {
         const messagesRef = collection(doc(db, collectionName, chatId), 'messages');
         const messagesQuery = query(messagesRef, orderBy('timestamp'));
         return onSnapshot(messagesQuery, async (snapshot) => {
-            let msgs = [];
+            const msgs = [];
             snapshot.forEach((doc) => {
                 msgs.push(doc.data());
             });
@@ -60,7 +64,7 @@ export const chatsFirestoreStore = {
         });
     },
 
-    getChats: async function(userId: string) {
+    getChats: async function(userId: string): Promise<Chat[]> {
         // console.log('getChats called with userId:', userId); // Log the userId
         const chatsRef = collection(db, collectionName);
         const chatsQuery = query(chatsRef, where('userIds', 'array-contains', userId));

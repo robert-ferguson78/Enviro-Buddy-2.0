@@ -7,6 +7,7 @@
 	import messagesStore from '$lib/stores/messages.store.js';
   import { page } from '$app/stores';
   import { setUserWithEmail } from '$lib/firebase/database.client';
+  import type { User } from "$lib/types/enviro-buddy-types";
 
   async function register(e: Event) {
     try {

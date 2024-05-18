@@ -1,7 +1,8 @@
 import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';
-import type { PageServerLoad } from "./dealers/$types";
+import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params, locals }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const load: PageServerLoad = async ({ locals, params }: { locals: any, params: { countyId: string } }) => {
     try {
         if (!locals.user) {
             throw new Error('User not logged in');

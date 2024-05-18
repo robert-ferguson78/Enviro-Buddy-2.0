@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
     import { onMount } from 'svelte';
     let L;
 
-    export let setCoordinates = () => {};
+    export let setCoordinates: ({ lat, lng }: { lat: number; lng: number }) => void;
 
     let map;
     let marker; // Keep a reference to the last marker added

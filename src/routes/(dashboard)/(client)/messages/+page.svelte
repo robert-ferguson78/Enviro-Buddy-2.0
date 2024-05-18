@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
     import ChatList from '$lib/components/partials/chat/ChatList.svelte';
     import { writable } from 'svelte/store';
     import { onMount } from 'svelte';
     import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
-
     import { chatIdStore } from '$lib/stores/chatIdStore';
+
+    const activeChat = writable(null);
 
     onMount(async () => {
         // console.log('chatId here:', $chatIdStore); // Log chatId

@@ -16,7 +16,7 @@
       user = await userFirestoreStore.getUser(value.userId);
 
       // Fetch the notifications and store the unsubscribe function
-      unsubscribeNotifications = notificationStoreInstance.getUnreadNotifications(value.userId, () => {});
+      unsubscribeNotifications = notificationStoreInstance.getUnreadNotifications(value.userId);
     } else {
       user = null;
       unreadNotificationCount = 0;
@@ -39,8 +39,8 @@
 
   onDestroy(() => {
     unsubscribe();
-    notificationStoreInstance.unsubscribe && notificationStoreInstance.unsubscribe();
-  });
+    unsubscribeNotifications && unsubscribeNotifications();
+});
 </script>
 
 

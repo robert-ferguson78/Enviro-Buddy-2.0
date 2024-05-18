@@ -57,7 +57,7 @@
 
   function handleFileChange(event) {
     image = event.target.files[0];
-    const preview = document.getElementById('preview');
+    let preview = document.getElementById('preview') as HTMLImageElement;
     preview.src = URL.createObjectURL(image);
   }
 
@@ -65,7 +65,7 @@
     additionalImages = [];
     additionalImages = Array.from(event.target.files);
     additionalImages.forEach((image, index) => {
-      const preview = document.getElementById(`additional-preview-${index}`);
+      let preview = document.getElementById(`additional-preview-${index}`) as HTMLImageElement;
       preview.src = URL.createObjectURL(image);
     });
   }

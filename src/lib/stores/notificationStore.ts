@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import { notificaionFirestoreStore } from '$lib/firebase/models/notifications-firestore-store';
 
 function notificationStore() {
-  const { subscribe, set, update } = writable([]);
+  const { subscribe, set } = writable([]);
 
   return {
     subscribe,

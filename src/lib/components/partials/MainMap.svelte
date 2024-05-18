@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
     import { onMount, afterUpdate } from 'svelte';
     import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
     import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';
     import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
     import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
     import SecondaryMainMap from '$lib/components/partials/SecondaryMainMap.svelte';
+    import type { carType } from '$lib/types/enviro-buddy-types';
 
     let secondaryMapActions;
     let button;
@@ -17,6 +18,7 @@
     let map;
     let L;
     let dealers;
+    let dealer;
     let countyIdToName = {};
     let users;
 
@@ -48,7 +50,7 @@
             }).addTo(map);
     
             // Fetch all counties from Firestore
-            const counties = await countyFirestoreStore.getAllCounties();
+            const counties: any = await countyFirestoreStore.getAllCounties();
         
             // Create a mapping from countyId to county
             for (const county of counties) {
@@ -75,7 +77,7 @@
             const brandLayers = {};
 
             // Fetch all car types from Firestore
-            const carTypes = await carTypeFirestoreStore.findCarType();
+            const carTypes: any = await carTypeFirestoreStore.findCarType();
 
             // Create a mapping from userId to car types
             let userIdToCarTypes = {};

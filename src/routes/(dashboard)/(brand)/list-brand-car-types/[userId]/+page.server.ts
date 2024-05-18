@@ -1,7 +1,8 @@
 import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ locals }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const load: PageServerLoad = async ({ locals }: { locals: any }) => {
     try {
         // console.log('locals.user:', locals.user); // Log locals.user
         if (!locals.user) {

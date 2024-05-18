@@ -1,8 +1,20 @@
 import { auth } from '$lib/firebase/firebase.server';
 import { redirect } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
 
-/** @type {import('@sveltejs/kit').Handle} */
-export async function handle({ event, resolve }) {
+// Define a new type that extends the Locals type of RequestEvent
+type ExtendedLocals = {
+    user?: {
+        id: string;
+        email: string;
+    };
+};
+
+// Define a new type that extends RequestEvent to include locals
+type ExtendedRequestEvent = RequestEvent & { locals: ExtendedLocals };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function handle({ event, resolve }: { event: ExtendedRequestEvent; resolve: any }) {
 
     const protectRoutes = [
         '/add',

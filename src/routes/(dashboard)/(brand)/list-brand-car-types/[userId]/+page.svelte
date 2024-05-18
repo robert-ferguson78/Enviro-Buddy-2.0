@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
   import UpdateHead from '$lib/UpdateHead.svelte';
   import AddCarType from './addCarType.svelte';
   import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
+  import type { carType } from '$lib/types/enviro-buddy-types';
   export let data;
-  let carTypes = data?.props?.carTypes || [];
-  // let additionalImages = []
+  let carTypes: any = data?.props?.carTypes || [];
 
   carTypes = carTypes.map(carType => ({
     ...carType, 
@@ -55,12 +55,12 @@
   }
 
   function handleImageChange(event, carType) {
-      carType.imageFile = event.target.files[0];
-      carType.imagePreview = URL.createObjectURL(event.target.files[0]);
-      const preview = document.getElementById(`preview-${carType.id}`);
-      if (preview) {
-          preview.src = carType.imagePreview;
-      }
+    carType.imageFile = event.target.files[0];
+    carType.imagePreview = URL.createObjectURL(event.target.files[0]);
+    const preview = document.getElementById(`preview-${carType.id}`) as HTMLImageElement;
+    if (preview) {
+      preview.src = carType.imagePreview;
+    }
   }
 
   function handleAdditionalFilesChange(event, carType) {

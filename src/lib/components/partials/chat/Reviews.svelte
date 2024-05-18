@@ -1,5 +1,5 @@
-<script>
-import { onMount } from 'svelte';
+<script lang="ts">
+import { onMount, onDestroy } from 'svelte';
 import { reviewsFirestoreStore } from '$lib/firebase/models/reviews-firestore-store';
 import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
 import auth from '$lib/stores/auth.store';
@@ -15,25 +15,30 @@ let reviews = [];
 let newMessage = '';
 let userName;
 let userId;
+let unsubscribe;
 
 onMount(async () => {
     if (user && user.userId) {
         let userdetails = await userFirestoreStore.getUser(user.userId);
         userName = userdetails.name;
-        // console.log('user name here:', userName);
         userId = user.userId;
-        // console.log('user Id here:', userId);
     }
 
     const dealerExists = await reviewsFirestoreStore.checkForDealer(dealerId);
     if (dealerExists) {
-        const unsubscribe = reviewsFirestoreStore.getReviewsRealtime(dealerId, (newReviews) => {
+        unsubscribe = reviewsFirestoreStore.getReviewsRealtime(dealerId, (newReviews) => {
             reviews = newReviews
+                .filter(review => review.timestamp) // filter out reviews without a timestamp
                 .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
         });
-        return unsubscribe;
     } else {
         reviews = ['No reviews yet, be the first to add a review'];
+    }
+});
+
+onDestroy(() => {
+    if (unsubscribe) {
+        unsubscribe();
     }
 });
 

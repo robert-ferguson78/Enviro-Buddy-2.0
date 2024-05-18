@@ -66,21 +66,14 @@ export const countyFirestoreStore = {
 
     // Method to check for a county
     async getCheckForCounty(county, userId) {
-        // console.log(`Checking for county: ${county} for user: ${userId}`); // Log the inputs
-    
         let countyExists = false;
     
         try {
             const querySnapshot = await getDocs(query(countiesRef, where("county", "==", county), where("userId", "==", userId)));
-            querySnapshot.forEach((doc) => {
-                // console.log(doc.data()); // Log the data of each matching document
-                countyExists = true;
-            });
+            countyExists = !querySnapshot.empty;
         } catch (error) {
-            console.error("Error checking for county: ", error); // Log any errors that occur
+            console.error("Error checking for county: ", error);
         }
-    
-        // console.log(`County exists: ${countyExists}`); // Log the output
     
         return countyExists;
     },

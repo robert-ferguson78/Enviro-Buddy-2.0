@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
     import { writable } from 'svelte/store'; // Import writable store
@@ -7,7 +7,7 @@
     import GalleryImages from '$lib/components/partials/GalleryImages.svelte';
     import authStore from '$lib/stores/auth.store';
     import { chatIdStore } from '$lib/stores/chatIdStore';
-    import { getWeatherIcon } from '$lib/utils/weather.ts';
+    import { getWeatherIcon } from '$lib/utils/weather';
 
     let carTypes = [];
 

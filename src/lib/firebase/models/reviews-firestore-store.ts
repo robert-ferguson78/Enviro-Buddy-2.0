@@ -1,4 +1,5 @@
 import { getDoc, doc, collection, addDoc, query, onSnapshot, serverTimestamp } from 'firebase/firestore';
+import type { Review } from '$lib/types/enviro-buddy-types';
 import { db } from '$lib/firebase/firebase.client';
 
 const collectionName = "reviews";

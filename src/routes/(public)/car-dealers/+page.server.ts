@@ -2,17 +2,18 @@ import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-stor
 import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
 import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
 import type { PageServerLoad } from "./$types";
+import type { Dealer, CountyData } from "$lib/types/enviro-buddy-types";
 
 export const load: PageServerLoad = async () => {
     try {
-        const dealers = await dealerFirestoreStore.getAllDealers()
+        const dealers = await dealerFirestoreStore.getAllDealers() as Dealer[]
 
         // Fetch additional data for each dealer
         const dealersWithExtraInfo = await Promise.all(dealers.map(async dealer => {
             // Fetch user data
             const userData = await userFirestoreStore.getUser(dealer.userId);
             // Fetch county data
-            const countyData = await countyFirestoreStore.getCountyById(dealer.countyId);
+            const countyData = await countyFirestoreStore.getCountyById(dealer.countyId) as CountyData;
 
             // Add extra data to dealer
             return {

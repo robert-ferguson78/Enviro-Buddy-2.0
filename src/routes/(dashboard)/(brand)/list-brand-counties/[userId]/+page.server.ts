@@ -1,7 +1,8 @@
 import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ locals }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const load: PageServerLoad = async ({ locals }: { locals: any }) => {
     try {
         if (!locals.user) {
             throw new Error('User not logged in');

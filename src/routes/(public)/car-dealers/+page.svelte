@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
     import UpdateHead from '$lib/UpdateHead.svelte';
     import { goto } from '$app/navigation'; 
+
     export let data;
-    let dealers = data?.props?.dealers || [];
+    let dealers = (data?.props?.dealers || []) as any[];
     let selectedBrand = '';
     let selectedCounty = '';
 

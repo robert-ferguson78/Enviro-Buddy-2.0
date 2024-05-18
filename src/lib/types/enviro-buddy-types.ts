@@ -1,3 +1,6 @@
+import 'firebase/firestore';
+import { Timestamp } from '@firebase/firestore';
+
 export interface User {
     name: string;
     brand: string;
@@ -11,12 +14,35 @@ export interface carTypes {
     imageUrl: string;
     userId: string;
 }
+
+export interface carType {
+  id: string;
+  carName: string;
+  carType: string;
+  carRange: string;
+  image: string;
+  additionalImages?: string[];
+}
+
 export interface Counties {
     _id: string;
     county: string;
     userid: string;
 }
 export interface NewCounty {
+  county: string;
+}
+
+export interface CountyData {
+  _id: string;
+  county: string;
+}
+
+export interface Dealer {
+  _id: string;
+  userId: string;
+  countyId: string;
+  brand: string;
   county: string;
 }
 export interface Dealers {
@@ -87,4 +113,27 @@ export interface UserResponse {
   }
   export interface AuthTokenResponse {
     token: string;
+  }
+
+  export interface Chat {
+    id: string;
+    timestamp?: Timestamp;
+    unreadCount?: number;
+}
+
+  export type Review = {
+    id: string;
+    userId: string;
+    userName: string;
+    message: string;
+    timestamp?: Timestamp;
+  };
+
+  export type County = {
+    _id: string;
+    county: string;
+  };
+
+  export interface Locals {
+    user?: User;
   }

@@ -6,7 +6,8 @@ export async function load({ params }) {
     const chatId = params.chatId;
     // console.log('id:', chatId); // Log id
     try {
-        const chat = await chatsFirestoreStore.getChat(chatId);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const chat: any = await chatsFirestoreStore.getChat(chatId);
         // console.log('chat:', chat); // Log chat
         if (chat) {
             // Convert timestamp to string if it's a Firestore Timestamp

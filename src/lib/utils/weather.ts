@@ -95,12 +95,14 @@ export async function getWeatherForecast(latitude: number, longitude: number, fi
         const currentHour = new Date().getHours();
 
         // Include the first forecast and filter the rest of the list to only include forecasts where the hour is within 1 hour of the current hour
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const dailyForecasts = [forecastList[0], ...forecastList.slice(1).filter((forecast: any) => {
             const forecastHour = new Date(forecast.dt * 1000).getHours();
 
             return Math.abs(forecastHour - currentHour) <= 1;
         })];
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return dailyForecasts.map((forecast: any) => {
             const weatherCode = forecast.weather[0].id;
             const weatherCondition = weatherConditions.get(weatherCode);

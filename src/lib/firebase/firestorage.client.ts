@@ -29,7 +29,7 @@ export async function saveFileToBucket(file: File, destination: string): Promise
       uploadTask.on('state_changed',
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          // console.log('Upload is ' + progress + '% done');
+          console.log('Upload is ' + progress + '% done');
         },
         (error) => {
           // Handle unsuccessful uploads

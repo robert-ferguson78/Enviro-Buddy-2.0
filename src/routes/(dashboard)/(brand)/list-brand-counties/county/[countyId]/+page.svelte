@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import UpdateHead from '$lib/UpdateHead.svelte';
     import AddDealer from './addDealer.svelte';
     import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';

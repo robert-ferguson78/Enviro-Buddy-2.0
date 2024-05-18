@@ -1,4 +1,4 @@
-<script>
+<script script="ts">
   import { onMount } from 'svelte';
   import authStore from '$lib/stores/auth.store';
   import AuthFormUpdate from '$lib/components/Auth/AuthFormUpdate.svelte'; // import the AuthFormUpdate component

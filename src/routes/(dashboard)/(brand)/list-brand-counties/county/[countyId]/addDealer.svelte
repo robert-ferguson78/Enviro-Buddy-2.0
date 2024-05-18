@@ -37,7 +37,7 @@
     unsubscribePage();
   });
 
-  function setCoordinates({ lat, lng }) {
+  function setCoordinates({ lat, lng }: { lat: number; lng: number }) {
     latitude = lat;
     longitude = lng;
   }

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import UpdateHead from '$lib/UpdateHead.svelte';
   import authStore from '$lib/stores/auth.store';
 
