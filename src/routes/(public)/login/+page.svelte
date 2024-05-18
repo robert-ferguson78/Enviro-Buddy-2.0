@@ -31,4 +31,11 @@
 <h2>Login With Google</h2>
 <AuthFormLogin on:submit={onLogin} btnName="Login" />
 <LoginWithGoogle />
-<a href="/forgot-password">Forgot Password</a>
+<a href="/forgot-password">
+  <button class="button has-background-light mt-3">
+    <span class="icon">
+      <i class="fa-solid fa-lock"></i>
+      </span>
+      <span>Forgot Password</span>
+  </button>
+</a>

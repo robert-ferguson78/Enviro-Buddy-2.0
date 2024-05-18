@@ -30,5 +30,10 @@
 </script>
 
 <div class="row">
-    <div class="column"><button on:click={loginGoogle}>Login With Google</button></div>
+        <button class="button is-success is-active has-text-white mt-3" on:click={loginGoogle}>
+            <span class="icon">
+                <i class="fa-brands fa-google"></i>
+              </span>
+              <span>Login With Google</span>
+        </button>
 </div>

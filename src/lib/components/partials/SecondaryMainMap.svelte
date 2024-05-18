@@ -1,13 +1,25 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { onDestroy } from 'svelte';
     import { goto } from '$app/navigation';
     import { writable } from 'svelte/store'; // Import writable store
     import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
     import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
+    import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
     import GalleryImages from '$lib/components/partials/GalleryImages.svelte';
     import authStore from '$lib/stores/auth.store';
     import { chatIdStore } from '$lib/stores/chatIdStore';
     import { getWeatherIcon } from '$lib/utils/weather';
+
+    let user;
+
+    const unsubscribe = authStore.subscribe(async value => {
+        if (value && value.isLoggedIn && value.userId) {
+        user = await userFirestoreStore.getUser(value.userId);
+        } else {
+        user = null;
+        }
+    });
 
     let carTypes = [];
 
@@ -90,8 +102,15 @@
         goto(url);
         };
 
+    onDestroy(() => {
+        unsubscribe();
+    });
 </script>
 
 <div id="secondary-map" style="height: 150px;"></div>
-<button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background" on:click={startNewChat}>Test Drive Chat</button>
+{#if user}
+    <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background" on:click={startNewChat}>Test Drive Chat</button>
+    {:else}
+    <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background"><a href="/login"><u>login</u></a> / <a href="/signup"><u>Register</u>&nbsp;</a>to Book Test Drive</button>
+{/if}
 <GalleryImages {carTypes} />

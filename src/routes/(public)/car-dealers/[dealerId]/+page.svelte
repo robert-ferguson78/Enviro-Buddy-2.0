@@ -58,7 +58,11 @@
     function createPopupHTML(dealer) {
         const div = document.createElement('div');
         const button = document.createElement('button');
-        button.textContent = 'Book a Test Drive';
+        if ($authStore.userId) {
+            button.textContent = 'Book a Test Drive';
+        } else {
+            button.textContent = 'Login/Register to book a Test Drive';
+        }
         button.className = 'button is-normal mt-3 mb-3 has-brand-green-background start-chat-button';
         div.appendChild(button);
         return div;
@@ -72,7 +76,12 @@
             dealerUserId: dealer.userId,
             authUserId: $authStore.userId
         });
-        let url = `/chat/${chatId}`;
+        let url;
+        if ($authStore.userId) {
+            url = `/chat/${chatId}`;
+        } else {
+            url = `/login`;
+        }
         // console.log('Navigating to:', url);
         goto(url);
     };

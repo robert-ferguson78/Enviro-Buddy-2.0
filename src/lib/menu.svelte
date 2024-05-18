@@ -59,8 +59,12 @@
                 <a class="button" href={`/profile/${user.user_id}`}>Profile</a>
               {/if}
                 <a id="envirobuddy" class="button" href="/car-dealers">Car Dealers</a>
-                {#if user}
-                  <a class="button" href="/messages">Messages {unreadNotificationCount > 0 ? `(${unreadNotificationCount})` : ''}</a>
+              {#if user}
+                  <a class="button" href="/messages">Messages 
+                    {#if unreadNotificationCount > 0}
+                      <span class="notification-count">{unreadNotificationCount}</span>
+                    {/if}
+                  </a>
               {/if}
                 <a id="about" class="button" href="/about">About</a>
               {#if $authStore.isLoggedIn}
@@ -75,3 +79,23 @@
       </div>
     </div>
   </nav>
+
+  <style>
+    .notification-count {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: -15px;
+      right: -8px;
+      min-width:25px; /* Adjust as needed */
+      min-height: 25px; /* Adjust as needed */
+      padding: 2px 6px;
+      border-radius: 50%;
+      border-width: 1px;
+      border-color: #fff;
+      background-color: #ff3220;
+      color: white;
+      font-size: 0.8em;
+    }
+  </style>
