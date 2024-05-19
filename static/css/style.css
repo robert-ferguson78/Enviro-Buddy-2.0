@@ -1,5 +1,5 @@
 .navbar {
-    background-color: #066F64;
+    background-color: #049f62;
     min-height:130px;
 }
 .caps {
@@ -55,7 +55,7 @@ ul.message {
     }
 body {
     position:relative;
-    padding-bottom: 150px;
+    padding-bottom: 300px;
     min-height: 100VH;
 }
 .footer {
@@ -64,6 +64,25 @@ body {
     left: 0;
     bottom: 0;
     right:0;
-    background-color: #066F64;
+    background-color: transparent !important;
     color: #ffffff;
+}
+footer.footer {
+    background-image: url("/images/footer-background-3.png");
+    background-size: cover;
+    min-height: 300px;
+  }
+.footer b {
+    background-color: rgba(255,255,255,0.8);
+    color: #066f64;
+    padding: 8px 15px;
+    border-radius:10px;
+}
+.leaflet-container {
+    border: solid 2px #066f64;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.card, .box {
+    border: solid 1px #066f64;
 }

@@ -33,14 +33,16 @@
 </script>
 
 <!-- HTML and Svelte markup for the component -->
-<form on:submit|preventDefault={onSubmit}> <!-- Form with onSubmit event handler -->
-    <div class="field">
-        <label class="label" for="name">Name</label>
-        <input class="input" type="text" bind:value={name} id="name" name="name">
-    </div>
-    <div class="field">
-        <label class="label" for="brand">Car Brand</label>
-        <input class="input" type="text" bind:value={brand} id="brand" name="brand">
-    </div>
-    <button class="button is-link">{btnName}</button>
-</form>
+<div class="box">
+    <form on:submit|preventDefault={onSubmit}> <!-- Form with onSubmit event handler -->
+        <div class="field">
+            <label class="label" for="name">Name</label>
+            <input class="input" type="text" bind:value={name} id="name" name="name">
+        </div>
+        <div class="field">
+            <label class="label" for="brand">Car Brand</label>
+            <input class="input" type="text" bind:value={brand} id="brand" name="brand">
+        </div>
+        <button class="button is-link">{btnName}</button>
+    </form>
+</div>

@@ -143,3 +143,13 @@
       {/if}
     {/each}
   </div>
+
+<style>
+.column input {
+  border: solid 1px grey;
+  padding: 5px 8px;
+}
+.button {
+  margin-bottom: 10px;
+}
+</style>

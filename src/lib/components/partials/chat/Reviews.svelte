@@ -82,11 +82,14 @@ async function addReview() {
 <!-- CSS for the component -->
 <style>
     .review-ctn {
-        max-height: 575px;
+        max-height: 590px;
         overflow: scroll;
         overflow-x: hidden;
     }
     .review-ctn.loggedin {
         max-height: 575px;
+    }
+    .review-ctn .box  {
+    background-color: rgba(4, 159, 98, 0.1);
     }
 </style>
