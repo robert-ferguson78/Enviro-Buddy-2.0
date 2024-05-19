@@ -7,9 +7,21 @@
     let map;
     let marker; // Keep a reference to the last marker added
     let mapContainer; // Reference to the map div
+    let customIcon; // Custom icon for the marker
 
     onMount(async () => {
         L = await import('leaflet');
+
+        // Define custom icon
+        customIcon = L.icon({
+            iconUrl: '/images/map-car-marker.png',
+            shadowUrl: '/images/map-car-marker-shadow.png',
+            iconSize: [52, 60], // size of the icon
+            shadowSize: [52, 60], // size of the shadow
+            iconAnchor: [26, 60], // anchor at half width and full height to position the bottom center of the icon at the marker's location
+            shadowAnchor: [26, 60], // anchor the shadow at the same point
+            popupAnchor: [0, -60] // open the popup just above the icon
+        });
 
         if (mapContainer) {
             map = L.map(mapContainer).setView([53.551357, -7.628111], 6);
@@ -28,8 +40,8 @@
                     map.removeLayer(marker);
                 }
 
-                // Add a new marker and keep a reference to it
-                marker = L.marker([lat, lng]).addTo(map);
+                // Add a new marker with custom icon and keep a reference to it
+                marker = L.marker([lat, lng], {icon: customIcon}).addTo(map);
 
                 setCoordinates({ lat, lng });
             });
