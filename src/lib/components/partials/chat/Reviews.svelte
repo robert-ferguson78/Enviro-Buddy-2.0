@@ -90,6 +90,9 @@ async function addReview() {
         max-height: 575px;
     }
     .review-ctn .box  {
-    background-color: rgba(4, 159, 98, 0.1);
+        background-color: rgba(4, 159, 98, 0.1);
+    }
+    .review-ctn .box.has-brand-green-background {
+        background-color: #066f64;
     }
 </style>
