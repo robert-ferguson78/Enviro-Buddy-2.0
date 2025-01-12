@@ -1,23 +1,28 @@
 import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
+import { redirect } from '@sveltejs/kit';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const load = async ( locals ) => {
+export const load = async ({ params, locals }) => {
     try {
-        // console.log('locals.user:', locals.user); // Log locals.user
         if (!locals.user) {
-            throw new Error('User not logged in');
+            throw redirect(302, '/login');
         }
-        const { id: userId } = locals.user;
+
+        const userId = params.userId;
+        // console.log('Loading car types for user:', userId);
         const carTypes = await carTypeFirestoreStore.getCarTypesByBrandId(userId)
-        // console.log('Car types in load function:', carTypes); // Log carTypes
-        if (carTypes.length > 0) {
-            const props = { carTypes };
-            // console.log('Returning props from load function:', props); // Log props
-            return { props };
-        } else {
-            throw new Error('Could not load data');
-        }
+        // console.log('Found car types:', carTypes);
+        // Return data even if no car types found
+        return {
+            props: {
+                carTypes: carTypes || [],
+                userId
+            }
+        };
     } catch (error) {
+        if (error instanceof redirect) {
+            throw error;
+        }
         console.error('Error in load function:', error.message); // Log error message
         return { status: 500, error: error.message };
     }
