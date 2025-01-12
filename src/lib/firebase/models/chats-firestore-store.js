@@ -1,4 +1,4 @@
-import { doc, collection, query, where, getDocs, addDoc, orderBy, Timestamp, getDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
+import { doc, collection, query, where, getDocs, addDoc, orderBy, Timestamp, getDoc, onSnapshot, serverTimestamp, limit } from "firebase/firestore";
 import { db } from '../firebase.client.js';
 
 const collectionName = "chats";
@@ -97,5 +97,22 @@ export const chatsFirestoreStore = {
         };
         const chatRef = await addDoc(collection(db, collectionName), chatData);
         return chatRef.id;
+    },
+
+    // Function to get chats in realtime
+    getChatsRealtime: function(userId, callback) {
+        const chatsRef = collection(db, collectionName);
+        const chatsQuery = query(
+            chatsRef, 
+            where('userIds', 'array-contains', userId),
+            orderBy('timestamp', 'desc'),
+            limit(10)
+        );
+        
+        return onSnapshot(chatsQuery, (snapshot) => {
+            const chats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            callback(chats);
+        });
     }
+    
 };

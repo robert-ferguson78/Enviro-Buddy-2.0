@@ -12,30 +12,23 @@
     const chatsStore = writable([]);
 
     // Subscribe to the auth store
-    authStore.subscribe(async $authStore => {
-        // If the user is logged in, get their chats
-        if ($authStore.userId) {
-            let chats = await chatsFirestoreStore.getChats($authStore.userId);
-            // For each chat, get the unread notifications and set the unread count
-            for (let chat of chats) {
-                notificaionFirestoreStore.getUnreadNotificationsForChat($authStore.userId, chat.id, (notifications) => {
-                    chat.unreadCount = notifications.length;
-                    chatsStore.set(chats); 
-                });
-            }
-            // Sort the chats by timestamp and set the chats store
-            chats.sort((a, b) => a.timestamp.toDate().getTime() - b.timestamp.toDate().getTime());
-            chatsStore.set(chats);
-        }
-    });
+    let unsubscribe;
 
-    // When the component mounts, subscribe to the chats store
-    onMount(async () => {
-        chatsStore.subscribe(value => {
-            chats = value;
-            console.log("chats has: ", chats);
+    onMount(() => {
+    if ($authStore.userId) {
+        unsubscribe = chatsFirestoreStore.getChatsRealtime($authStore.userId, (updatedChats) => {
+            chatsStore.set(updatedChats);
         });
-    });
+    }
+
+    return () => {
+        if (unsubscribe) unsubscribe();
+    };
+});
+
+
+    // Single store subscription
+    $: chats = $chatsStore;
 
     // Function to select a chat
     function selectChat(chat) {
