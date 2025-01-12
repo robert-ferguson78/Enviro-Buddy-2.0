@@ -9,7 +9,7 @@ import { getAuth } from 'firebase/auth';
  * @param {string} destination - The path where the file will be saved.
  * @returns {Promise<string>} - A promise that resolves with the download URL of the saved file.
  */
-export async function saveFileToBucket(file: File, destination: string): Promise<string> {
+export async function saveFileToBucket(file, destination) {
     // console.log("Path: ", destination); // Log the path
     // console.log("File name: ", file.name); // Log the file name
 
@@ -63,7 +63,7 @@ export async function saveFileToBucket(file: File, destination: string): Promise
  * @param {string} filePath - The path of the file to be deleted.
  * @returns {Promise<void>} - A promise that resolves when the file is deleted.
  */
-export async function deleteFileFromBucket(filePath: string): Promise<void> {
+export async function deleteFileFromBucket(filePath) {
   // Get a reference to the Firebase storage service and the specified file
     const storage = getStorage(app);
     const fileRef = ref(storage, filePath);

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import { onMount } from 'svelte';
     import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
     import { chatIdStore } from '$lib/stores/chatIdStore';

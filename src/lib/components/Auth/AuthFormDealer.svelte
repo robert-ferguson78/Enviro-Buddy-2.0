@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import { createEventDispatcher } from 'svelte';
     import messagesStore from '$lib/stores/messages.store';
 
@@ -6,7 +6,7 @@
     const dispatch = createEventDispatcher();
 
      // Exported variables
-    export let btnName: string;
+    export let btnName;
     export let forgotPassword = false;
 
     let name = '';
@@ -39,7 +39,7 @@
     };
 
     // Function to handle form submission
-    const handleSubmit = (e: Event) => {
+    const handleSubmit = (e) => {
         e.preventDefault(); // Prevent the default form submission
         if (validateForm()) { // If the form is valid
             console.log({ name, brand, email, password }); // Log the form data

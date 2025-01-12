@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import { onMount } from 'svelte';
     import UpdateHead from '$lib/UpdateHead.svelte';
     import { goto } from '$app/navigation';
@@ -11,7 +11,7 @@
 
     export let data;
     // dealer is a prop passed from the parent component which is mixed with the data prop
-    let dealer = (data?.props?.dealer as { latitude: number; longitude: number; userId: string; name: string; brand: string; county: string; _id: string; countyId: string; image: string; phone: string; email: string; website: string; address: string; carName: string; }) || { latitude: 0, longitude: 0, userId: '', name: '', brand: '', county: '', _id: '', countyId: '', image: '', phone: '', email: '', website: '', address: '', carName: '' };
+    let dealer = (data?.props?.dealer) || { latitude: 0, longitude: 0, userId: '', name: '', brand: '', county: '', _id: '', countyId: '', image: '', phone: '', email: '', website: '', address: '', carName: '' };
     let map;
     let customIcon;
     let forecast = [];

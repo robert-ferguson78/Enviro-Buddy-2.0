@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { onDestroy } from 'svelte';
   import authStore from '$lib/stores/auth.store';
   import { logout } from '$lib/firebase/auth.client';

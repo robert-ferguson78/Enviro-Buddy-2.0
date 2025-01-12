@@ -1,12 +1,11 @@
 import { getDoc, doc, collection, addDoc, query, onSnapshot, serverTimestamp } from 'firebase/firestore';
-import type { Review } from '$lib/types/enviro-buddy-types';
-import { db } from '$lib/firebase/firebase.client';
+import { db } from '$lib/firebase/firebase.client.js';
 
 const collectionName = "reviews";
 
 export const reviewsFirestoreStore = {
     // Function to get real-time updates of reviews for a specific dealer
-    getReviewsRealtime: function(dealerId: string, callback: (reviews: Review[]) => void) {
+    getReviewsRealtime: function(dealerId, callback) {
         // Create a query to get the 'messages' collection within the document with the specified dealer ID
         const q = query(collection(doc(db, collectionName, dealerId), 'messages'));
     
@@ -38,22 +37,22 @@ export const reviewsFirestoreStore = {
         // Return the unsubscribe function for the real-time listener
         return unsubscribe;
     },
-    
+
     // Function to create a new review for a specific dealer
-    createReview: async function(dealerId: string, userId: string, userName: string, message: string) {
+    createReview: async function(dealerId, userId, userName, message) {
         const reviewData = {
             userId: userId,
             userName: userName,
             message: message,
             timestamp: serverTimestamp(),
         };
-    
+        
         const reviewRef = await addDoc(collection(doc(db, collectionName, dealerId), 'messages'), reviewData);
         return reviewRef.id;
     },
 
     // Function to check if a dealer exists in the collection
-    checkForDealer: async function(dealerId: string) {
+    checkForDealer: async function(dealerId) {
         const dealerDoc = await getDoc(doc(db, collectionName, dealerId));
         return dealerDoc.exists;
     }

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
   import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
   import messagesStore from '$lib/stores/messages.store';
@@ -58,7 +58,7 @@
   // Function to handle the change event of the main image file input
   function handleFileChange(event) {
     image = event.target.files[0]; // Get the first file from the file input and assign it to the image variable
-    let preview = document.getElementById('preview') as HTMLImageElement; // Get the image element for previewing the main image
+    let preview = document.getElementById('preview'); // Get the image element for previewing the main image
     preview.src = URL.createObjectURL(image); // Create a URL representing the selected file and assign it to the src attribute of the preview image
   }
 
@@ -67,7 +67,7 @@
     additionalImages = []; // Reset the additionalImages array
     additionalImages = Array.from(event.target.files); // Get all files from the file input and assign them to the additionalImages array
     additionalImages.forEach((image, index) => { // For each additional image
-      let preview = document.getElementById(`additional-preview-${index}`) as HTMLImageElement; // Get the image element for previewing the additional image
+      let preview = document.getElementById(`additional-preview-${index}`); // Get the image element for previewing the additional image
       preview.src = URL.createObjectURL(image); // Create a URL representing the selected file and assign it to the src attribute of the preview image
     });
   }

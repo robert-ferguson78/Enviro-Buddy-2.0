@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     // Importing the headMetadata store from the headStore file
     import { headMetadata } from './stores/headStore';
 

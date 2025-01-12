@@ -19,7 +19,7 @@ export default {
         }, 15000);
     },
     // A method to show a success message
-    showSuccess: function(message: string) {
+    showSuccess: function(message) {
         // Set the store state to show the success message
         messageStore.set({ show: true, message, type: 'success'});
         // After 15 seconds, reset the store state to hide the message

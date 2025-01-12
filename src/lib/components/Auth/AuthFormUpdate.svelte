@@ -1,10 +1,10 @@
-<script lang="ts">
+<script>
     import { onMount } from 'svelte';
     import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store'; // Import the userFirestoreStore
     import messagesStore from '$lib/stores/messages.store'; // Import the messagesStore
 
     // Declare exported variables
-    export let btnName: string; // Button name passed as a prop
+    export let btnName; // Button name passed as a prop
     export let userId; // User ID passed as a prop
 
     // Declare local variables

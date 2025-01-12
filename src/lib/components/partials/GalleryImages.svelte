@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import { onMount } from 'svelte'; // Import onMount
     export let carTypes = []; // Accept carTypes as a prop
     import ImageGallery from '@react2svelte/image-gallery';

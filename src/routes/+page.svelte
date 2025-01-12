@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import MainMap from '$lib/components/partials/MainMap.svelte';
 </script>
 

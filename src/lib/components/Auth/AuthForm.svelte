@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import { createEventDispatcher } from 'svelte'; // Import the createEventDispatcher function from Svelte
     import messagesStore from '$lib/stores/messages.store'; // Import the messagesStore
 
@@ -6,7 +6,7 @@
     const dispatch = createEventDispatcher(); // Create an event dispatcher for dispatching custom events
 
     // Exported variables
-    export let btnName: string; // Button name passed as a prop
+    export let btnName; // Button name passed as a prop
     export let forgotPassword = false; // Boolean indicating whether the user is in the "forgot password" state, default is false
 
     // Local variables
@@ -38,7 +38,7 @@
     };
 
     // Function to handle form submission
-    const handleSubmit = (e: Event) => {
+    const handleSubmit = (e) => {
         e.preventDefault(); // Prevent the default form submission
         if (validateForm()) { // If the form is valid
             console.log({ name, email, password }); // Log the form data

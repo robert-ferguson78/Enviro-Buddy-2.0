@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import "../app.css";
     import { headMetadata } from '$lib/stores/headStore';
     import EnviroBrandName from '$lib/envirobuddyBrand.svelte';
@@ -9,7 +9,7 @@
     import { sendJWTToken } from "$lib/firebase/auth.client";
 
     // Variable to hold the timer ID
-    let timerdId: NodeJS.Timeout;
+    let timerdId;
 
     // Function to send server token
     async function sendServerToken() {

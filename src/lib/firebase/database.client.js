@@ -1,6 +1,5 @@
 import { setDoc, collection, doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase.client.js';
-import type { User } from '$lib/types/enviro-buddy-types';
 
 /**
  * Asynchronously set a user in the Firestore database.
@@ -9,7 +8,7 @@ import type { User } from '$lib/types/enviro-buddy-types';
  * @param {string} name - The name of the user.
  * @throws {Error} - Throws an error if the userId is not provided or is not a string.
  */
-export async function setUser(userId: string, name: string) {
+export async function setUser(userId, name) {
     // console.log(typeof userId); // Log the type of userId
     // Check if the userId is provided and is a string
     if (!userId || typeof userId !== 'string') {
@@ -39,7 +38,7 @@ export async function setUser(userId: string, name: string) {
  * @param {User} user - The user object.
  * @throws {Error} - Throws an error if the userId is not provided or is not a string.
  */
-export async function setUserWithEmail(user: User) {
+export async function setUserWithEmail(user) {
     const userId = user.user_id;
     // console.log(typeof userId); // Log the type of userId
 

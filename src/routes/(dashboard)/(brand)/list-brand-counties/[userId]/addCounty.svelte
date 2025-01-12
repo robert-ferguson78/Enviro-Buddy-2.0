@@ -1,9 +1,8 @@
-<script lang="ts">
+<script>
   import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
   import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
   import messagesStore from '$lib/stores/messages.store';
   import authStore from '$lib/stores/auth.store';
-  import type { NewCounty } from "$lib/types/enviro-buddy-types.ts";
   import { createEventDispatcher } from 'svelte';
 
   let user;
@@ -30,7 +29,7 @@
             if (existingCounty) {
                 messagesStore.showError('County already exists!');
             } else {
-                const newCounty: NewCounty = {
+                const newCounty = {
                     county: county,
                 };
                 const createdCounty = await countyFirestoreStore.addCounty(newCounty, user.user_id);

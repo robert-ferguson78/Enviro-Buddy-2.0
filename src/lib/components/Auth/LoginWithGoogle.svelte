@@ -1,15 +1,8 @@
-<script lang="ts">
+<script>
     import { loginWithGoogle } from '$lib/firebase/auth.client.js';
     import { afterLoginGoogle } from '$lib/helpers/route.helper.js';
     import messagesStore from '$lib/stores/messages.store';
     import { page } from '$app/stores';
-    import type { UserData } from '$lib/types/enviro-buddy-types';
-
-    // Define the UserData interface
-    interface UserData {
-        user_id: string;
-        user_name: string;
-    }
 
     // Function to log in with Google
     async function loginGoogle() {

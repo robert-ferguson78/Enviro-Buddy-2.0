@@ -1,6 +1,6 @@
-<script lang="ts">
+<script>
     // Exported variables
-    export let btnName: string; // Button name passed as a prop
+    export let btnName; // Button name passed as a prop
     export let forgotPassword = false; // Boolean indicating whether the user is in the "forgot password" state, default is false
 </script>
 

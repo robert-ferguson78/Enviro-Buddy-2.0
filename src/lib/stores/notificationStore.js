@@ -17,7 +17,7 @@ function notificationStore() {
       return unsubscribe;
     },
     // Mark notifications as read for a specific user and chat
-    markNotificationsAsRead: async function(userId: string, chatId: string) {
+    markNotificationsAsRead: async function(userId, chatId) {
         // Mark the notifications as read in the Firestore store
         await notificaionFirestoreStore.markNotificationsAsRead(userId, chatId);
         // Get the updated list of unread notifications and set the Svelte store with it
@@ -26,7 +26,7 @@ function notificationStore() {
         });
       },
     // Get the count of unread notifications for a specific user
-    getUnreadNotificationCount: async function(userId: string) {
+    getUnreadNotificationCount: async function(userId) {
       // Get the count of unread notifications from the Firestore store
       const count = await notificaionFirestoreStore.getUnreadNotificationCount(userId);
       return count;

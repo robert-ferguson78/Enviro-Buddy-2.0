@@ -1,12 +1,12 @@
-<script lang="ts">
+<script>
     import UpdateHead from '$lib/UpdateHead.svelte';
     import AuthForm from "$lib/components/Auth/AuthForm.svelte";
     import { mailResetPasswordEmail } from '$lib/firebase/auth.client';
     import messagesStore from '$lib/stores/messages.store';
 
-    async function onForgotPassword(e: Event) {
+    async function onForgotPassword(e) {
         try {
-            const formData = new FormData(e.target as HTMLFormElement);
+            const formData = new FormData(e.target);
             const email = formData.get('email');
             if (email === null || typeof email !== 'string') {
                 throw new Error('Email not found in form data');
@@ -16,11 +16,11 @@
             messagesStore.showSuccess('Reset Password Email Sent');
         } catch (error) {
             // console.log((error as any).code);
-            if ((error as any).code === 'auth/user-not-found') {
+            if ((error).code === 'auth/user-not-found') {
                 messagesStore.showError('Email not found, Please check the email and try again');
                 return;
             }
-            messagesStore.showError((error as any).code);
+            messagesStore.showError((error).code);
         }
     }
 </script>

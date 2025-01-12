@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import UpdateHead from '$lib/UpdateHead.svelte';
   import AuthFormDealership from '$lib/components/Auth/AuthFormDealer.svelte';
   import { registerWithEmailandPassword } from '$lib/firebase/auth.client';
@@ -6,21 +6,16 @@
 	import messagesStore from '$lib/stores/messages.store.js';
   import { page } from '$app/stores';
   import { setUserWithEmail } from '$lib/firebase/database.client';
-  import type { SignUpUser } from "$lib/types/enviro-buddy-types";
 
-  // Define a new interface for the custom event
-  interface CustomEvent extends Event {
-    detail: SignUpUser;
-  }
 
-  async function register(e: CustomEvent) {
+  async function register(e) {
     try {
       // console.log(e.detail); // Log the event target
 
-      let name = e.detail.name as string;
-      let brand = e.detail.brand as string;
-      let email = e.detail.email as string;
-      let password = e.detail.password as string;
+      let name = e.detail.name;
+      let brand = e.detail.brand;
+      let email = e.detail.email;
+      let password = e.detail.password;
       // console.log({ name, brand, email, password });
 
       let userId = await registerWithEmailandPassword(email, password);
@@ -42,10 +37,10 @@
 
       afterLogin($page.url);
     } catch (error) {
-      console.log((error as any).code);
+      console.log((error).code);
       console.log(error.message);
 
-      if ((error as any).code === 'auth/email-already-in-use') {
+      if ((error).code === 'auth/email-already-in-use') {
         messagesStore.showError('Email has already been registered');
       }
       // console.log(error);

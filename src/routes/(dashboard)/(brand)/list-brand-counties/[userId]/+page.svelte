@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import UpdateHead from '$lib/UpdateHead.svelte';
   import AddCounty from './addCounty.svelte';
   import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';

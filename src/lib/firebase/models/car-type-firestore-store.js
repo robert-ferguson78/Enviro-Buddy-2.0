@@ -1,37 +1,26 @@
 import { doc, getDoc, collection, updateDoc, query, where, getDocs, deleteDoc, addDoc } from "firebase/firestore";
-import { db } from '$lib/firebase/firebase.client';
-import { saveFileToBucket, deleteFileFromBucket } from '$lib/firebase/firestorage.client';
+import { db } from '../firebase.client.js';
+import { saveFileToBucket, deleteFileFromBucket } from '../firestorage.client.js';
 
 const collectionName = "carTypes";
 const carTypesRef = collection(db, collectionName);
 
-// Define the Firestore store for car types
 export const carTypeFirestoreStore = {
-    // Method to find all car types
     async findCarType() {
-        // Get a snapshot of the 'carTypes' collection
         const snapshot = await getDocs(carTypesRef);
-        // Map over the documents in the snapshot and return an array of car types
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     },
 
-    // Method to find a car type by ID
     async findByIdCarType(id) {
-        // Get the document with the given ID
         const docSnap = await getDoc(doc(db, collectionName, id));
-        // If the document exists, return the car type, otherwise return null
-        return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
+        return docSnap.exists() ? { id: docSnap.id, ...doc.data() } : null;
     },
 
-    // Method to get car types by brand ID
     async getCarTypesByBrandId(userId) {
-        // Get a snapshot of the documents where 'userId' is equal to 'brandId'
         const q = query(carTypesRef, where("userId", "==", userId));
         const snapshot = await getDocs(q);
-        // Map over the documents in the snapshot and return an array of car types
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     },
-
     // Method to get all car body types
     async getAllCarBodyTypes() {
         // Get a snapshot of the 'carTypes' collection

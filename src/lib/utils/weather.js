@@ -62,7 +62,7 @@ const weatherConditions = new Map();
     weatherConditions.set(200, { description: "thunderstorm with light rain", icon: "/svg/thunderstorms-rain.svg", filled: "/svg-filled/filled-thunderstorms-rain.svg" });
 
 // Function to get the weather icon and description based on the latitude and longitude
-export async function getWeatherIcon(latitude: number, longitude: number, fillType: 'icon' | 'filled'): Promise<{icon: string | null, description: string | null}> {
+export async function getWeatherIcon(latitude, longitude, fillType) {
     try {
         // Make a GET request to the OpenWeatherMap API
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHERMAP_API_KEY}`);
@@ -95,7 +95,7 @@ export async function getWeatherIcon(latitude: number, longitude: number, fillTy
 }
 
 // Function to get the weather forecast based on the latitude and longitude
-export async function getWeatherForecast(latitude: number, longitude: number, fillType: 'icon' | 'filled'): Promise<Array<{icon: string | null, description: string | null, temp: number | null, date: number | null}>> {
+export async function getWeatherForecast(latitude, longitude, fillType) {
     try {
         // Make a GET request to the OpenWeatherMap API
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHERMAP_API_KEY}&units=metric`);
@@ -107,15 +107,17 @@ export async function getWeatherForecast(latitude: number, longitude: number, fi
 
         // Filter the forecast list to only include forecasts where the hour is within 1 hour of the current hour
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const dailyForecasts = [forecastList[0], ...forecastList.slice(1).filter((forecast: any) => {
-            const forecastHour = new Date(forecast.dt * 1000).getHours();
-
-            return Math.abs(forecastHour - currentHour) <= 1;
-        })];
+        const dailyForecasts = [
+            forecastList[0], 
+            ...forecastList.slice(1).filter(forecast => {
+                const forecastHour = new Date(forecast.dt * 1000).getHours();
+                return Math.abs(forecastHour - currentHour) <= 1;
+            })
+        ];
 
         // Map the filtered forecast list to an array of objects containing the icon, description, temperature, and date
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return dailyForecasts.map((forecast: any) => {
+        return dailyForecasts.map(forecast => {
             const weatherCode = forecast.weather[0].id;
             const weatherCondition = weatherConditions.get(weatherCode);
             const temp = forecast.main.temp;

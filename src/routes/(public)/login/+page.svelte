@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import UpdateHead from '$lib/UpdateHead.svelte';
   import LoginWithGoogle from '$lib/components/Auth/LoginWithGoogle.svelte';
   import AuthFormLogin from '$lib/components/Auth/AuthFormLogin.svelte';
@@ -7,16 +7,16 @@
   import { page } from '$app/stores';
   import { afterLogin } from '$lib/helpers/route.helper';
 
-  async function onLogin(e: Event) {
+  async function onLogin(e) {
     try {
-      const formdata = new FormData(e.target as HTMLFormElement);
+      const formdata = new FormData(e.target);
       const email = formdata.get('email');
       const pasword = formdata.get('password');
-      const user =  await loginWithEmailandPassword(email as string, pasword as string);
+      const user =  await loginWithEmailandPassword(email, pasword);
       await afterLogin($page.url);
     } catch (error) {
-      console.log((error as any).code);
-      if (['auth/invalid-email', 'auth/user-not-found', 'auth/wrong-password'].includes((error as any).code)) {
+      console.log((error).code);
+      if (['auth/invalid-email', 'auth/user-not-found', 'auth/wrong-password'].includes((error).code)) {
         messagesStore.showError('Invalid email or password');
         return;
       }

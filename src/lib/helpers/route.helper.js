@@ -2,7 +2,7 @@ import { goto } from '$app/navigation';
 import { sendJWTToken } from '$lib/firebase/auth.client';
 import { setUser } from '$lib/firebase/database.client';
 
-export async function afterLogin(url: URL) {
+export async function afterLogin(url) {
     // Get the 'redirect' search parameter from the URL, or default to the root route
     const route = url.searchParams.get('redirect') || '/';
     // console.log('afterLogin: route:', route);
@@ -12,7 +12,7 @@ export async function afterLogin(url: URL) {
     // console.log('afterLogin: goto called with route:', route);
 }
 
-export async function afterLoginGoogle(url: URL, userId: string, userName: string) {
+export async function afterLoginGoogle(url, userId, userName) {
     // console.log('afterLoginGoogle: called with url:', url, 'userId:', userId, 'userName:', userName);
     
     // Get the 'redirect' search parameter from the URL, or default to the root route

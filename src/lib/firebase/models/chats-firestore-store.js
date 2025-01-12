@@ -1,22 +1,14 @@
 import { doc, collection, query, where, getDocs, addDoc, orderBy, Timestamp, getDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
-import type { Chat } from '$lib/types/enviro-buddy-types';
-import { db } from '$lib/firebase/firebase.client';
+import { db } from '../firebase.client.js';
 
 const collectionName = "chats";
 
-
-
-// Define the Firestore store for chats
 export const chatsFirestoreStore = {
-    // Function to get real-time updates of messages for a specific chat
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getMessagesRealtime: function(chatId: string, callback: (messages: any[]) => void) {
-        // console.log(`Setting up real-time listener for chatId: ${chatId}`);
+    getMessagesRealtime: function(chatId, callback) {
         const messagesRef = collection(doc(db, collectionName, chatId), 'messages');
         const messagesQuery = query(messagesRef, orderBy('timestamp'));
         const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
             const messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            // console.log(`Received ${messages.length} real-time messages:`, messages);
             callback(messages);
         }, (error) => {
             console.error(`Error setting up real-time listener:`, error);
@@ -24,8 +16,7 @@ export const chatsFirestoreStore = {
         return unsubscribe;
     },
 
-    // Function to get the count of unread notifications for a specific chat and user
-    getUnreadNotificationsCount: async function(chatId: string, userId: string) {
+    getUnreadNotificationsCount: async function(chatId, userId) {
         const notificationsRef = collection(doc(db, collectionName, chatId), 'notifications');
         const notificationsQuery = query(notificationsRef, where('read', '==', false), where('receiverId', '==', userId));
         const notificationsSnapshot = await getDocs(notificationsQuery);
@@ -47,7 +38,7 @@ export const chatsFirestoreStore = {
     },
 
     // Function to send a message in a specific chat
-    sendMessage: async function(chatId: string, message: string, senderId: string, receiverId: string, senderName: string) {
+    sendMessage: async function(chatId, message, senderId, receiverId, senderName) {
         const messagesRef = collection(doc(db, collectionName, chatId), 'messages');
         await addDoc(messagesRef, {
             text: message,
@@ -69,7 +60,7 @@ export const chatsFirestoreStore = {
     },
 
     // Function to get all chats for a specific user
-    getChats: async function(userId: string): Promise<Chat[]> {
+    getChats: async function(userId) {
         // console.log('getChats called with userId:', userId); // Log the userId
         const chatsRef = collection(db, collectionName);
         const chatsQuery = query(chatsRef, where('userIds', 'array-contains', userId));
@@ -81,7 +72,7 @@ export const chatsFirestoreStore = {
     },
 
     // Function to get a chat by its ID
-    getChat: async function(chatId: string) {
+    getChat: async function(chatId) {
         const chatRef = doc(db, collectionName, chatId);
         const chatSnap = await getDoc(chatRef);
         if (chatSnap.exists()) {
@@ -92,22 +83,19 @@ export const chatsFirestoreStore = {
     },
 
     // Function to create a new chat between two users
-    createChat: async function(userId1: string, userId2: string, userName1: string, userName2: string) {
+    createChat: async function(userId1, userId2, userName1, userName2) {
         // console.log('userId1:', userId1);
         // console.log('userId2:', userId2);
         // console.log('userName1:', userName1);
         // console.log('userName2:', userName2);
         // console.log('timestamp:', serverTimestamp());
-    
         const chatData = {
             userIds: [userId1, userId2],
             userNames: [userName1, userName2],
             timestamp: serverTimestamp(),
             // Add other fields as needed
         };
-    
         const chatRef = await addDoc(collection(db, collectionName), chatData);
         return chatRef.id;
-    },
-
+    }
 };

@@ -1,6 +1,6 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import { setUser } from '$lib/firebase/database.client';
-import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
+import { setUser } from '$lib/firebase/database.client.js';
+import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store.js';
 
 /**
  * Asynchronously log in a user with Google.
@@ -16,7 +16,7 @@ export async function loginWithGoogle() {
 
         // Sign in the user with a Google account using a popup
         const userCredential = await signInWithPopup(auth, new GoogleAuthProvider());
-        // console.log('After signInWithPopup', userCredential);    
+        // console.log('After signInWithPopup', userCredential);
         // console.log('userCredential:', userCredential);
 
         // Get the user's ID and display name from the userCredential object
@@ -59,7 +59,7 @@ export async function logout() {
  * @param {string} password - The user's password.
  * @returns {Promise<string>} - A promise that resolves with the user's ID.
  */
-export async function registerWithEmailandPassword(email: string, password: string) {
+export async function registerWithEmailandPassword(email, password) {
     // Get the auth object for the Firebase app
     const auth = getAuth();
     // Create a new user with the specified email and password
@@ -75,7 +75,7 @@ export async function registerWithEmailandPassword(email: string, password: stri
  * @param {string} password - The user's password.
  * @returns {Promise<Object>} - A promise that resolves with the user object.
  */
-export async function loginWithEmailandPassword(email: string, password: string) {
+export async function loginWithEmailandPassword(email, password) {
     // Get the auth object for the Firebase app
     const auth = getAuth();
     // Sign in the user with the specified email and password
@@ -89,7 +89,7 @@ export async function loginWithEmailandPassword(email: string, password: string)
  *
  * @param {string} email - The user's email.
  */
-export async function mailResetPasswordEmail(email: string) {
+export async function mailResetPasswordEmail(email) {
     // Get the auth object for the Firebase app
     const auth = getAuth();
     // Send a password reset email to the specified email
@@ -103,7 +103,7 @@ export async function sendJWTToken() {
     // Get the auth object for the Firebase app
     const auth = getAuth();
     // Get the currently signed-in user
-    const user =  auth.currentUser;
+    const user = auth.currentUser;
 
     // If no user is signed in, return
     if (!user) {

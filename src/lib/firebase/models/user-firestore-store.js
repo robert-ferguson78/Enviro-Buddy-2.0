@@ -6,7 +6,7 @@ const collectionName = "users";
 
 export const userFirestoreStore = {
     // Function to get a user by their ID
-    getUser: async function(userId: string) {
+    getUser: async function(userId) {
         const userRef = doc(db, collectionName, userId);
         const userSnap = await getDoc(userRef);
 

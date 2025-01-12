@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 import { onMount, onDestroy } from 'svelte';
 import { reviewsFirestoreStore } from '$lib/firebase/models/reviews-firestore-store';
 import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';

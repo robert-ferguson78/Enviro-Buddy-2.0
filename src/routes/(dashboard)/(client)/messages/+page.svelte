@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import ChatList from '$lib/components/partials/chat/ChatList.svelte';
     import { writable } from 'svelte/store';
     import { onMount } from 'svelte';

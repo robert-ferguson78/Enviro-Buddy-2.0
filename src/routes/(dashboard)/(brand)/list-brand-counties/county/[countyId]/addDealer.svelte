@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';
   import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
   import messagesStore from '$lib/stores/messages.store';
@@ -37,7 +37,7 @@
     unsubscribePage();
   });
 
-  function setCoordinates({ lat, lng }: { lat: number; lng: number }) {
+  function setCoordinates({ lat, lng }) {
     latitude = lat;
     longitude = lng;
   }

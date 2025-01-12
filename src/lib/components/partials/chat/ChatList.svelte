@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import { writable, get } from 'svelte/store';
     import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
     import { goto } from '$app/navigation'; 
@@ -6,7 +6,6 @@
     import authStore from '$lib/stores/auth.store';
     import { chatIdStore } from '$lib/stores/chatIdStore';
     import { notificaionFirestoreStore } from '$lib/firebase/models/notifications-firestore-store';
-    import type { Chat } from '$lib/types/enviro-buddy-types';
 
     // Initialize an empty array for chats and a writable store for chats
     let chats = [];

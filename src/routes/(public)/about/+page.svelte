@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script context="module">
   // This function runs on the server before the page is sent to the client
   export async function load({ page, fetch, session }) {
       // The returned props are passed to the component
@@ -8,7 +8,7 @@
     }
 </script>
 
-<script lang="ts">
+<script>
   import UpdateHead from '$lib/UpdateHead.svelte';
 </script>
 
