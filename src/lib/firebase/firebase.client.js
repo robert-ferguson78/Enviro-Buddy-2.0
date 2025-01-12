@@ -1,8 +1,9 @@
-import { is_client } from 'svelte/internal';
 import { getApps, initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+
+const isBrowser = typeof window !== 'undefined';
 
 // Define the configuration for the Firebase app
 // The configuration values are retrieved from the environment variables
@@ -27,7 +28,7 @@ if (getApps().length == 0) {
     // Get the auth object for the Firebase app
     auth = getAuth(app);
     // If the code is running in a client-side environment, get the analytics object for the Firebase app
-    if (is_client) {
+    if (isBrowser) {
         getAnalytics(app);
     }
 }
