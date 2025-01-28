@@ -3,12 +3,25 @@ import { db } from '../firebase.client.js';
 
 const collectionName = "chats";
 
+// reactive state management for Svelte 5
+let $state = {
+    activeChats: [],
+    currentMessages: [],
+    unreadCount: 0
+};
+
+// Derived values for reactive data
+const $derived = {
+    hasUnreadMessages: () => $state.unreadCount > 0
+};
+
 export const chatsFirestoreStore = {
     getMessagesRealtime: function(chatId, callback) {
         const messagesRef = collection(doc(db, collectionName, chatId), 'messages');
         const messagesQuery = query(messagesRef, orderBy('timestamp'));
         const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
             const messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            $state.currentMessages = messages; // update reactive state
             callback(messages);
         }, (error) => {
             console.error(`Error setting up real-time listener:`, error);
@@ -20,6 +33,7 @@ export const chatsFirestoreStore = {
         const notificationsRef = collection(doc(db, collectionName, chatId), 'notifications');
         const notificationsQuery = query(notificationsRef, where('read', '==', false), where('receiverId', '==', userId));
         const notificationsSnapshot = await getDocs(notificationsQuery);
+        $state.unreadCount = notificationsSnapshot.size; // update reactive state
         return notificationsSnapshot.size;
     },
 
@@ -32,6 +46,7 @@ export const chatsFirestoreStore = {
             snapshot.forEach((doc) => {
                 msgs.push(doc.data());
             });
+            $state.currentMessages = msgs; // update reactive state
             const chatData = await this.getChat(chatId);
             callback(msgs, chatData.userNames);
         });
@@ -61,13 +76,14 @@ export const chatsFirestoreStore = {
 
     // Function to get all chats for a specific user
     getChats: async function(userId) {
-        // console.log('getChats called with userId:', userId); // Log the userId
+        // console.log('getChats called with userId:', userId);
         const chatsRef = collection(db, collectionName);
         const chatsQuery = query(chatsRef, where('userIds', 'array-contains', userId));
         const chatsSnap = await getDocs(chatsQuery);
-        // console.log('chatsSnap:', chatsSnap); // Log the snapshot
+        // console.log('chatsSnap:', chatsSnap);
         const chats = chatsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        // console.log('chats:', chats); // Log the chats
+        $state.activeChats = chats; // update reactive state
+        // console.log('chats:', chats);
         return chats;
     },
 
@@ -93,7 +109,6 @@ export const chatsFirestoreStore = {
             userIds: [userId1, userId2],
             userNames: [userName1, userName2],
             timestamp: serverTimestamp(),
-            // Add other fields as needed
         };
         const chatRef = await addDoc(collection(db, collectionName), chatData);
         return chatRef.id;
@@ -111,8 +126,11 @@ export const chatsFirestoreStore = {
         
         return onSnapshot(chatsQuery, (snapshot) => {
             const chats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            $state.activeChats = chats; // update reactive state
             callback(chats);
         });
     }
-    
 };
+
+// Export reactive state and derived values
+export { $state, $derived };
