@@ -19,5 +19,14 @@ export default defineConfig({
 		fs: {
 			strict: false // Allow reading files from the file system
 		}
+	},
+	build: {
+		rollupOptions: {
+			output: {
+				chunkFileNames: 'assets/js/[name]-[hash].js',
+				entryFileNames: 'assets/js/[name]-[hash].js',
+				assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
+			}
+		}
 	}
 });
