@@ -3,7 +3,7 @@
   import AuthFormDealership from '$lib/components/Auth/AuthFormDealer.svelte';
   import { registerWithEmailandPassword } from '$lib/firebase/auth.client';
 	import { afterLogin } from '$lib/helpers/route.helper';
-	import messagesStore from '$lib/stores/messages.store.js';
+	import messagesStore from '$lib/stores/messages.store.';
   import { page } from '$app/stores';
   import { setUserWithEmail } from '$lib/firebase/database.client';
 
@@ -41,10 +41,10 @@
       console.log(error.message);
 
       if ((error).code === 'auth/email-already-in-use') {
-        messagesStore.showError('Email has already been registered');
+        showError('Email has already been registered');
       }
       // console.log(error);
-      messagesStore.showError();
+      showError();
     }
   }
 </script>

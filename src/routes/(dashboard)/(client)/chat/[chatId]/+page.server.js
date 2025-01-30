@@ -1,4 +1,4 @@
-import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
+import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store.svelte';
 import { Timestamp } from 'firebase/firestore';
 
 export async function load({ params }) {

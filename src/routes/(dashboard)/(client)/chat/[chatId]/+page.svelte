@@ -1,11 +1,17 @@
 <script>
     import ChatWindow from '$lib/components/partials/chat/ChatWindow.svelte';
+    import { onMount } from 'svelte';
     
+    /** @type {import('./$types').PageData} */
     export let data;
     
-    // console.log('data:', data);
-    // console.log('chatId:', data.props.chatId);
-    // console.log('chat:', data.props.chat);
+    let chat;
+    
+    onMount(() => {
+        chat = data.props.chat;
+    });
 </script>
-
-<ChatWindow activeChat={data.props.chat} />
+    
+{#if chat}
+    <ChatWindow activeChat={chat} />
+{/if}

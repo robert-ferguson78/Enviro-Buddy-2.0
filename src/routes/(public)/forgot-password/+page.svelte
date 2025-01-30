@@ -2,7 +2,7 @@
     import UpdateHead from '$lib/UpdateHead.svelte';
     import AuthForm from "$lib/components/Auth/AuthForm.svelte";
     import { mailResetPasswordEmail } from '$lib/firebase/auth.client';
-    import messagesStore from '$lib/stores/messages.store';
+    import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';
 
     async function onForgotPassword(e) {
         try {
@@ -13,14 +13,14 @@
             }
             await mailResetPasswordEmail(email);
             // console.log('email sent');
-            messagesStore.showSuccess('Reset Password Email Sent');
+            showSuccess('Reset Password Email Sent');
         } catch (error) {
             // console.log((error as any).code);
             if ((error).code === 'auth/user-not-found') {
-                messagesStore.showError('Email not found, Please check the email and try again');
+                showError('Email not found, Please check the email and try again');
                 return;
             }
-            messagesStore.showError((error).code);
+            showError((error).code);
         }
     }
 </script>

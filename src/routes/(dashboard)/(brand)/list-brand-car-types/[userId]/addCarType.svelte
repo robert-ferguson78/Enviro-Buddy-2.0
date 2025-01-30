@@ -1,7 +1,7 @@
 <script>
   import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
   import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
-  import messagesStore from '$lib/stores/messages.store';
+  import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';
   import authStore from '$lib/stores/auth.store';
   import { createEventDispatcher } from 'svelte';
 
@@ -45,11 +45,11 @@
     // Add the car type to the Firestore database
     try {
       await carTypeFirestoreStore.createCarType(carTypeObject);
-      messagesStore.showSuccess('Car added sucessfully!');
+      showSuccess('Car added sucessfully!');
       dispatch('add'); // Dispatch 'add' event here
     } catch (error) {
       console.error('Error adding car type:', error);
-      messagesStore.showError('Car not added, please contact support!');
+      showError('Car not added, please contact support!');
     }
 
     console.log({ carName, carRange, carType, image, additionalImages, userId: user.user_id });

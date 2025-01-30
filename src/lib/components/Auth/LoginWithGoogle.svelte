@@ -1,7 +1,7 @@
 <script>
     import { loginWithGoogle } from '$lib/firebase/auth.client.js';
     import { afterLoginGoogle } from '$lib/helpers/route.helper.js';
-    import messagesStore from '$lib/stores/messages.store';
+    import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';
     import { page } from '$app/stores';
 
     // Function to log in with Google
@@ -21,7 +21,7 @@
             // If there's an error, log it and show an error message if the popup wasn't closed by the user
             console.error('loginGoogle: error:', error);
             if (error.code !== 'auth/popup-closed-by-user') {
-                messagesStore.showError("There was an issue With sign in, please try again");
+                showError("There was an issue With sign in, please try again");
             }
         }
     }

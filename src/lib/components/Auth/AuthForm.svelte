@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'; // Import the createEventDispatcher function from Svelte
-    import messagesStore from '$lib/stores/messages.store'; // Import the messagesStore
+    import { showError, showSuccess } from '$lib/stores/messages.store.svelte';// Import the messagesStore
 
     // Create an event dispatcher
     const dispatch = createEventDispatcher(); // Create an event dispatcher for dispatching custom events
@@ -29,7 +29,7 @@
 
         // If there are errors, show an error message and return false
         if (errors.length > 0) {
-            messagesStore.showError(`There was an issue with registration: ${errors.join(', ')}`); // Show an error message
+            showError(`There was an issue with registration: ${errors.join(', ')}`); // Show an error message
             return false; // Return false
         }
 

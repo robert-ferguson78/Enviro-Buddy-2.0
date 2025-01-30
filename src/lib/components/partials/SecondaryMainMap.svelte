@@ -4,7 +4,7 @@
     import { goto } from '$app/navigation';
     import { writable } from 'svelte/store'; // Import writable store
     import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
-    import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
+    import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store.svelte';
     import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
     import GalleryImages from '$lib/components/partials/GalleryImages.svelte';
     import authStore from '$lib/stores/auth.store';

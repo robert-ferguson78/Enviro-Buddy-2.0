@@ -2,7 +2,7 @@
   import { onDestroy } from 'svelte';
   import authStore from '$lib/stores/auth.store';
   import { logout } from '$lib/firebase/auth.client';
-  import messagesStore from '$lib/stores/messages.store';
+  import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';
   import { goto } from '$app/navigation';
   import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
   import { notificationStoreInstance } from '$lib/stores/notificationStore';
@@ -37,7 +37,7 @@
       await logout();
       goto('/');
     } catch(e) {
-      messagesStore.showError();
+      messageActions.showError();
     }
   }
 

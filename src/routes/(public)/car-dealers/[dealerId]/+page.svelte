@@ -3,7 +3,7 @@
     import UpdateHead from '$lib/UpdateHead.svelte';
     import { goto } from '$app/navigation';
     import 'leaflet/dist/leaflet.css';
-    import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
+    import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store.svelte';
     import authStore from '$lib/stores/auth.store';
     import { reviewIdStore } from '$lib/stores/reviewIdStore';
     import { getWeatherForecast } from '$lib/utils/weather';

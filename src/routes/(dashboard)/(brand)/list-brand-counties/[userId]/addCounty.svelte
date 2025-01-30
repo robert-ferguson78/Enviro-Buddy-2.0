@@ -1,7 +1,7 @@
 <script>
   import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
   import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
-  import messagesStore from '$lib/stores/messages.store';
+  import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';
   import authStore from '$lib/stores/auth.store';
   import { createEventDispatcher } from 'svelte';
 
@@ -27,17 +27,17 @@
         try {
             const existingCounty = await countyFirestoreStore.getCheckForCounty(county, user.user_id);
             if (existingCounty) {
-                messagesStore.showError('County already exists!');
+                showError('County already exists!');
             } else {
                 const newCounty = {
                     county: county,
                 };
                 const createdCounty = await countyFirestoreStore.addCounty(newCounty, user.user_id);
-                messagesStore.showSuccess('County successfully added!');
+                showSuccess('County successfully added!');
                 dispatch('add');
             }
         } catch (error) {
-            messagesStore.showError('Error adding county!');
+            showError('Error adding county!');
         }
     }
   }

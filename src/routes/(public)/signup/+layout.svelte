@@ -8,10 +8,9 @@
     import { onMount } from "svelte";
     import { sendJWTToken } from "$lib/firebase/auth.client";
 
+    $: messages = $messagesStore;
     // Variable to hold the timer ID
     let timerdId;
-
-    let messages = $derived($messagesStore);
 
     // Function to send server token
     async function sendServerToken() {
@@ -45,7 +44,7 @@
 
     // Function to close the message
     function closeMessage() {
-        messageActions.hide();
+        messagesStore.hide();
     }
 </script>
 

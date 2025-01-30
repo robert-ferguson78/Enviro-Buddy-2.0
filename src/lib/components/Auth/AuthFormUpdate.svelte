@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store'; // Import the userFirestoreStore
-    import messagesStore from '$lib/stores/messages.store'; // Import the messagesStore
+    import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';// Import the messagesStore
 
     // Declare exported variables
     export let btnName; // Button name passed as a prop
@@ -25,9 +25,9 @@
         const user = { name, brand }; // Create a user object
         try {
             await userFirestoreStore.updateUser(userId, user); // Update the user's data
-            messagesStore.showSuccess('User profile has been updated successfully.'); // Show a success message
+            showSuccess('User profile has been updated successfully.'); // Show a success message
         } catch (error) {
-            messagesStore.showError('An error occurred while updating the user profile.'); // Show an error message
+            showError('An error occurred while updating the user profile.'); // Show an error message
         }
     }
 </script>

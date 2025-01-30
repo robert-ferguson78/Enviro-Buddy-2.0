@@ -3,9 +3,13 @@
   import LoginWithGoogle from '$lib/components/Auth/LoginWithGoogle.svelte';
   import AuthFormLogin from '$lib/components/Auth/AuthFormLogin.svelte';
   import { loginWithEmailandPassword } from '$lib/firebase/auth.client';
-	import messagesStore from '$lib/stores/messages.store';
+	import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';
   import { page } from '$app/stores';
   import { afterLogin } from '$lib/helpers/route.helper';
+
+  const showError = (message = 'An error occurred') => {
+    messageActions.showError(message);
+  };
 
   async function onLogin(e) {
     try {
@@ -17,11 +21,11 @@
     } catch (error) {
       console.log((error).code);
       if (['auth/invalid-email', 'auth/user-not-found', 'auth/wrong-password'].includes((error).code)) {
-        messagesStore.showError('Invalid email or password');
+        showError('Invalid email or password');
         return;
       }
       // console.log((error as any).code);
-      messagesStore.showError();
+      showError();
     }
   }
 </script>

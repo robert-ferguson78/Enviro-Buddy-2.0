@@ -2,7 +2,7 @@
     import ChatList from '$lib/components/partials/chat/ChatList.svelte';
     import { writable } from 'svelte/store';
     import { onMount } from 'svelte';
-    import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store';
+    import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store.svelte';
     import { chatIdStore } from '$lib/stores/chatIdStore';
 
     const activeChat = writable(null);

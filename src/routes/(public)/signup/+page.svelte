@@ -4,7 +4,7 @@
 	import LoginWithGoogle from '$lib/components/Auth/LoginWithGoogle.svelte';
   import { registerWithEmailandPassword } from '$lib/firebase/auth.client';
 	import { afterLogin } from '$lib/helpers/route.helper';
-	import messagesStore from '$lib/stores/messages.store.js';
+	import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';
   import { page } from '$app/stores';
   import { setUserWithEmail } from '$lib/firebase/database.client';
 
@@ -27,10 +27,10 @@
     } catch (error) {
       console.log((error).code);
       if ((error).code === 'auth/email-already-in-use') {
-        messagesStore.showError('Email has already been registered');
+        showError('Email has already been registered');
       }
       console.log(error);
-      messagesStore.showError();
+      showError();
     }
   }
 </script>

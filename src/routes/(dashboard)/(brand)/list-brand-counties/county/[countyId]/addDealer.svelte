@@ -1,7 +1,7 @@
 <script>
   import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';
   import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
-  import messagesStore from '$lib/stores/messages.store';
+  import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';
   import authStore from '$lib/stores/auth.store';
   import { createEventDispatcher } from 'svelte';
   import { page } from '$app/stores';
@@ -57,10 +57,10 @@
                 userId: user.user_id
             };
             const createdDealer = await dealerFirestoreStore.addDealer(countyId, newDealer);
-            messagesStore.showSuccess('Dealer successfully added!');
+            showSuccess('Dealer successfully added!');
             dispatch('add');
         } catch (error) {
-            messagesStore.showError('Error adding dealer!');
+            showError('Error adding dealer!');
         }
     }
   }
