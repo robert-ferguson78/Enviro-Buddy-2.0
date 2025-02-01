@@ -1,5 +1,5 @@
 <script>
-    import "../app.css";
+    import "$lib/app.css"; // Use $lib alias for the CSS file
     import { headMetadata } from '$lib/stores/headStore';
     import EnviroBrandName from '$lib/envirobuddyBrand.svelte';
     import Menu from '$lib/menu.svelte';
@@ -8,39 +8,39 @@
     import { onMount } from "svelte";
     import { sendJWTToken } from "$lib/firebase/auth.client";
 
-    // Variable to hold the timer ID
-    let timerdId;
+    // Use $state for reactive variables
+    let messages = $state($messagesStore);
+    let timerdId = $state(null); // Use $state for timer ID
 
-    let messages = $derived($messagesStore);
+    // Use $props() to define children
+    const { children } = $props();
 
     // Function to send server token
     async function sendServerToken() {
         try {
             await sendJWTToken();
-        } catch(error) {
+        } catch (error) {
             // Clear the interval if there's an error
             clearInterval(timerdId);
             // Show error message
-            showError();
-            console.log(error);
+            messageActions.showError();
+            console.error(error);
         }
     }
 
     // On mount, send server token and set an interval to keep sending it
     onMount(() => {
         sendServerToken().then(() => {
-            timerdId = setInterval(sendServerToken, 1000 * 10 * 60);
-        }).catch(e => {
-            console.log(e);
-            showError();
+            timerdId = setInterval(sendServerToken, 1000 * 10 * 60); // 10 minutes
+        }).catch((e) => {
+            console.error(e);
+            messageActions.showError();
         });
 
         // Clear the interval when the component is unmounted
-        return new Promise(() => {
-            return () => {
-                clearInterval(timerdId);
-            }
-        });
+        return () => {
+            clearInterval(timerdId);
+        };
     });
 
     // Function to close the message
@@ -63,24 +63,25 @@
 <!-- Main content of the page -->
 <div class="container">
     <!-- Show a message if there's one in the store -->
-    {#if $messagesStore.show} 
-    <article 
-        class:is-danger={$messagesStore.type === 'error'}
-        class:is-success={$messagesStore.type === 'success'}
-        class="message"
-        role="alert">
-        <div class="message-header">
-            <!-- Show the type of the message -->
-            <p>{$messagesStore.type === 'error' ? 'Error' : 'Success'}</p>
-            <!-- Button to close the message -->
-            <button on:click={closeMessage} class="delete" aria-label="delete"></button>
-        </div>
-        <!-- Show the message -->
-        <div class="message-body">
-            {$messagesStore.message}
-        </div>
-    </article>
+    {#if $messagesStore.show}
+        <article
+            class:is-danger={$messagesStore.type === 'error'}
+            class:is-success={$messagesStore.type === 'success'}
+            class="message"
+            role="alert"
+        >
+            <div class="message-header">
+                <!-- Show the type of the message -->
+                <p>{$messagesStore.type === 'error' ? 'Error' : 'Success'}</p>
+                <!-- Button to close the message -->
+                <button onclick={closeMessage} class="delete" aria-label="delete"></button>
+            </div>
+            <!-- Show the message -->
+            <div class="message-body">
+                {$messagesStore.message}
+            </div>
+        </article>
     {/if}
-    <!-- Slot to include child components -->
-    <slot />
+    <!-- Render child components -->
+    {@render children()}
 </div>

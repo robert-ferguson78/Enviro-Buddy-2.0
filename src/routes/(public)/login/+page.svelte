@@ -32,14 +32,16 @@
 
 <UpdateHead title="Login" description="Driving your Electric Dreams Today" />
 
-<h2>Login With Google</h2>
-<AuthFormLogin on:submit={onLogin} btnName="Login" />
-<LoginWithGoogle />
-<a href="/forgot-password">
-  <button class="button has-background-light mt-3">
-    <span class="icon">
-      <i class="fa-solid fa-lock"></i>
-      </span>
-      <span>Forgot Password</span>
-  </button>
-</a>
+<section class="section">
+  <h1 class="title">Login or Signin with Google</h1>
+  <AuthFormLogin on:submit={onLogin} btnName="Login" />
+  <LoginWithGoogle />
+  <a href="/forgot-password">
+    <button class="button has-background-light mt-3">
+      <span class="icon">
+        <i class="fa-solid fa-lock"></i>
+        </span>
+        <span>Forgot Password</span>
+    </button>
+  </a>
+</section>
