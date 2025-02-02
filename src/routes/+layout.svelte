@@ -9,8 +9,7 @@
     import { sendJWTToken } from "$lib/firebase/auth.client";
 
     // Use $state for reactive variables
-    let messages = $state($messagesStore);
-    let timerdId = $state(null); // Use $state for timer ID
+    let timerId = $state(null); // Corrected spelling
 
     // Use $props() to define children
     const { children } = $props();
@@ -21,9 +20,9 @@
             await sendJWTToken();
         } catch (error) {
             // Clear the interval if there's an error
-            clearInterval(timerdId);
+            clearInterval(timerId);
             // Show error message
-            messageActions.showError();
+            messageActions.showError('Failed to send JWT token. Please try again.');
             console.error(error);
         }
     }
@@ -31,15 +30,15 @@
     // On mount, send server token and set an interval to keep sending it
     onMount(() => {
         sendServerToken().then(() => {
-            timerdId = setInterval(sendServerToken, 1000 * 10 * 60); // 10 minutes
+            timerId = setInterval(sendServerToken, 1000 * 10 * 60); // 10 minutes
         }).catch((e) => {
             console.error(e);
-            messageActions.showError();
+            messageActions.showError('Failed to initialize JWT token.');
         });
 
         // Clear the interval when the component is unmounted
         return () => {
-            clearInterval(timerdId);
+            clearInterval(timerId);
         };
     });
 
@@ -63,7 +62,7 @@
 <!-- Main content of the page -->
 <div class="container">
     <!-- Show a message if there's one in the store -->
-    {#if $messagesStore.show}
+    {#if $messagesStore && $messagesStore.show}
         <article
             class:is-danger={$messagesStore.type === 'error'}
             class:is-success={$messagesStore.type === 'success'}
@@ -82,6 +81,7 @@
             </div>
         </article>
     {/if}
+
     <!-- Render child components -->
     {@render children()}
 </div>

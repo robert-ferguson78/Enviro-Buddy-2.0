@@ -1,11 +1,18 @@
 <script>
-    // Exported variables
-    export let btnName; // Button name passed as a prop
-    export let forgotPassword = false; // Boolean indicating whether the user is in the "forgot password" state, default is false
+
+    // implement runes props
+    let { btnName, forgotPassword = false, onsubmit } = $props();
+
+    // Function to handle form submission
+    function handleSubmit(e) {
+        e.preventDefault(); // moved prevent form submisison to here
+        console.log('Form submitted'); // Log form submission
+        onsubmit(e); // Call the onsubmit function passed as a prop
+    }
 </script>
 
 <!-- HTML and Svelte markup for the component -->
-<form on:submit|preventDefault> <!-- Form with onSubmit event handler that prevents the default form submission -->
+<form onsubmit={handleSubmit}> <!-- Form with onSubmit event handler that prevents the default form submission -->
     <div class="field">
         <label class="label" for="email">Email</label>
         <input class="input" type="text" placeholder="Enter email" id="email" name="email">
