@@ -2,6 +2,7 @@
     import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
     import { routeStore, routeActions } from '../../stores/routeStore.svelte.js';
+    import { decode } from '@mapbox/polyline';
 
     // Destructure addWaypoint action from routeActions
     const { addWaypoint } = routeActions;
@@ -58,26 +59,48 @@
         });
     });
 
-    // Effect for route updates (was wokring but not working now - need to debug again)
     $effect(() => {
-        if (!map || !L || !currentRoute?.routes?.[0]?.geometry) return;
-        // Check for change
-        const newGeometry = JSON.stringify(currentRoute.routes[0].geometry);
-        if (newGeometry === routeGeometry) return;
-        
-        routeGeometry = newGeometry;
+        // Clear route if less than 2 waypoints
+        if (waypoints.length < 2) {
+            if (routeLayer) {
+                routeLayer.remove();
+                routeLayer = null;
+            }
+            return;
+        }
+
+        if (!map || !L || !currentRoute?.geometry) return;
+
+        // Track both geometry and number of waypoints
+        const currentGeometry = currentRoute.geometry.coordinates;
+        const waypointCount = waypoints.length;
+
+        // Update when waypoints or the route geometry changes
+        const newState = `${currentGeometry}-${waypointCount}`;
+        if (newState === routeGeometry) return;
+        routeGeometry = newState;
+    
         // Remove previous route
         if (routeLayer) {
             routeLayer.remove();
         }
 
-        // Convert coordinates and draw new route
-        const coordinates = currentRoute.routes[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
-        routeLayer = L.default.polyline(coordinates, { color: '#007bff' }).addTo(map);
+        // Decode the polyline string and convert to Leaflet coordinates
+        const decodedCoordinates = decode(currentGeometry);
+        const coordinates = decodedCoordinates.map(point => [point[0], point[1]]);
 
-        // Adjust map view to show entire route
-        const bounds = L.default.latLngBounds(coordinates);
-        map.fitBounds(bounds, { padding: [50, 50] });
+        routeLayer = L.default.polyline(coordinates, {
+            color: '#007bff',
+            weight: 5,
+            opacity: 0.8,
+            lineJoin: 'round'
+        }).addTo(map);
+
+        // Center and Zoom map with coordinates
+        if (coordinates.length > 0) {
+            const bounds = L.default.latLngBounds(coordinates);
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
     });
 
     // cleanup on destroy
