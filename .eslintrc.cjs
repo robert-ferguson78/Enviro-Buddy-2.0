@@ -19,6 +19,12 @@ module.exports = {
 		es2017: true,
 		node: true
 	},
+	globals: {
+        $state: 'readonly',
+        $derived: 'readonly',
+        $effect: 'readonly',
+        $props: 'readonly'
+    },
 	overrides: [
 		{
 			files: ['*.svelte'],

@@ -39,11 +39,14 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@mapbox/polyline": "^1.2.1",
 		"axios": "^1.6.8",
 		"busboy": "^1.6.0",
 		"leaflet": "^1.9.4",
 		"leaflet-groupedlayercontrol": "^0.6.1",
 		"multer": "^1.4.5-lts.1",
+		"nanoid": "^5.0.9",
+		"svelte-dnd-action": "^0.9.57",
 		"svelte-routing": "^2.12.0"
 	}
 }

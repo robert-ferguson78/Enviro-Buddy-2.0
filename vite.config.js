@@ -16,11 +16,15 @@ export default defineConfig({
 		dedupe: ['@sveltejs/kit'] // Dedupe the SvelteKit package - prevents it from being included multiple times
 	},
 	server: {
+		hmr: {
+            overlay: true, // Show error overlays in the browser
+        },
 		fs: {
 			strict: false // Allow reading files from the file system
 		}
 	},
 	build: {
+		sourcemap: true,
 		rollupOptions: {
 			output: {
 				chunkFileNames: 'assets/js/[name]-[hash].js',

@@ -35,7 +35,7 @@
             bind:value={searchText}
             placeholder="Enter location (e.g., Heidelberg, Germany)"
         />
-        <button on:click={handleSearch} disabled={loading}>
+        <button onclick={handleSearch} disabled={loading}>
             {loading ? 'Searching...' : 'Search'}
         </button>
     </div>
