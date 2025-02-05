@@ -1,5 +1,6 @@
 <script>
     import { routeStore, routeActions } from '../../stores/routeStore.svelte.js';
+    import { OpenRouteService } from '$lib/routeServices/openRouteService';
     
     // Destructure needed actions from routeActions
     const { addWaypoint, deleteWaypoint, clearRoute } = routeActions;
@@ -38,17 +39,26 @@
         console.log('All waypoints cleared');
     }
 
-    // Handle drag and drop reordering of waypoints
-    function handleDrop(e, targetIndex) {
-        e.preventDefault();
-        const sourceIndex = parseInt(e.dataTransfer.getData('text/plain'));
-        if (sourceIndex !== targetIndex) {
-            const newWaypoints = [...routeStore.waypoints];
-            const [movedItem] = newWaypoints.splice(sourceIndex, 1);
-            newWaypoints.splice(targetIndex, 0, movedItem);
-            routeStore.waypoints = newWaypoints;
+    // Handle for move waypoints up and down to reorder
+    function moveWaypoint(index, direction) {
+        const newWaypoints = [...routeStore.waypoints];
+        const newIndex = direction === 'up' ? index - 1 : index + 1;
+        
+        // Swap positions
+        [newWaypoints[index], newWaypoints[newIndex]] = [newWaypoints[newIndex], newWaypoints[index]];
+        
+        // Update store with new waypoint order
+        routeStore.waypoints = newWaypoints;
+        
+        // Recalculate route with new waypoint order
+        if (newWaypoints.length >= 2) {
+            OpenRouteService.calculateRoute(newWaypoints)
+                .then(newRoute => {
+                    routeStore.route = newRoute;
+                });
         }
     }
+    
 </script>
 
 <div class="waypoint-list">
@@ -68,6 +78,24 @@
                     ondragover={(e) => e.preventDefault()}
                 >
                     <div class="waypoint-info">
+                        <div class="reorder-controls">
+                            <button 
+                                class="reorder-btn"
+                                onclick={() => moveWaypoint(index, 'up')}
+                                disabled={index === 0}
+                                title="Move up"
+                            >
+                                ↑
+                            </button>
+                            <button 
+                                class="reorder-btn"
+                                onclick={() => moveWaypoint(index, 'down')}
+                                disabled={index === waypoints.length - 1}
+                                title="Move down"
+                            >
+                                ↓
+                            </button>
+                        </div>
                         <span class="waypoint-number">{index + 1}</span>
                         <div class="coordinates">
                             <input
@@ -109,6 +137,31 @@
         padding: 1rem;
         border-radius: 8px;
         margin-top: 1rem;
+    }
+
+    .reorder-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .reorder-btn {
+        background: none;
+        border: none;
+        color: #007bff;
+        cursor: pointer;
+        padding: 2px 4px;
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    .reorder-btn:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .reorder-btn:hover:not(:disabled) {
+        color: #0056b3;
     }
 
     h3 {
@@ -214,4 +267,22 @@
         font-size: 1.1rem;
         color: #333;
     }
+    :global(.custom-marker-icon) {
+    background: none;
+    border: none;
+}
+
+:global(.marker-number) {
+    width: 24px;
+    height: 24px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
 </style>

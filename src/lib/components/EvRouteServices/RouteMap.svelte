@@ -54,8 +54,17 @@
     $effect(() => {
         if (!map || !L || !markerLayer) return;
         markerLayer.clearLayers();
-        waypoints.forEach(point => {
-            L.default.marker([point.lat, point.lng]).addTo(markerLayer);
+        
+        waypoints.forEach((point, index) => {
+            // Create custom numbered icon
+            const numberIcon = L.default.divIcon({
+                className: 'custom-marker-icon',
+                html: `<div class="marker-number">${index + 1}</div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+
+            L.default.marker([point.lat, point.lng], { icon: numberIcon }).addTo(markerLayer);
         });
     });
 
