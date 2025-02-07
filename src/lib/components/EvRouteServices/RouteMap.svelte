@@ -129,4 +129,7 @@
         border: 1px solid #ccc;
         border-radius: 4px;
     }
+    #route-map {
+        margin-bottom: 0;
+    }
 </style>

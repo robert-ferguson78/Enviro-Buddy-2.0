@@ -136,7 +136,6 @@
         background: #f5f5f5;
         padding: 1rem;
         border-radius: 8px;
-        margin-top: 1rem;
     }
 
     .reorder-controls {
