@@ -5,7 +5,7 @@
     import { decode } from '@mapbox/polyline';
 
     // Destructure addWaypoint action from routeActions
-    const { addWaypoint } = routeActions;
+    const { addWaypoint, updateWaypoint, recalculateRoute } = routeActions;
 
     // Initialize reactive state variables using Svelte 5 runes
     let map = $state(null);
@@ -44,7 +44,14 @@
             // Add waypoints already created to map
             if (waypoints.length > 0) {
                 waypoints.forEach(point => {
-                    L.default.marker([point.lat, point.lng]).addTo(markerLayer);
+                    const marker = L.default.marker([point.lat, point.lng], { draggable: true }).addTo(markerLayer);
+                    marker.on('dragend', (event) => {
+                    const newPosition = event.target.getLatLng();
+                    updateWaypoint(waypoints.indexOf(point), {
+                        lat: newPosition.lat,
+                        lng: newPosition.lng
+                        });
+                    });
                 });
             }
         }
@@ -64,7 +71,25 @@
                 iconAnchor: [15, 15]
             });
 
-            L.default.marker([point.lat, point.lng], { icon: numberIcon }).addTo(markerLayer);
+            // Added draggable property and drag end event handler
+            const marker = L.default.marker([point.lat, point.lng], { 
+                icon: numberIcon,
+                draggable: true 
+            }).addTo(markerLayer);
+
+            // Drag end event handler for updated markers
+            marker.on('dragend', async (event) => {
+                const newPosition = event.target.getLatLng();
+                updateWaypoint(index, {
+                    lat: newPosition.lat,
+                    lng: newPosition.lng
+                });
+                
+                // re-calculate dragged marker route with more than minimum waypoints
+                if (waypoints.length >= 2) {
+                    await recalculateRoute(waypoints);
+                }
+            });
         });
     });
 

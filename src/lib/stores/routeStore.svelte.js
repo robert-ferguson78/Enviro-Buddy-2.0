@@ -136,5 +136,6 @@ export const routeActions = {
     reorderWaypoints,
     clearRoute,
     setRoute,
-    toggleEditing
+    toggleEditing,
+    recalculateRoute
 };
