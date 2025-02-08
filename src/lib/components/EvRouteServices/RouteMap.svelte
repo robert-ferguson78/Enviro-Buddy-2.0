@@ -3,6 +3,11 @@
     import { browser } from '$app/environment';
     import { routeStore, routeActions } from '../../stores/routeStore.svelte.js';
     import { decode } from '@mapbox/polyline';
+    // reverse geocoding for co-ordinates to get address
+    import { ORSService } from '$lib/routeServices/orsService';
+    import { orsConfig } from '$lib/routeServices/orsConfig';
+
+    const orsService = new ORSService(orsConfig.apiKey);
 
     // Destructure addWaypoint action from routeActions
     const { addWaypoint, updateWaypoint, recalculateRoute } = routeActions;
@@ -21,7 +26,7 @@
     // Initialize the Leaflet map with default settings (note to self default map ziew and zoom need to change)
     function initializeMap() {
         // Create map centered on specific coordinates (make these dynamic)
-        map = L.default.map('route-map').setView([49.41461, 8.681495], 13);
+        map = L.default.map('route-map').setView([53.427977, -7.940325], 7);
         L.default.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
@@ -29,9 +34,23 @@
         markerLayer = L.default.layerGroup().addTo(map);
         
         // Add waypoints from map
-        map.on('click', (event) => {
+        map.on('click', async (event) => {
             const { lat, lng } = event.latlng;
-            addWaypoint({ lat, lng });
+            try {
+                // Use reverse geocoding to get address
+                const result = await orsService.reverseGeocode(lat, lng);
+                addWaypoint({
+                    lat,
+                    lng,
+                    address: result.properties.label
+                });
+            } catch (error) {
+                addWaypoint({ 
+                    lat, 
+                    lng, 
+                    address: 'Custom Location' 
+                });
+            }
         });
     }
 
@@ -58,7 +77,7 @@
     });
 
     // Effect for waypoint updates (upate map markers)
-    $effect(() => {
+    $effect(() =>   {
         if (!map || !L || !markerLayer) return;
         markerLayer.clearLayers();
         
@@ -80,17 +99,28 @@
             // Drag end event handler for updated markers
             marker.on('dragend', async (event) => {
                 const newPosition = event.target.getLatLng();
-                updateWaypoint(index, {
-                    lat: newPosition.lat,
-                    lng: newPosition.lng
-                });
+                try {
+                    // get address from reverse geocoding
+                    const result = await orsService.reverseGeocode(newPosition.lat, newPosition.lng);
+                    updateWaypoint(index, {
+                        lat: newPosition.lat,
+                        lng: newPosition.lng,
+                        address: result.properties.label
+                    });
                 
-                // re-calculate dragged marker route with more than minimum waypoints
-                if (waypoints.length >= 2) {
-                    await recalculateRoute(waypoints);
+                    // re-calculate dragged marker route with more than minimum waypoints
+                    if (waypoints.length >= 2) {
+                        await recalculateRoute(waypoints);
+                    }
+                } catch (error) {
+                    updateWaypoint(index, {
+                        lat: newPosition.lat,
+                        lng: newPosition.lng,
+                        address: 'Custom Location'
+                    });
                 }
             });
-        });
+         });
     });
 
     $effect(() => {

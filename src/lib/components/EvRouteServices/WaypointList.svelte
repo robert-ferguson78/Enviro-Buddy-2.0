@@ -1,6 +1,9 @@
 <script>
     import { routeStore, routeActions } from '../../stores/routeStore.svelte.js';
     import { OpenRouteService } from '$lib/routeServices/openRouteService';
+    // import ORS service to use location search
+    import { ORSService } from '$lib/routeServices/orsService';
+    import { orsConfig } from '$lib/routeServices/orsConfig';
     
     // Destructure needed actions from routeActions
     const { addWaypoint, deleteWaypoint, clearRoute } = routeActions;
@@ -8,6 +11,29 @@
     // Create derived values from the route store
     let waypoints = $derived(routeStore.waypoints || []);
     let route = $derived(routeStore.route);
+
+    // address search setup
+    let searchText = $state('');
+    let loading = false;
+    const orsService = new ORSService(orsConfig.apiKey);
+
+    // location search handler
+    async function handleLocationSearch() {
+        loading = true;
+        try {
+            const result = await orsService.geocodeAddress(searchText);
+            addWaypoint({
+                lat: result.coordinates[1],
+                lng: result.coordinates[0],
+                address: result.properties.label
+            });
+            searchText = ''; // Clear search after successful add
+        } catch (error) {
+            console.error('Search error:', error);
+        } finally {
+            loading = false;
+        }
+    }
 
     // Format coordinate values to 4 decimal places
     function formatCoordinate(coord) {
@@ -63,6 +89,17 @@
 
 <div class="waypoint-list">
     <h3>Route Waypoints</h3>
+    <div class="search-box">
+        <input
+            type="text"
+            bind:value={searchText}
+            placeholder="Search for a location to add"
+            onkeydown={(e) => e.key === 'Enter' && searchText && handleLocationSearch()}
+        />
+        <button onclick={() => searchText && handleLocationSearch()} disabled={loading || !searchText}>
+            {loading ? 'Adding...' : 'Add Location'}
+        </button>
+    </div>
     {#if waypoints.length === 0}
         <p class="empty-state">
             Click on the map to add waypoints or 
@@ -98,6 +135,7 @@
                         </div>
                         <span class="waypoint-number">{index + 1}</span>
                         <div class="coordinates">
+                            <div class="address">{waypoint.address}</div>
                             <input
                                 type="number"
                                 bind:value={waypoint.lat}
@@ -254,34 +292,65 @@
     }
 
     .route-summary {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
 
     .route-summary p {
         margin: 0.5rem 0;
         font-size: 1.1rem;
         color: #333;
     }
-    :global(.custom-marker-icon) {
-    background: none;
-    border: none;
-}
+    .search-box {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
 
-:global(.marker-number) {
-    width: 24px;
-    height: 24px;
-    background: #007bff;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 0.9rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
+    .search-box input {
+        flex: 1;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .search-box button {
+        padding: 0.5rem 1rem;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .search-box button:disabled {
+        background: #ccc;
+    }
+
+    :global(.custom-marker-icon) {
+        background: none;
+        border: none;
+    }
+
+    :global(.marker-number) {
+        width: 24px;
+        height: 24px;
+        background: #007bff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
 </style>

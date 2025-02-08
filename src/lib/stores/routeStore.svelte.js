@@ -51,7 +51,8 @@ export function addWaypoint(waypoint) {
     const waypointWithId = {
         id: nanoid(),
         lat: waypoint.lat,
-        lng: waypoint.lng
+        lng: waypoint.lng,
+        address: waypoint.address || 'Custom Location'
     };
     waypoints = [...waypoints, waypointWithId];
     console.log('Waypoint added with ID:', waypointWithId);
