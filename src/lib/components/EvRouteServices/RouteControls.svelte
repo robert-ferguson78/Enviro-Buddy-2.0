@@ -1,24 +1,20 @@
 <script>
+    import { routeStore, routeActions } from '../../stores/routeStore.svelte.js';
     import { OpenRouteService } from '$lib/routeServices/openRouteService';
 
-    // Get props using Svelte 5 runes
-    let { waypoints, setRoute, isEditing, toggleEditing, handleClearRoute } = $props();
-    
+    // Update props to match parent component
+    let { activeRouteData, activeDay, setRoute, toggleEditing, handleClearRoute, isEditing } = $props();
+
     // State for confirmation dialog using Svelte 5 runes
     let showConfirmClear = $state(false);
 
-    // Calculate route using OpenRouteService
+    // Calculate route using activeRouteData
     async function calculateRoute() {
-        try {
-            const routeData = await OpenRouteService.calculateRoute(waypoints);
-            console.log('Route data before setting:', routeData);
-            setRoute(routeData);
-            console.log('Route data after setting:', routeData);
-        } catch (error) {
-            console.error('Failed to calculate route:', error);
+        if (activeRouteData.waypoints.length >= 2) {
+            const result = await OpenRouteService.calculateRoute(activeRouteData.waypoints);
+            setRoute(result);
         }
     }
-
     // Show confirmation dialog for route clearing
     function confirmClear() {
         showConfirmClear = true;

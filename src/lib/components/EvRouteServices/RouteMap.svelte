@@ -6,6 +6,10 @@
     // reverse geocoding for co-ordinates to get address
     import { ORSService } from '$lib/routeServices/orsService';
     import { orsConfig } from '$lib/routeServices/orsConfig';
+    import { OpenRouteService } from '$lib/routeServices/openRouteService';
+
+    // route layers for each day
+    let routeLayers = $state({});
 
     const orsService = new ORSService(orsConfig.apiKey);
 
@@ -18,11 +22,12 @@
     let markerLayer = $state(null);
     let L = $state(null);
     let routeGeometry = $state(null);
+    // Update props to use only what's needed from parent
+    let { activeRouteData, activeDay, routes } = $props();
 
-    // Create derived values from the route store
-    let waypoints = $derived(routeStore.waypoints);
-    let currentRoute = $derived(routeStore.route);
-
+    // update route changes with derived values
+    let currentRoute = $derived(activeRouteData.route);
+    let waypoints = $derived(activeRouteData.waypoints);
     // Initialize the Leaflet map with default settings (note to self default map ziew and zoom need to change)
     function initializeMap() {
         // Create map centered on specific coordinates (make these dynamic)
@@ -61,12 +66,12 @@
             L = await import('leaflet');
             initializeMap();
             // Add waypoints already created to map
-            if (waypoints.length > 0) {
-                waypoints.forEach(point => {
+            if (activeRouteData.waypoints.length > 0) {
+                activeRouteData.waypoints.forEach(point => {
                     const marker = L.default.marker([point.lat, point.lng], { draggable: true }).addTo(markerLayer);
                     marker.on('dragend', (event) => {
                     const newPosition = event.target.getLatLng();
-                    updateWaypoint(waypoints.indexOf(point), {
+                    updateWaypoint(activeRouteData.waypoints.indexOf(point), {
                         lat: newPosition.lat,
                         lng: newPosition.lng
                         });
@@ -76,12 +81,12 @@
         }
     });
 
-    // Effect for waypoint updates (upate map markers)
-    $effect(() =>   {
+    // Effect for waypoint updates (update map markers)
+    $effect(() => {
         if (!map || !L || !markerLayer) return;
         markerLayer.clearLayers();
         
-        waypoints.forEach((point, index) => {
+        activeRouteData.waypoints.forEach((point, index) => {
             // Create custom numbered icon
             const numberIcon = L.default.divIcon({
                 className: 'custom-marker-icon',
@@ -99,74 +104,92 @@
             // Drag end event handler for updated markers
             marker.on('dragend', async (event) => {
                 const newPosition = event.target.getLatLng();
+                console.log('Marker dragged to position:', newPosition);
                 try {
                     // get address from reverse geocoding
                     const result = await orsService.reverseGeocode(newPosition.lat, newPosition.lng);
-                    updateWaypoint(index, {
+                    console.log('Geocoding result:', result);
+                    console.log('New address:', result.properties.label);
+
+                    const updatedWaypoint = {
                         lat: newPosition.lat,
                         lng: newPosition.lng,
-                        address: result.properties.label
-                    });
-                
-                    // re-calculate dragged marker route with more than minimum waypoints
-                    if (waypoints.length >= 2) {
-                        await recalculateRoute(waypoints);
+                        address: result.properties.label,
+                        id: point.id // Preserve the existing waypoint ID
+                    };
+                    console.log('Updating waypoint with:', updatedWaypoint);
+                    
+                    // Single update with all data
+                    updateWaypoint(index, updatedWaypoint);
+                    
+                    // Recalculate route if needed
+                    if (activeRouteData.waypoints.length >= 2) {
+                        const newRoute = await OpenRouteService.calculateRoute(activeRouteData.waypoints);
+                        routeStore.routes[activeDay].route = newRoute;
                     }
                 } catch (error) {
+                    // console.log('Original waypoint:', point);
+                    console.log('Geocoding error:', error);
                     updateWaypoint(index, {
                         lat: newPosition.lat,
                         lng: newPosition.lng,
-                        address: 'Custom Location'
+                        address: point.address || 'Custom Location',
+                        id: point.id
                     });
+                    // console.log('Fallback waypoint update:', updatedWaypoint);
+                    updateWaypoint(index, updatedWaypoint);
                 }
             });
          });
     });
 
+    // Track route changes with derived values
+    let activeRoute = $derived(routeStore.routes[activeDay].route);
+    // Track previous state to prevent unnecessary updates
+    let routeState = $state({
+        geometry: null,
+        activeDay: null
+    });
+
     $effect(() => {
-        // Clear route if less than 2 waypoints
-        if (waypoints.length < 2) {
-            if (routeLayer) {
-                routeLayer.remove();
-                routeLayer = null;
-            }
+        // Clear ALL route layers when switching days or when no route exists
+        if (!activeRouteData.route?.geometry || !map || !L) {
+            Object.values(routeLayers).forEach(layer => layer?.remove());
             return;
         }
 
-        if (!map || !L || !currentRoute?.geometry) return;
+        // Clear all routes firt
+        const currentGeometry = activeRouteData.route.geometry.coordinates;
+        
+        // Only update if geometry or active day has changed
+        const newState = {
+            geometry: JSON.stringify(currentGeometry),
+            activeDay
+        };
+        
+        if (JSON.stringify(routeState) === JSON.stringify(newState)) return;
+        routeState = newState;
 
-        // Track both geometry and number of waypoints
-        const currentGeometry = currentRoute.geometry.coordinates;
-        const waypointCount = waypoints.length;
-
-        // Update when waypoints or the route geometry changes
-        const newState = `${currentGeometry}-${waypointCount}`;
-        if (newState === routeGeometry) return;
-        routeGeometry = newState;
-    
-        // Remove previous route
-        if (routeLayer) {
-            routeLayer.remove();
-        }
-
-        // Decode the polyline string and convert to Leaflet coordinates
+        // Clear ALL route layers
+        Object.values(routeLayers).forEach(layer => layer?.remove());
+        
+         // Draw only the active day's route
         const decodedCoordinates = decode(currentGeometry);
         const coordinates = decodedCoordinates.map(point => [point[0], point[1]]);
 
-        routeLayer = L.default.polyline(coordinates, {
-            color: '#007bff',
+        routeLayers[activeDay] = L.default.polyline(coordinates, {
+            color: routes[activeDay].color,
             weight: 5,
             opacity: 0.8,
             lineJoin: 'round'
         }).addTo(map);
 
-        // Center and Zoom map with coordinates
+        // Center map on current route
         if (coordinates.length > 0) {
             const bounds = L.default.latLngBounds(coordinates);
             map.fitBounds(bounds, { padding: [50, 50] });
         }
     });
-
     // cleanup on destroy
     onDestroy(() => {
         if (map) {

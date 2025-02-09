@@ -9,8 +9,9 @@
     const { addWaypoint, deleteWaypoint, clearRoute } = routeActions;
 
     // Create derived values from the route store
-    let waypoints = $derived(routeStore.waypoints || []);
-    let route = $derived(routeStore.route);
+    let { activeRouteData, activeDay } = $props();
+    let waypoints = $derived(activeRouteData.waypoints);
+    let route = $derived(activeRouteData.route);
 
     // address search setup
     let searchText = $state('');
@@ -41,7 +42,7 @@
     }
 
     // Handle waypoint coordinate editing with validation
-    function editWaypoint(index, field, value) {
+    async function editWaypoint(index, field, value) {
         const parsedValue = parseFloat(value);
         // Validate latitude range
         if (field === 'lat' && (parsedValue < -90 || parsedValue > 90)) {
@@ -53,38 +54,48 @@
             alert('Longitude must be between -180 and 180');
             return;
         }
+
+        try {
         // Update waypoint with new value
-        const updatedWaypoint = { ...routeStore.waypoints[index], [field]: parsedValue };
-        routeActions.updateWaypoint(index, updatedWaypoint);
-        console.log('Waypoint edited:', { index, field, value });
+        const updatedWaypoint = { ...routeStore.routes[activeDay].waypoints[index], [field]: parsedValue };
+        await routeActions.updateWaypoint(index, updatedWaypoint);
+        // console.log('Waypoint edited:', { index, field, value });
+
+        // Recalculate route if we have at least 2 waypoints
+            if (routeStore.routes[activeDay].waypoints.length >= 2) {
+                const newRoute = await OpenRouteService.calculateRoute(routeStore.routes[activeDay].waypoints);
+                routeStore.routes[activeDay].route = newRoute;
+            }
+        } catch (error) {
+            console.error('Error updating waypoint:', error);
+        }
     }
 
     // Clear all waypoints and route (no confirmation pop up)
     function clearWaypoints() {
         clearRoute();
-        console.log('All waypoints cleared');
+        // console.log('All waypoints cleared');
     }
 
-    // Handle for move waypoints up and down to reorder
     function moveWaypoint(index, direction) {
-        const newWaypoints = [...routeStore.waypoints];
+        const newWaypoints = [...activeRouteData.waypoints];
         const newIndex = direction === 'up' ? index - 1 : index + 1;
-        
-        // Swap positions
         [newWaypoints[index], newWaypoints[newIndex]] = [newWaypoints[newIndex], newWaypoints[index]];
-        
-        // Update store with new waypoint order
-        routeStore.waypoints = newWaypoints;
-        
-        // Recalculate route with new waypoint order
+    
+        routeStore.routes[activeDay].waypoints = newWaypoints;
+    
+        // Recalculate route and save
         if (newWaypoints.length >= 2) {
             OpenRouteService.calculateRoute(newWaypoints)
                 .then(newRoute => {
-                    routeStore.route = newRoute;
+                    routeStore.routes[activeDay].route = newRoute;
+                    // Call reorderWaypoints to ensure proper saving
+                    routeActions.reorderWaypoints(newWaypoints);
                 });
+        } else {
+            routeActions.reorderWaypoints(newWaypoints);
         }
     }
-    
 </script>
 
 <div class="waypoint-list">
@@ -138,11 +149,13 @@
                             <div class="address">{waypoint.address}</div>
                             <input
                                 type="number"
+                                step="0.001"
                                 bind:value={waypoint.lat}
                                 oninput={(e) => editWaypoint(index, 'lat', e.target.value)}
                             />
                             <input
                                 type="number"
+                                step="0.001"
                                 bind:value={waypoint.lng}
                                 oninput={(e) => editWaypoint(index, 'lng', e.target.value)}
                             />
@@ -234,6 +247,7 @@
         display: flex;
         align-items: center;
         gap: 1rem;
+        flex: 1;
     }
 
     .waypoint-number {
@@ -249,8 +263,15 @@
     }
 
     .coordinates {
-        color: #666;
-        font-family: monospace;
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
+    .coordinates input {
+        width: 100%;
+        max-width: 200px;
     }
 
     .delete-btn {
@@ -260,6 +281,12 @@
         font-size: 1.5rem;
         cursor: pointer;
         padding: 0 0.5rem;
+    }
+
+    .address {
+        font-size: 0.9rem;
+        color: #666;
+        width: 100%;
     }
 
     .delete-btn:hover {
