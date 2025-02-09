@@ -3,7 +3,7 @@
   import AuthFormDealership from '$lib/components/Auth/AuthFormDealer.svelte';
   import { registerWithEmailandPassword } from '$lib/firebase/auth.client';
 	import { afterLogin } from '$lib/helpers/route.helper';
-	import messagesStore from '$lib/storeas/messages.store.svelte.js';
+	import messagesStore from '$lib/storeas/messages.store.svelte';
   import { page } from '$app/stores';
   import { setUserWithEmail } from '$lib/firebase/database.client';
 
