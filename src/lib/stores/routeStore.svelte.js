@@ -18,6 +18,7 @@ let routes = $state(defaultRoutes);
 let activeDay = $state('monday');
 let isEditing = $state(false); // Edit mode state
 let selectedWaypoint = $state(null); // Currently selected waypoint
+let totalWeeklyDistance = $state(0); // Total distance for the week
 
 // Load initial state from localStorage
 if (browser) {
@@ -42,7 +43,10 @@ export const routeStore = {
     get activeDay() { return activeDay; },
     get isEditing() { return isEditing; },
     get selectedWaypoint() { return selectedWaypoint; },
-    
+    get totalWeeklyDistance() { 
+        // Calculate from routes
+        return calculateTotalWeeklyDistance(); 
+    },
     set activeDay(day) { activeDay = day; },
     set isEditing(value) {
         isEditing = value;
@@ -51,6 +55,25 @@ export const routeStore = {
         selectedWaypoint = waypoint;
     }
 };
+
+// Calculate total distance for the week
+function calculateTotalWeeklyDistance() {
+    // Add up the distances for all days
+    const total = Object.values(routes).reduce((sum, dayRoute) => {
+        // Check if a route exists for day
+        if (dayRoute.route) {
+            // Convert to number and default to 0 if undefined
+            return sum + parseFloat(dayRoute.route.distanceKm || 0);
+        }
+        // If there is no route for day then just return the distance
+        return sum;
+    }, 0);
+    
+    // Number 2 decimal places
+    const formattedTotal = parseFloat(total.toFixed(2));
+    console.log('Total Weekly Distance:', formattedTotal, 'km');
+    return formattedTotal;
+}
 
 // Persist waypoints to localStorage
 function saveWaypoints() {

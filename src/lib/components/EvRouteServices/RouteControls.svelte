@@ -3,7 +3,7 @@
     import { OpenRouteService } from '$lib/routeServices/openRouteService';
 
     // Update props to match parent component
-    let { activeRouteData, activeDay, setRoute, toggleEditing, handleClearRoute, isEditing } = $props();
+    let { activeRouteData, activeDay, setRoute, toggleEditing, handleClearRoute, isEditing, totalWeeklyDistance } = $props();
 
     // State for confirmation dialog using Svelte 5 runes
     let showConfirmClear = $state(false);
@@ -43,6 +43,10 @@
     </button>
 
     <button onclick={confirmClear}>Clear Route</button>
+
+    <div class="total-distance">
+        Total Weekly Distance: {totalWeeklyDistance} km
+    </div>
 
     {#if showConfirmClear}
         <div class="confirm-dialog">
@@ -125,5 +129,13 @@
     .confirm-btn:hover {
         background: #28a745;
         color: white;
+    }
+
+    .total-distance {
+        margin-left: auto;
+        padding: 0.5rem;
+        background: #e9ecef;
+        border-radius: 4px;
+        font-weight: bold;
     }
 </style>
