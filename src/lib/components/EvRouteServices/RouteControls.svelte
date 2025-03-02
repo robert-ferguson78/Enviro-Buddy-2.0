@@ -3,7 +3,7 @@
     import { OpenRouteService } from '$lib/routeServices/openRouteService';
 
     // Update props to match parent component
-    let { activeRouteData, activeDay, setRoute, toggleEditing, handleClearRoute, isEditing, totalWeeklyDistance } = $props();
+    let { activeRouteData, activeDay, setRoute, toggleEditing, handleClearRoute, isEditing, totalWeeklyDistance, totalWeeklyDuration } = $props();
 
     // State for confirmation dialog using Svelte 5 runes
     let showConfirmClear = $state(false);
@@ -30,6 +30,13 @@
         handleClearRoute();
         showConfirmClear = false;
     }
+
+    // Format duration into hours and minutes
+    function formatDuration(minutes) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+    }
 </script>
 
 <div class="route-controls">
@@ -44,8 +51,15 @@
 
     <button onclick={confirmClear}>Clear Route</button>
 
-    <div class="total-distance">
-        Total Weekly Distance: {totalWeeklyDistance} km
+    <div class="route-totals">
+        <div class="total-item">
+            <span class="total-label">Weekly Distance:</span>
+            <span class="total-value">{totalWeeklyDistance} km</span>
+        </div>
+        <div class="total-item">
+            <span class="total-label">Total Drive Time:</span>
+            <span class="total-value">{formatDuration(totalWeeklyDuration)}</span>
+        </div>
     </div>
 
     {#if showConfirmClear}
@@ -131,11 +145,30 @@
         color: white;
     }
 
-    .total-distance {
+    .route-totals {
         margin-left: auto;
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
         background: #e9ecef;
         border-radius: 4px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .total-item {
+        display: flex;
+        gap: 0.5rem;
+        white-space: nowrap;
+    }
+    
+    .total-label {
         font-weight: bold;
+        color: #555;
+    }
+    
+    .total-value {
+        font-weight: bold;
+        color: #333;
     }
 </style>

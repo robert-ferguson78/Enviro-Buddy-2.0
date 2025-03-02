@@ -46,6 +46,10 @@ export const routeStore = {
         // Calculate from routes
         return calculateTotalWeeklyDistance(); 
     },
+    get totalWeeklyDuration() {
+        // Calculate from routes
+        return calculateTotalWeeklyDuration();
+    },
     set activeDay(day) { activeDay = day; },
     set isEditing(value) {
         isEditing = value;
@@ -72,6 +76,24 @@ function calculateTotalWeeklyDistance() {
     const formattedTotal = parseFloat(total.toFixed(2));
     console.log('Total Weekly Distance:', formattedTotal, 'km');
     return formattedTotal;
+}
+
+// This is a duplicate of the above function but for duration
+function calculateTotalWeeklyDuration() {
+    const total = Object.values(routes).reduce((sum, dayRoute) => {
+        // Only add to total if the day has a calculated route
+        if (dayRoute.route) {
+            // Extract the duration value, convert to number, default to 0 if undefined
+            return sum + parseInt(dayRoute.route.durationMinutes || 0);
+        }
+        // If no route for this day, just return current sum unchanged
+        return sum;
+    }, 0);
+    
+    // Log for debugging purposes
+    console.log('Total Weekly Duration:', total, 'minutes');
+    
+    return total;
 }
 
 // Persist waypoints to localStorage

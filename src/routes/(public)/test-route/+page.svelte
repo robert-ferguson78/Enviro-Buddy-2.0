@@ -44,6 +44,7 @@
         {handleClearRoute}
         {isEditing}
         totalWeeklyDistance={routeStore.totalWeeklyDistance}
+        totalWeeklyDuration={routeStore.totalWeeklyDuration}
     />
     <WaypointList 
         {activeRouteData}
