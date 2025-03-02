@@ -18,7 +18,6 @@ let routes = $state(defaultRoutes);
 let activeDay = $state('monday');
 let isEditing = $state(false); // Edit mode state
 let selectedWaypoint = $state(null); // Currently selected waypoint
-let totalWeeklyDistance = $state(0); // Total distance for the week
 
 // Load initial state from localStorage
 if (browser) {
