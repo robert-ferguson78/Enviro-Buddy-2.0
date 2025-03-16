@@ -16,7 +16,7 @@ export class OpenRouteService {
         try {
             // Convert waypoints to [longitude, latitude] format required by the API
             const coordinates = waypoints.map(point => [point.lng, point.lat]);
-            console.log('Sending coordinates to OpenRouteService:', coordinates);
+            // console.log('Sending coordinates to OpenRouteService:', coordinates);
     
             // API request to OpenRouteService
             const response = await fetch(ORS_API_URL, {
@@ -36,14 +36,35 @@ export class OpenRouteService {
             // for API errors :(
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error.message}`);
+                const errorMessage = errorData.error?.message || 'Unknown error';
+                
+                // Check if the error is about waypoints not near roads
+                if (errorMessage.includes('Could not find routable point within a radius')) {
+                    // Extract waypoint indices from error message
+                    const waypointIndices = [];
+                    const regex = /coordinate (\d+):/g;
+                    let match;
+                    
+                    while ((match = regex.exec(errorMessage)) !== null) {
+                        waypointIndices.push(parseInt(match[1]));
+                    }
+                    
+                    // Create custom error with waypoint information
+                    const error = new Error('Waypoints not near road');
+                    error.type = 'WAYPOINTS_NOT_NEAR_ROAD';
+                    error.waypointIndices = waypointIndices;
+                    throw error;
+                }
+                
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
             }
     
             const data = await response.json();
-            console.log('API response:', data);
+            // console.log('API response:', data);
             return this.formatRouteResponse(data);
         } catch (error) {
-            console.error('OpenRouteService error:', error);
+            error;
+            // console.error('OpenRouteService error:', error);
             throw error;
         }
     }
@@ -64,12 +85,12 @@ export class OpenRouteService {
         const durationInMinutes = Math.round(route.summary.duration / 60); // Convert duration to minutes
     
         // debugging actual values to convert
-        console.log('Route Calculations:', {
-            distanceKm: `${distanceInKm.toFixed(2)} km`,
-            durationMinutes: `${durationInMinutes} minutes`,
-            rawDistance: route.summary.distance,
-            rawDuration: route.summary.duration
-        });
+        // console.log('Route Calculations:', {
+        //     distanceKm: `${distanceInKm.toFixed(2)} km`,
+        //     durationMinutes: `${durationInMinutes} minutes`,
+        //     rawDistance: route.summary.distance,
+        //     rawDuration: route.summary.duration
+        // });
 
         // Put data in a const so i can console log it
         const formattedRoute = {
@@ -81,7 +102,7 @@ export class OpenRouteService {
             segments: route.segments
         };
     
-        console.log('Formatted route data:', formattedRoute);
+        // console.log('Formatted route data:', formattedRoute);
         return formattedRoute;
     }
 }

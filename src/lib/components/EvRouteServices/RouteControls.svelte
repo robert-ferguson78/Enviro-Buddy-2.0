@@ -1,6 +1,7 @@
 <script>
     import { routeStore, routeActions } from '../../stores/routeStore.svelte.js';
     import { OpenRouteService } from '$lib/routeServices/openRouteService';
+    import { messageActions } from '$lib/stores/messages.store.svelte';
 
     // Update props to match parent component
     let { activeRouteData, activeDay, setRoute, toggleEditing, handleClearRoute, isEditing, totalWeeklyDistance, totalWeeklyDuration } = $props();
@@ -11,10 +12,42 @@
     // Calculate route using activeRouteData
     async function calculateRoute() {
         if (activeRouteData.waypoints.length >= 2) {
-            const result = await OpenRouteService.calculateRoute(activeRouteData.waypoints);
-            setRoute(result);
+            try {
+                // Clear any previous problematic waypoints
+                routeStore.problematicWaypoints = [];
+                
+                const result = await OpenRouteService.calculateRoute(activeRouteData.waypoints);
+                setRoute(result);
+            } catch (error) {
+                // console.error('Route calculation error:', error);
+                
+                // Handle specific error for waypoints not near roads
+                if (error.type === 'WAYPOINTS_NOT_NEAR_ROAD') {
+                    // Convert 0-based indices to 1-based for user display
+                    const waypointNumbers = error.waypointIndices.map(idx => idx + 1);
+                    
+                    let errorMessage;
+                    if (waypointNumbers.length === 1) {
+                        errorMessage = `Waypoint ${waypointNumbers[0]} is not near a road. Please reposition it.`;
+                    } else {
+                        errorMessage = `Waypoints ${waypointNumbers.join(', ')} are not near roads. Please reposition them.`;
+                    }
+                    
+                    // Use messageActions to show error
+                    messageActions.showError(errorMessage);
+                    
+                    // Highlight problematic waypoints
+                    routeStore.problematicWaypoints = error.waypointIndices;
+                } else {
+                    // Generic error message for other errors
+                    messageActions.showError(`Failed to calculate route: ${error.message || 'Unknown error'}`);
+                }
+            }
+        } else {
+            messageActions.showError("At least 2 waypoints are required to calculate a route.");
         }
     }
+    
     // Show confirmation dialog for route clearing
     function confirmClear() {
         showConfirmClear = true;
@@ -29,6 +62,7 @@
     function clearRoute() {
         handleClearRoute();
         showConfirmClear = false;
+        routeStore.problematicWaypoints = []; // Clear problematic waypoints
     }
 
     // Format duration into hours and minutes

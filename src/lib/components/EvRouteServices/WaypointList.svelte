@@ -1,4 +1,5 @@
 <script>
+    // Add import for problematic waypoints
     import { routeStore, routeActions } from '../../stores/routeStore.svelte.js';
     import { OpenRouteService } from '$lib/routeServices/openRouteService';
     // import ORS service to use location search
@@ -30,7 +31,7 @@
             });
             searchText = ''; // Clear search after successful add
         } catch (error) {
-            console.error('Search error:', error);
+            // console.error('Search error:', error);
         } finally {
             loading = false;
         }
@@ -67,7 +68,7 @@
                 routeStore.routes[activeDay].route = newRoute;
             }
         } catch (error) {
-            console.error('Error updating waypoint:', error);
+            // console.error('Error updating waypoint:', error);
         }
     }
 

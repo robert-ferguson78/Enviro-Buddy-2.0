@@ -7,6 +7,7 @@
     import { ORSService } from '$lib/routeServices/orsService';
     import { orsConfig } from '$lib/routeServices/orsConfig';
     import { OpenRouteService } from '$lib/routeServices/openRouteService';
+    import { messageActions } from '$lib/stores/messages.store.svelte'; // display error messages
 
     // route layers for each day
     let routeLayers = $state({});
@@ -105,42 +106,33 @@
             marker.on('dragend', async (event) => {
                 const newPosition = event.target.getLatLng();
                 console.log('Marker dragged to position:', newPosition);
+                
+                let updatedWaypoint = {
+                    lat: newPosition.lat,
+                    lng: newPosition.lng,
+                    address: point.address || 'Custom Location',
+                    id: point.id
+                };
+                
                 try {
                     // get address from reverse geocoding
                     const result = await orsService.reverseGeocode(newPosition.lat, newPosition.lng);
                     console.log('Geocoding result:', result);
-                    console.log('New address:', result.properties.label);
-
-                    const updatedWaypoint = {
-                        lat: newPosition.lat,
-                        lng: newPosition.lng,
-                        address: result.properties.label,
-                        id: point.id // Preserve the existing waypoint ID
-                    };
+                    
+                    updatedWaypoint.address = result.properties.label;
                     console.log('Updating waypoint with:', updatedWaypoint);
                     
                     // Single update with all data
                     updateWaypoint(index, updatedWaypoint);
-                    
-                    // Recalculate route if needed
-                    if (activeRouteData.waypoints.length >= 2) {
-                        const newRoute = await OpenRouteService.calculateRoute(activeRouteData.waypoints);
-                        routeStore.routes[activeDay].route = newRoute;
-                    }
                 } catch (error) {
-                    // console.log('Original waypoint:', point);
                     console.log('Geocoding error:', error);
-                    updateWaypoint(index, {
-                        lat: newPosition.lat,
-                        lng: newPosition.lng,
-                        address: point.address || 'Custom Location',
-                        id: point.id
-                    });
-                    // console.log('Fallback waypoint update:', updatedWaypoint);
+                    
                     updateWaypoint(index, updatedWaypoint);
+                    
+                    messageActions.showError('Could not get address for this location. The waypoint has been updated with coordinates only.');
                 }
             });
-         });
+        });
     });
 
     // Track route changes with derived values

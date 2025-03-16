@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { nanoid } from 'nanoid';
+import { messageActions } from '$lib/stores/messages.store.svelte';
 
 // define the default route structure
 const defaultRoutes = {
@@ -18,6 +19,7 @@ let routes = $state(defaultRoutes);
 let activeDay = $state('monday');
 let isEditing = $state(false); // Edit mode state
 let selectedWaypoint = $state(null); // Currently selected waypoint
+let problematicWaypoints = $state([]);
 
 // Load initial state from localStorage
 if (browser) {
@@ -50,13 +52,15 @@ export const routeStore = {
         // Calculate from routes
         return calculateTotalWeeklyDuration();
     },
+    get problematicWaypoints() { return problematicWaypoints; },
     set activeDay(day) { activeDay = day; },
     set isEditing(value) {
         isEditing = value;
     },
     set selectedWaypoint(waypoint) {
         selectedWaypoint = waypoint;
-    }
+    },
+    set problematicWaypoints(indices) { problematicWaypoints = indices; }
 };
 
 // Calculate total distance for the week
@@ -74,7 +78,7 @@ function calculateTotalWeeklyDistance() {
     
     // Number 2 decimal places
     const formattedTotal = parseFloat(total.toFixed(2));
-    console.log('Total Weekly Distance:', formattedTotal, 'km');
+    // console.log('Total Weekly Distance:', formattedTotal, 'km');
     return formattedTotal;
 }
 
@@ -91,7 +95,7 @@ function calculateTotalWeeklyDuration() {
     }, 0);
     
     // Log for debugging purposes
-    console.log('Total Weekly Duration:', total, 'minutes');
+    // console.log('Total Weekly Duration:', total, 'minutes');
     
     return total;
 }
@@ -168,6 +172,28 @@ export function updateWaypoint(index, waypoint) {
                 routes[activeDay].route = newRoute;
                 // Save updated route data
                 saveWaypoints();
+            })
+            .catch(error => {
+                console.error('Route calculation error:', error);
+                
+                // Handle specific error for waypoints not near roads
+                if (error.type === 'WAYPOINTS_NOT_NEAR_ROAD') {
+                    // Convert 0-based indices to 1-based for user display
+                    const waypointNumbers = error.waypointIndices.map(idx => idx + 1);
+                    
+                    let errorMessage;
+                    if (waypointNumbers.length === 1) {
+                        errorMessage = `Waypoint ${waypointNumbers[0]} is too far from a road. Please reposition it closer to a road.`;
+                    } else {
+                        errorMessage = `Waypoints ${waypointNumbers.join(', ')} are too far from roads. Please reposition them closer to roads.`;
+                    }
+                    
+                    // Use messageActions to show error
+                    messageActions.showError(errorMessage);
+                } else {
+                    // Generic error message for other errors
+                    messageActions.showError('Failed to calculate route. Please try again.');
+                }
             });
     }
 }
@@ -189,7 +215,8 @@ export function deleteWaypoint(index) {
                 saveWaypoints(); // Save after route is updated
             })
             .catch(error => {
-                console.error('Route calculation failed:', error);
+                error; // stops eslint for unused variable
+                // console.error('Route calculation failed:', error);
                 routes[activeDay].route = null;
                 saveWaypoints();
             });
@@ -209,7 +236,8 @@ async function recalculateRoute(waypointList) {
         const newRoute = await OpenRouteService.calculateRoute(waypointList);
         routes[activeDay].route = newRoute;
     } catch (error) {
-        console.error('Route calculation failed:', error);
+        error;
+        //console.error('Route calculation failed:', error);
         routes[activeDay].route = null;
     }
 }
@@ -233,7 +261,7 @@ export function clearRoute() {
 // Toggle editing mode
 export function toggleEditing() {
     isEditing = !isEditing;
-    console.log('Editing toggled in store:', isEditing);
+    // console.log('Editing toggled in store:', isEditing);
 }
 
 // Export all route-related actions
