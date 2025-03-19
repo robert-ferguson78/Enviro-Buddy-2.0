@@ -13,12 +13,12 @@ export default readable({ isActive: false, isLoggedIn: false, userId: '', userNa
             // console.log('Auth state changed', user);
             // If a user is signed in
             if (user) {
-                // console.log('User is signed in with uid store:', user.uid)
-                // console.log('User is signed in with uid store:', user.displayName)
+                console.log('User is signed in with uid store:', user.uid)
+                console.log('User is signed in with uid store:', user.displayName)
                 // Set the store state to reflect that a user is signed in
                 set({ isActive: true, isLoggedIn: true, userId: user.uid, userName: user.displayName });
             } else {
-                // console.log('User is signed out');
+                console.log('User is signed out');
                 // If no user is signed in, set the store state to reflect that no user is signed in
                 set({ isActive: false, isLoggedIn: false, userId: '', userName: '' });
             }

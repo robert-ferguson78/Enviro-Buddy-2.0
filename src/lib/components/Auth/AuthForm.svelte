@@ -14,34 +14,46 @@
 
     // Function to validate the form
     const validateForm = () => {
+        console.log("Validating form with:", { name, email, password: password ? "***" : null });
         let errors = []; // Array to store the errors
 
         if (!name) errors.push('Name is required');
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Valid email is required');
-        if (!forgotPassword && (!password || !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{9,}$/.test(password))) {
-            errors.push('Password must be minimum 9 characters and contain letters and numbers'); // If password is empty or not valid, add an error
+        
+        // Updated regex to allow special characters
+        const passwordValid = !forgotPassword && password && /^(?=.*[A-Za-z])(?=.*\d).{9,}$/.test(password);
+        console.log("Password validation result:", passwordValid);
+        
+        if (!forgotPassword && !passwordValid) {
+            errors.push('Password must be minimum 9 characters and contain letters and numbers');
         }
 
         if (errors.length > 0) {
-            messageActions.showError(`There was an issue with registration: ${errors.join(', ')}`); // Show an error message
-            return false; // Return false
+            console.log("Validation errors:", errors);
+            messageActions.showError(`There was an issue with registration: ${errors.join(', ')}`);
+            return false;
         }
 
-        return true; // Return true
+        console.log("Form validation successful");
+        return true;
     };
 
     // Function to handle form submission
     const handleSubmit = (e) => {
+        console.log("Form submitted");
         e.preventDefault(); // Prevent the default form submission
         if (validateForm()) { // If the form is valid
+            console.log("Form is valid, dispatching submit event");
             // Dispatch the submit event to the parent component with the form data
             dispatch('submit', { name, email, password }); // Dispatch the submit event
+        } else {
+            console.log("Form validation failed");
         }
     };
 </script>
 
 <!-- HTML and Svelte markup for the component -->
-<form onsubmit={handleSubmit}> <!-- Form with onSubmit event handler -->
+<form on:submit={handleSubmit}> <!-- Form with onSubmit event handler -->
     <div class="field">
         <label class="label" for="name">Name</label>
         <input class="input" type="text" placeholder="Enter Name" id="name" name="name" bind:value={name}>
