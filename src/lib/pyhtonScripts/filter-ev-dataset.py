@@ -20,9 +20,15 @@ body_type_mapping = {
     "Q8 Sportback e-tron": "SUV Coupe",
     "e-tron GT": "Saloon",
     "RS e-tron GT": "Saloon",
+    "GT": "Saloon",
+    "SQ6 e-tron": "SUV",
+    "e-tron 50": "SUV",
+    "e-tron 55": "SUV",
+    "e-tron S": "SUV",
 
     #BMW
     "i3": "Hatchback",
+    "i3S": "Hatchback",
     "i4": "Saloon",
     "i5": "Saloon",
     "i7": "Saloon",
@@ -34,6 +40,9 @@ body_type_mapping = {
     #BYD
     "ATTO 3": "SUV",
     "Dolphin": "Hatchback",
+    "HAN": "Saloon",
+    "Seal": "Saloon",
+    "TANG": "SUV",
 
     #Cupra
     "Born": "Hatchback",
@@ -42,9 +51,20 @@ body_type_mapping = {
     #Dacia
     "Spring Electric": "City Car",
 
+    #Fiat
+    "500e": "City Car",
+    "600e": "Crossover",
+
+    #Ford
+    "Focus electric": "Hatchback",
+    "Mustang Mach e": "SUV",
+
     #Hyundai
     "IONIQ 5": "Crossover",
     "IONIQ 6": "Saloon",
+    "Kona Electric": "SUV",
+    "Ioniq": "Saloon",
+    "Kona": "SUV",
 
     #Jeep
     "Avenger": "SUV",
@@ -53,6 +73,10 @@ body_type_mapping = {
     "EV6": "Crossover",
     "EV9": "SUV",
     "Niro EV": "Crossover",
+    "Soul EV": "Crossover",
+    "Soul": "Crossover",
+    "e-Niro": "Crossover",
+    "e-Soul": "Crossover",
 
     #Mazda
     "MX-30": "Crossover",
@@ -63,6 +87,9 @@ body_type_mapping = {
     "Countryman": "SUV",
     "Aceman": "Crossover",
 
+    #Mitsubishi
+    "i-Miev": "City Car",
+
     #Nissan
     "Ariya": "Crossover",
     "Leaf": "Hatchback",
@@ -72,6 +99,11 @@ body_type_mapping = {
     "E-Expert": "Van",
     "E-Traveller": "Van",
     "I-on": "City Car",
+    "Partner": "Van",
+    "e-2008": "Crossover",
+    "e-208": "Hatchback",
+    "e-3008": "SUV",
+    "e-Partner": "Van",
 
     #Polestar
     "2": "Fastback",
@@ -82,10 +114,26 @@ body_type_mapping = {
     "Kangoo ZE": "Van",
     "Zoe": "Hatchback",
     "Megane E-Tech": "Crossover",
+    "Scenic": "SUV",
+    "Twingo Z.E.": "City Car",
+    "5 E-Tech": "Hatchback",
+
+    #Seat
+    "Mii Electric": "City Car",
 
     #Smart
     "#1": "SUV",
     "#3": "SUV Coupe",
+    "forfour EQ": "City Car",
+    "fortwo ED": "City Car",
+    "fortwo EQ": "City Car",
+
+    #Skoda
+    "CITIGOe iV": "City Car",
+    "Enyaq iV": "SUV",
+    "Enyaq": "SUV",
+    "Elroq": "SUV",
+    "Enyaq Coupe": "SUV Coupe",
 
     #Tesla
     "Roadster": "Convertible",
@@ -94,9 +142,30 @@ body_type_mapping = {
     "Model X": "SUV",
     "Model Y": "SUV",
 
+    #Toyota
+    "ProAce City Electric": "Van",
+    "ProAce Electric": "Van",
+
     #Volkswagen
     "ID.Buzz": "Van",
     "e-up": "City Car",
+    "ID.3": "Hatchback",
+    "ID.4": "SUV",
+    "ID.5": "SUV Coupe",
+    "ID.7": "Saloon",
+    "e-Golf": "Hatchback",
+
+    #Volvo
+    "C40": "SUV Coupe",
+    "EX30": "SUV",
+    "EX90": "SUV",
+    "XC40": "SUV",
+
+    #Renault
+    "Twizy": "Quadricycle",
+
+    #Xpeng
+    "P5": "Saloon",
 
 }
 
@@ -130,9 +199,9 @@ def calculate_weather_ranges(battery_size, energy_consumption):
             "driving_resistance": 1.08    # 8% more resistance
         },
         "mild": {  # 23°C conditions (baseline)
-        "battery_efficiency": 1.0,    # No reduction
-        "hvac_consumption": 0.1,      # Minimal HVAC usage
-        "driving_resistance": 1.0     # Baseline resistance
+            "battery_efficiency": 1.0,    # No reduction
+            "hvac_consumption": 0.1,      # Minimal HVAC usage
+            "driving_resistance": 1.0     # Baseline resistance
         },
         "warm": {  # 30°C
             "battery_efficiency": 0.97,   # 3% reduction
@@ -166,7 +235,7 @@ def calculate_total_charge_time(dc_charger, battery_size):
 
     charging_curve = sorted(dc_charger["charging_curve"], key=lambda x: x["percentage"])
     total_time = 0
-    charging_efficiency = 0.95
+    charging_efficiency = 0.95  # Updated efficiency factor
 
     for i in range(len(charging_curve) - 1):
         start = charging_curve[i]
