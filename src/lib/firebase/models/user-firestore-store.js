@@ -23,19 +23,24 @@ export const userFirestoreStore = {
         const snapshot = await getDocs(usersCollectionRef);
         return snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
     },
-
     // Function to add details to a user document
     addUserDetails: async function(user) {
-        const userRef = doc(db, collectionName, user.user_id);
-        await updateDoc(userRef, {
-            name: user.name,
-            brand: user.brand,
-            type: user.type,
-        });
-        const docSnap = await getDoc(userRef);
-        return { _id: docSnap.id, ...docSnap.data() };
+        console.log("addUserDetails called with user:", user);
+        try {
+            const userRef = doc(db, collectionName, user.user_id);
+            await updateDoc(userRef, {
+                name: user.name,
+                brand: user.brand,
+                type: user.type,
+            });
+            console.log("User details updated successfully");
+            const docSnap = await getDoc(userRef);
+            return { _id: docSnap.id, ...docSnap.data() };
+        } catch (error) {
+            console.error("Error in addUserDetails:", error);
+            throw error;
+        }
     },
-
     // Function to update a user document with new data
     updateUser: async function(_id, newData) {
         const userRef = doc(db, collectionName, _id);

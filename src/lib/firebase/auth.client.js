@@ -60,14 +60,27 @@ export async function logout() {
  * @returns {Promise<string>} - A promise that resolves with the user's ID.
  */
 export async function registerWithEmailandPassword(email, password) {
-    // Get the auth object for the Firebase app
-    const auth = getAuth();
-    // Create a new user with the specified email and password
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    // Return the user's ID
-    return userCredential.user.uid;
+    console.log("registerWithEmailandPassword called with email:", email);
+    
+    try {
+        // Get the auth object for the Firebase app
+        const auth = getAuth();
+        console.log("Firebase auth object obtained");
+        
+        // Create a new user with the specified email and password
+        console.log("About to call createUserWithEmailAndPassword");
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log("User created successfully:", userCredential.user.uid);
+        
+        // Return the user's ID
+        return userCredential.user.uid;
+    } catch (error) {
+        console.error("Error in registerWithEmailandPassword:", error);
+        console.error("Error code:", error.code);
+        console.error("Error message:", error.message);
+        throw error; // Re-throw the error to be caught by the caller
+    }
 }
-
 /**
  * Asynchronously log in a user with an email and password.
  *
