@@ -53,7 +53,7 @@
 </script>
 
 <!-- HTML and Svelte markup for the component -->
-<form on:submit={handleSubmit}> <!-- Form with onSubmit event handler -->
+<form onsubmit={handleSubmit}> <!-- refcatored from 'on:submit' to 'onsubmit' attribute -->
     <div class="field">
         <label class="label" for="name">Name</label>
         <input class="input" type="text" placeholder="Enter Name" id="name" name="name" bind:value={name}>

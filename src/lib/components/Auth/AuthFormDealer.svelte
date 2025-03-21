@@ -5,14 +5,14 @@
     // Create an event dispatcher
     const dispatch = createEventDispatcher();
 
-     // Exported variables
-    export let btnName;
-    export let forgotPassword = false;
+    // Refactored from 'export let' to using $props() rune for props
+    const { btnName, forgotPassword = false } = $props();
 
-    let name = '';
-    let brand = '';
-    let email = '';
-    let password = '';
+    // Refactored regular variables to $state variables
+    let name = $state('');
+    let brand = $state('');
+    let email = $state('');
+    let password = $state('');
 
     // Function to validate the form
     const validateForm = () => {
@@ -49,7 +49,8 @@
     };
 </script>
 
-<form on:submit|preventDefault={handleSubmit}>
+<!-- refactored from 'on:submit|preventDefault' to 'onsubmit' with preventDefault in the handler -->
+<form onsubmit={handleSubmit}>
     <div class="field">
         <label class="label" for="name">Name</label>
         <input class="input" type="text" placeholder="Enter Name" id="name" name="name" bind:value={name}>

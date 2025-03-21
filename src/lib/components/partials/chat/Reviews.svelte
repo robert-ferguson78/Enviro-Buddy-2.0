@@ -4,19 +4,23 @@ import { reviewsFirestoreStore } from '$lib/firebase/models/reviews-firestore-st
 import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
 import auth from '$lib/stores/auth.store';
 
-let user;
+
+// recactored from 'export let' to using $props() rune for props
+const { dealerId } = $props();
+
+// refactored regular variables to $state variables
+let user = $state(null);
+let reviews = $state([]);
+let newMessage = $state('');
+let userName = $state('');
+let userId = $state('');
+let unsubscribe = $state(null);
+
 // Subscribe to the auth store to get the current user
 auth.subscribe(value => {
     user = value;
 // console.log('user object:', user);
 });
-
-export let dealerId;
-let reviews = [];
-let newMessage = '';
-let userName;
-let userId;
-let unsubscribe;
 
 // When the component mounts
 onMount(async () => {
@@ -64,7 +68,7 @@ async function addReview() {
     <h2 class="title">Customer Reviews</h2>
     {#if user && user.userId}
         <input class="input is-rounded" bind:value={newMessage} placeholder="Add a review" />
-        <button class="button is-normal mt-3 mb-3 has-brand-green-background start-chat-button is-fullwidth" on:click={addReview}>Submit</button>
+        <button class="button is-normal mt-3 mb-3 has-brand-green-background start-chat-button is-fullwidth" onclick={addReview}>Submit</button><!-- refcatored from 'on:click' to 'onclick' attribute -->
     {:else}
         <div class="box has-brand-green-background">
             <p>Please <a href="/login"><u>login</u></a> / <a href="/signup"><u>Register</u></a> to add a review</p>

@@ -29,7 +29,7 @@
 
 <!-- HTML and Svelte markup for the component -->
 <div class="row">
-        <button class="button is-success is-active has-text-white mt-3" on:click={loginGoogle}>
+        <button class="button is-success is-active has-text-white mt-3" onclick={loginGoogle}> <!-- refactored from 'on:click' to 'onclick' attribute -->
             <span class="icon">
                 <i class="fa-brands fa-google"></i>
               </span>

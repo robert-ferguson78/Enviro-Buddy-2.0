@@ -6,11 +6,13 @@
     import { get } from 'svelte/store';
     import { messagesStore, messageActions } from '$lib/stores/messages.store.svelte';
     
+    // refactored from 'export let' to using $props() rune for props
     const { activeChat } = $props();
     
-    // Message store subscription
+    // refactored reactive statement to $derived
     let messages = $derived($messagesStore);
     
+    // refactored regular variables to $state variables
     let chatMessages = $state([]);
     let newMessage = $state('');
     let userIdToName = $state({});
@@ -21,6 +23,7 @@
         user = value;
     });
     
+    // refactored reactive statement to $effect
     $effect(() => {
         if (activeChat && activeChat.userIds) {
             const ids = activeChat.userIds;

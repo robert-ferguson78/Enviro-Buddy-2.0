@@ -5,8 +5,11 @@
     import authStore from '$lib/stores/auth.store';
     import { chatIdStore } from '$lib/stores/chatIdStore';
     import { notificaionFirestoreStore } from '$lib/firebase/models/notifications-firestore-store';
+
+    // refactored regular variables to $state variables
     let chats = $state([]);
 
+    // refcatored reactive statement to $derived
     let unreadCount = $derived(chatsFirestoreStore.state.unreadCount);
 
     onMount(() => {

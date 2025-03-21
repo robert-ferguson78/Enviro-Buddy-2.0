@@ -16,7 +16,7 @@
 
     // address search setup
     let searchText = $state('');
-    let loading = false;
+    let loading = $state(false);
     const orsService = new ORSService(orsConfig.apiKey);
 
     // location search handler
@@ -97,6 +97,30 @@
             routeActions.reorderWaypoints(newWaypoints);
         }
     }
+
+    // Added function to handle drag and drop
+    function handleDrop(e, targetIndex) {
+        e.preventDefault();
+        const sourceIndex = parseInt(e.dataTransfer.getData('text/plain'));
+        if (sourceIndex !== targetIndex) {
+            const newWaypoints = [...activeRouteData.waypoints];
+            const [movedWaypoint] = newWaypoints.splice(sourceIndex, 1);
+            newWaypoints.splice(targetIndex, 0, movedWaypoint);
+            
+            routeStore.routes[activeDay].waypoints = newWaypoints;
+            
+            // Recalculate route if needed
+            if (newWaypoints.length >= 2) {
+                OpenRouteService.calculateRoute(newWaypoints)
+                    .then(newRoute => {
+                        routeStore.routes[activeDay].route = newRoute;
+                        routeActions.reorderWaypoints(newWaypoints);
+                    });
+            } else {
+                routeActions.reorderWaypoints(newWaypoints);
+            }
+        }
+    }
 </script>
 
 <div class="waypoint-list">
@@ -108,6 +132,7 @@
             placeholder="Search for a location to add"
             onkeydown={(e) => e.key === 'Enter' && searchText && handleLocationSearch()}
         />
+        <!-- refcatored from 'on:click' to 'onclick' attribute -->
         <button onclick={() => searchText && handleLocationSearch()} disabled={loading || !searchText}>
             {loading ? 'Adding...' : 'Add Location'}
         </button>
