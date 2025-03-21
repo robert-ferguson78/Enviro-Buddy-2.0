@@ -1,8 +1,6 @@
 <script>
-    import { onMount } from 'svelte';
-    import { onDestroy } from 'svelte';
+    import { onMount, onDestroy } from 'svelte';
     import { goto } from '$app/navigation';
-    import { writable } from 'svelte/store'; // Import writable store
     import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
     import { chatsFirestoreStore } from '$lib/firebase/models/chats-firestore-store.svelte';
     import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
@@ -11,25 +9,40 @@
     import { chatIdStore } from '$lib/stores/chatIdStore';
     import { getWeatherIcon } from '$lib/utils/weather';
 
-    let user;
+    // Use the dealer store passed from MainMap
+    let { dealerStore } = $props();
+    
+    console.log('[SecondaryMap] Component initialized');
 
-    const unsubscribe = authStore.subscribe(async value => {
-        if (value && value.isLoggedIn && value.userId) {
-        user = await userFirestoreStore.getUser(value.userId);
-        } else {
-        user = null;
+    let user = $state(null);
+    let carTypes = $state([]);
+    let map;
+    let L;
+    let currentMarker = $state(null);
+    let dealer = $state(null);
+    let customIcon;
+    
+    // Subscribe to the dealer store
+    const unsubscribeDealerStore = dealerStore.subscribe(newDealer => {
+        if (newDealer) {
+            console.log('[SecondaryMap] Dealer updated from store:', newDealer.name);
+            dealer = newDealer;
+            updateMap(newDealer);
         }
     });
 
-    let carTypes = [];
-
-    let map;
-    let L;
-    let currentMarker = null; // reference to the current marker
-    let dealer = writable(null); // Make dealer a writable store
-    let customIcon; // Define customIcon variable
+    const unsubscribeAuth = authStore.subscribe(async value => {
+        if (value && value.isLoggedIn && value.userId) {
+            user = await userFirestoreStore.getUser(value.userId);
+            console.log('[SecondaryMap] User authenticated:', user);
+        } else {
+            user = null;
+            console.log('[SecondaryMap] No authenticated user');
+        }
+    });
 
     onMount(async () => {
+        console.log('[SecondaryMap] Component mounted');
         if (typeof window !== 'undefined') {
             const module = await import('leaflet');
             L = module.default;
@@ -38,79 +51,85 @@
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
             }).addTo(map);
+            
+            console.log('[SecondaryMap] Map initialized');
+            
+            // If we already have a dealer, update the map
+            if (dealer) {
+                updateMap(dealer);
+            }
         }
     });
 
-    // Add this reactive statement
-    $: $dealer && mapActions.addMarker($dealer); // Use $dealer to access the value of the dealer store
+    async function updateMap(newDealer) {
+        if (!L || !map || !newDealer) return;
+        
+        console.log('[SecondaryMap] Updating map with dealer:', newDealer.name);
+        
+        if (currentMarker) {
+            console.log('[SecondaryMap] Removing existing marker');
+            map.removeLayer(currentMarker);
+        }
+        
+        console.log('[SecondaryMap] Getting weather icon');
+        const weather = await getWeatherIcon(newDealer.latitude, newDealer.longitude, 'filled');
+        const iconUrl = weather ? weather.icon : '/images/map-car-marker.png';
+        
+        console.log('[SecondaryMap] Creating icon with URL:', iconUrl);
+        customIcon = L.icon({
+            iconUrl: iconUrl,
+            shadowUrl: '/images/map-weathersvg-shadow4.png',
+            iconSize: [52, 60],
+            shadowSize: [52, 60],
+            iconAnchor: [26, 60],
+            shadowAnchor: [26, 60],
+            popupAnchor: [0, -60]
+        });
+        
+        console.log('[SecondaryMap] Adding marker at:', newDealer.latitude, newDealer.longitude);
+        currentMarker = L.marker([newDealer.latitude, newDealer.longitude], {icon: customIcon}).addTo(map);
+        map.flyTo([currentMarker.getLatLng().lat, currentMarker.getLatLng().lng], 16, { duration: 2.2 });
+        
+        // Update car types
+        await updateCarTypes();
+    }
 
     async function updateCarTypes() {
-        carTypes = await carTypeFirestoreStore.getCarTypesByBrandId($dealer.userId); // Update carTypes when dealer changes
-        // console.log('carTypes for dealer', carTypes); // Log carTypes
-    }
-
-    $: if ($dealer) {
-        mapActions.addMarker($dealer); // Use $dealer to access the value of the dealer store
-        updateCarTypes();
-    }
-
-    export let mapActions = {
-        async addMarker(newDealer) {
-            dealer.set(newDealer); // Update the dealer object using set method
-
-            // console.log('newDealer', newDealer);
-            if (L) {
-                if (currentMarker) {
-                    map.removeLayer(currentMarker);
-                }
-
-            // Get weather icon
-            const weather = await getWeatherIcon($dealer.latitude, $dealer.longitude, 'filled');
-            const iconUrl = weather ? weather.icon : '/images/map-car-marker.png';
-
-            // Use customIcon when creating the marker
-            customIcon = L.icon({
-                iconUrl: iconUrl,
-                shadowUrl: '/images/map-weathersvg-shadow4.png',
-                iconSize: [52, 60], // size of the icon
-                shadowSize: [52, 60], // size of the shadow
-                iconAnchor: [26, 60], // anchor at half width and full height to position the bottom center of the icon at the marker's location
-                shadowAnchor: [26, 60], // anchor the shadow at the same point
-                popupAnchor: [0, -60] // open the popup just above the icon
-            });
-
-                // Use customIcon when creating the marker
-                currentMarker = L.marker([$dealer.latitude, $dealer.longitude], {icon: customIcon}).addTo(map); // Use $dealer to access the value of the dealer store
-                map.flyTo([currentMarker.getLatLng().lat, currentMarker.getLatLng().lng], 16, { duration: 2.2 }); // Animate the transition to the new marker
-            }
+        console.log('[SecondaryMap] updateCarTypes called, dealer:', dealer);
+        if (dealer && dealer.userId) {
+            console.log('[SecondaryMap] Fetching car types for userId:', dealer.userId);
+            carTypes = await carTypeFirestoreStore.getCarTypesByBrandId(dealer.userId);
+            console.log('[SecondaryMap] Car types updated:', carTypes.length);
+        } else {
+            console.log('[SecondaryMap] No dealer or userId available for car types');
         }
-    };
-
-    // console.log("auth store data: ", authStore);
+    }
 
     async function startNewChat() {
-        const chatId = await chatsFirestoreStore.createChat($dealer.userId, $authStore.userId, $dealer.name, $authStore.userName);
-        // console.log('chatId:', chatId); // Log chatId
+        console.log('[SecondaryMap] Starting new chat');
+        const chatId = await chatsFirestoreStore.createChat(dealer.userId, $authStore.userId, dealer.name, $authStore.userName);
         chatIdStore.set({
             chatId: chatId,
-            dealerUserId: $dealer.userId,
+            dealerUserId: dealer.userId,
             authUserId: $authStore.userId
         });
         
         let url = `/chat/${chatId}`;
-        // console.log('Navigating to:', url);
+        console.log('[SecondaryMap] Navigating to:', url);
         goto(url);
-        };
+    }
 
     onDestroy(() => {
-        unsubscribe();
+        console.log('[SecondaryMap] Component destroyed');
+        unsubscribeAuth();
+        unsubscribeDealerStore();
     });
 </script>
 
 <div id="secondary-map" style="height: 150px;"></div>
 {#if user}
-    <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background" on:click={startNewChat}>Test Drive Chat</button>
-    {:else}
-    <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background"><a href="/login"><u>login</u></a> / <a href="/signup"><u>Register</u>&nbsp;</a>to Book Test Drive</button>
+    <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background" onclick={startNewChat}>Test Drive Chat</button>
+{:else}
+    <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background"><a href="/login"><u>login</u></a> / <a href="/signup"><u>Register</u> </a>to Book Test Drive</button>
 {/if}
 <GalleryImages {carTypes} />

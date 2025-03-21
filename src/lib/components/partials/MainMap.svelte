@@ -1,27 +1,28 @@
 <script>
-    import { onMount, afterUpdate } from 'svelte';
+    import { onMount, onDestroy } from 'svelte';
     import { countyFirestoreStore } from '$lib/firebase/models/county-firestore-store';
     import { dealerFirestoreStore } from '$lib/firebase/models/dealer-firestore-store';
     import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
     import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
     import SecondaryMainMap from '$lib/components/partials/SecondaryMainMap.svelte';
+    import { writable } from 'svelte/store';
 
-    let secondaryMapActions;
-    let button;
-    let lastOpenedPopupDealer = null;
-    let isPopupOpen = false;
-    let currentButton = null;
-    let customIcon;
-    let customShadow;
+    // Create a shared store for the selected dealer
+    const selectedDealerStore = writable(null);
+    
+    // Create a flag to prevent duplicate calls
+    let processingDealer = false;
 
+    // Initialize map variables
     let map;
     let L;
-    let dealers;
-    let dealer;
-    let countyIdToName = {};
-    let users;
+    let dealers = $state([]);
+    let countyIdToName = $state({});
+    let users = $state([]);
+    let customIcon;
 
     onMount(async () => {
+        console.log('[MainMap] Component mounted');
         if (typeof window !== 'undefined') {
             const module = await import('leaflet');
             L = module.default;
@@ -58,7 +59,6 @@
         
             // Fetch all dealers from Firestore
             dealers = await dealerFirestoreStore.getAllDealers();
-            // console.log('Dealers:', dealers);
         
             // Create an object to store the layers for each county
             const countyLayers = {};
@@ -89,7 +89,6 @@
 
             // Loop through the dealers
             for (const dealer of dealers) {
-                // console.log('Dealer:', dealer);
                 // Get the county name from the dealer's countyId
                 const countyName = countyIdToName[dealer.countyId];
                 // Find the user associated with the dealer
@@ -126,35 +125,20 @@
                     // Bind the popup to the marker
                     marker.bindPopup(popupHtml);
 
+                    // Use a closure to capture the current dealer
+                    const currentDealer = dealer;
+                    
+                    // Only add one popupopen event handler per marker
                     marker.on('popupopen', function(e) {
-                        isPopupOpen = true;
-
-                        // Add the marker to the secondary map when the popup opens
-                        secondaryMapActions.addMarker(dealer);
-
-                        let btn = document.getElementById(`btn-${dealer.id}`);
-                        if (btn) {
-                            // Remove the click event listener from the current button
-                            if (currentButton) {
-                                currentButton.removeEventListener('click', currentButton.clickEvent);
-                            }
-
-                            // Assign the new button to the current button
-                            currentButton = btn;
-
-                            // Store the click event in a variable
-                            currentButton.clickEvent = function() {
-                                // Add the marker to the secondary map when the button is clicked
-                                secondaryMapActions.addMarker(dealer);
-                            };
-
-                            // Add the click event listener to the current button
-                            currentButton.addEventListener('click', currentButton.clickEvent);
+                        console.log('[MainMap] Popup opened for dealer:', currentDealer.name);
+                        
+                        // Use the shared store to update the selected dealer
+                        if (!processingDealer) {
+                            processingDealer = true;
+                            selectedDealerStore.set(currentDealer);
+                            processingDealer = false;
                         }
                     });
-
-                    // Store the dealer of the last opened popup
-                    lastOpenedPopupDealer = dealer;
 
                     // Check if the county layer exists
                     if (countyLayers[countyName]) {
@@ -163,8 +147,8 @@
                         // Mark the county layer as having a dealer
                         countyLayers[countyName].hasDealer = true;
                     } else {
-                        console.log('No layer for countyId:', dealer.countyId);
-                    }
+                        console.log('[MainMap] No layer for countyId:', dealer.countyId);
+                    }   
                     // Check if the user's type is 'brand'
                     if (user.type === 'brand') {
                         // If the brand layer doesn't exist, create it
@@ -195,37 +179,34 @@
                         countyLayers[county].addTo(map);
                     }
                 }
-            }
+            } 
             // Create an object to store the grouped layers
-        let groupedLayers = {
-            "Brands": {},
-            "Counties": {}
-        };
+            let groupedLayers = {
+                "Brands": {},
+                "Counties": {}
+            };
 
-        // Loop through the brand layers and add them to the grouped layers
-        for (const brand in brandLayers) {
-            groupedLayers["Brands"][brand] = brandLayers[brand];
-        }
-
-        // Loop through the county layers and add them to the grouped layers
-        for (const county in countyLayers) {
-            // Only add the county layer to the grouped layers if it has a dealer
-            if (countyLayers[county].hasDealer) {
-                groupedLayers["Counties"][county] = countyLayers[county];
+            // Loop through the brand layers and add them to the grouped layers
+            for (const brand in brandLayers) {
+                groupedLayers["Brands"][brand] = brandLayers[brand];
             }
-        }
 
-        // Create a layer control and add it to the map
-        L.control.groupedLayers(null, groupedLayers).addTo(map);
+            // Loop through the county layers and add them to the grouped layers
+            for (const county in countyLayers) {
+                // Only add the county layer to the grouped layers if it has a dealer
+                if (countyLayers[county].hasDealer) {
+                    groupedLayers["Counties"][county] = countyLayers[county];
+                }
+            }
+
+            // Create a layer control and add it to the map
+            L.control.groupedLayers(null, groupedLayers).addTo(map);
         }
     });
 
-    afterUpdate(() => {
-        if (button) {
-            button.addEventListener('click', function() {
-                secondaryMapActions.addMarker(dealer);
-            });
-        }
+    onDestroy(() => {
+        // Clean up any subscriptions or resources
+        selectedDealerStore.set(null);
     });
 </script>
 
@@ -244,5 +225,5 @@
     <div id="map"></div>
 </div>
 <div class="column">
-    <SecondaryMainMap bind:mapActions={secondaryMapActions} />
+    <SecondaryMainMap dealerStore={selectedDealerStore} />
 </div>
