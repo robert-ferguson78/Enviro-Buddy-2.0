@@ -8,51 +8,72 @@
     import { reviewIdStore } from '$lib/stores/reviewIdStore';
     import { getWeatherForecast } from '$lib/utils/weather';
     import Reviews from '$lib/components/partials/chat/Reviews.svelte';
-
-    export let data;
-    // dealer is a prop passed from the parent component which is mixed with the data prop
-    let dealer = (data?.props?.dealer) || { latitude: 0, longitude: 0, userId: '', name: '', brand: '', county: '', _id: '', countyId: '', image: '', phone: '', email: '', website: '', address: '', carName: '' };
-    let map;
-    let customIcon;
-    let forecast = [];
-    let dealerLat = dealer.latitude || 0;
-    let dealerLong = dealer.longitude || 0;
-
+    
+    // Using Svelte 5's $props() rune to access data from the load function
+    const { data } = $props();
+    
+    // Using $state for reactive variables
+    let dealer = $state(
+      (data?.props?.dealer) || { 
+        latitude: 0, 
+        longitude: 0, 
+        userId: '', 
+        name: '', 
+        brand: '', 
+        county: '', 
+        _id: '', 
+        countyId: '', 
+        image: '', 
+        phone: '', 
+        email: '', 
+        website: '', 
+        address: '', 
+        carName: '' 
+      }
+    );
+    let map = $state(null);
+    let customIcon = $state(null);
+    let forecast = $state([]);
+    
+    // Derived values for dealer coordinates
+    let dealerLat = $derived(dealer.latitude || 0);
+    let dealerLong = $derived(dealer.longitude || 0);
+    
     onMount(async () => {
-        const L = (await import('leaflet')).default;
-        map = L.map('map').setView([dealerLat, dealerLong], 13);
-
-        customIcon = L.icon({
-                iconUrl: '/images/map-car-marker.png',
-                shadowUrl: '/images/map-car-marker-shadow.png',
-                iconSize: [52, 60], // size of the icon
-                shadowSize: [52, 60], // size of the shadow
-                iconAnchor: [26, 60], // anchor at half width and full height to position the bottom center of the icon at the marker's location
-                shadowAnchor: [26, 60], // anchor the shadow at the same point
-                popupAnchor: [0, -60] // open the popup just above the icon
-            });
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        const marker = L.marker([dealerLat, dealerLong], {icon: customIcon}).addTo(map);
-
-        const popupContent = createPopupHTML(dealer);
-        const popup = L.popup().setContent(popupContent);
-
-        marker.bindPopup(popup).openPopup();
-
-        // Attach click event listener to the button in the popup
-        // Delay the attachment of the event listener until after the popup content is attached to the DOM
-        setTimeout(() => {
-            const button = document.querySelector('.start-chat-button');
-            button.addEventListener('click', startNewChat);
-        }, 0);
-
-        const forecastData = await getWeatherForecast(dealerLat, dealerLong, "icon");
-        const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-        forecast = forecastData.filter(day => day.date > currentTimeInSeconds).slice(0, 5);
+      const L = (await import('leaflet')).default;
+      map = L.map('map').setView([dealerLat, dealerLong], 13);
+    
+      customIcon = L.icon({
+        iconUrl: '/images/map-car-marker.png',
+        shadowUrl: '/images/map-car-marker-shadow.png',
+        iconSize: [52, 60], // size of the icon
+        shadowSize: [52, 60], // size of the shadow
+        iconAnchor: [26, 60], // anchor at half width and full height to position the bottom center of the icon at the marker's location
+        shadowAnchor: [26, 60], // anchor the shadow at the same point
+        popupAnchor: [0, -60] // open the popup just above the icon
+      });
+    
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+    
+      const marker = L.marker([dealerLat, dealerLong], {icon: customIcon}).addTo(map);
+    
+      const popupContent = createPopupHTML(dealer);
+      const popup = L.popup().setContent(popupContent);
+    
+      marker.bindPopup(popup).openPopup();
+    
+      // Attach click event listener to the button in the popup
+      // Delay the attachment of the event listener until after the popup content is attached to the DOM
+      setTimeout(() => {
+        const button = document.querySelector('.start-chat-button');
+        button.addEventListener('click', startNewChat);
+      }, 0);
+    
+      const forecastData = await getWeatherForecast(dealerLat, dealerLong, "icon");
+      const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+      forecast = forecastData.filter(day => day.date > currentTimeInSeconds).slice(0, 5);
     });
 
     function createPopupHTML(dealer) {

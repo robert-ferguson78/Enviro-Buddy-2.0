@@ -6,11 +6,11 @@ export const load = async () => {
     try {
         const dealers = await dealerFirestoreStore.getAllDealers();
 
-        // Fetch additional data for each dealer
+        // Fetch additional data for each dealer using Promise.all for parallel requests
         const dealersWithExtraInfo = await Promise.all(dealers.map(async dealer => {
-            // Fetch user data
+            // Fetch user data to get brand information
             const userData = await userFirestoreStore.getUser(dealer.userId);
-            // Fetch county data
+            // Fetch county data to get county name
             const countyData = await countyFirestoreStore.getCountyById(dealer.countyId);
 
             // Add extra data to dealer
@@ -21,11 +21,15 @@ export const load = async () => {
             };
         }));
 
-        // console.log('Dealers in load function:', dealersWithExtraInfo); // Log carTypes
+        // Verify we have data to return
         if (dealersWithExtraInfo.length > 0) {
-            const props = { dealers: dealersWithExtraInfo };
-            // console.log('Returning props from load function:', props); // Log props
-            return { props };
+            // Return data in a structured format for the page component
+            // The 'props' property will be accessible via $props() in Svelte 5
+            return { 
+            props: { 
+                dealers: dealersWithExtraInfo 
+            } 
+            };
         } else {
             throw new Error('Could not load data');
         }

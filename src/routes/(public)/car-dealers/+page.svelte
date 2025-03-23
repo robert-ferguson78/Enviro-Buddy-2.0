@@ -1,20 +1,26 @@
 <script>
     import UpdateHead from '$lib/UpdateHead.svelte';
     import { goto } from '$app/navigation'; 
-
-    export let data;
-    let dealers = (data?.props?.dealers || []);
-    let selectedBrand = '';
-    let selectedCounty = '';
-
-    // Get unique brands and counties
-    $: brands = [...new Set(dealers.map(dealer => dealer.brand))];
-    $: counties = [...new Set(dealers.map(dealer => dealer.county))];
-
-    // Filter dealers based on selected brand and county
-    $: filteredDealers = dealers.filter(dealer => 
+    
+    // Using Svelte 5's $props() rune to access data from the load function
+    const { data } = $props();
+    
+    // Using $state for reactive variables
+    let dealers = $state(data?.props?.dealers || []);
+    let selectedBrand = $state('');
+    let selectedCounty = $state('');
+    
+    // Using $derived for computed values
+    // This replaces the $: reactive declarations in Svelte 4
+    let brands = $derived([...new Set(dealers.map(dealer => dealer.brand))]);
+    let counties = $derived([...new Set(dealers.map(dealer => dealer.county))]);
+    
+    // Another $derived value for filtered dealers
+    let filteredDealers = $derived(
+      dealers.filter(dealer =>
         (selectedBrand ? dealer.brand === selectedBrand : true) &&
         (selectedCounty ? dealer.county === selectedCounty : true)
+      )
     );
 
     function selectDealer(dealerId) {
@@ -63,7 +69,7 @@
                     County: {dealer.county}<br/>
                     Car Brand: {dealer.brand}<br/>
                 </h3>
-                <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background" on:click={() => selectDealer(dealer.dealerId)}>Go to Car Dealer</button>
+                <button class="button is-normal is-fullwidth mt-3 mb-3 has-brand-green-background" onclick={() => selectDealer(dealer.dealerId)}>Go to Car Dealer</button>
             </div>
         </div>
     {/each}
