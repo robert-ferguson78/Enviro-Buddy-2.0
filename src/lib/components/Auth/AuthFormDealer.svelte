@@ -30,7 +30,7 @@
 
         // If there are errors, show an error message and return false
         if (errors.length > 0) {
-            showError(`There was an issue with registration: ${errors.join(', ')}`);
+            messageActions.showError(`There was an issue with registration: ${errors.join(', ')}`);
             return false;
         }
 
