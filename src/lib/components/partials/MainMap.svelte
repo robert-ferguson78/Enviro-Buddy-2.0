@@ -11,15 +11,15 @@
     const selectedDealerStore = writable(null);
     
     // Create a flag to prevent duplicate calls
-    let processingDealer = false;
+    let processingDealer = $state(false);
 
     // Initialize map variables
-    let map;
-    let L;
+    let map = $state(null);
+    let L = $state(null);
     let dealers = $state([]);
     let countyIdToName = $state({});
     let users = $state([]);
-    let customIcon;
+    let customIcon = $state(null);
 
     onMount(async () => {
         console.log('[MainMap] Component mounted');
@@ -207,6 +207,11 @@
     onDestroy(() => {
         // Clean up any subscriptions or resources
         selectedDealerStore.set(null);
+        
+        // Clean up map if it exists
+        if (map) {
+            map.remove();
+        }
     });
 </script>
 
