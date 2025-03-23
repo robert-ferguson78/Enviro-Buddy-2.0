@@ -5,21 +5,25 @@
   import authStore from '$lib/stores/auth.store';
   import { createEventDispatcher } from 'svelte';
 
-  let user;
+  // Use $state for reactive variables
+  let user = $state(null);
+  let county = $state("");
 
   const dispatch = createEventDispatcher();
 
-  const unsubscribe = authStore.subscribe(async value => {
-    if (value && value.isLoggedIn && value.userId) {
-      user = await userFirestoreStore.getUser(value.userId);
-      // console.log(user, 'user object'); // Log the user object
-      // console.log(user.user_id, 'user id here2');
-    } else {
-      user = null;
-    }
+  // Use $effect for subscription
+  $effect(() => {
+    const unsubscribe = authStore.subscribe(async value => {
+      if (value && value.isLoggedIn && value.userId) {
+        user = await userFirestoreStore.getUser(value.userId);
+      } else {
+        user = null;
+      }
+    });
+    
+    // Return cleanup function
+    return unsubscribe;
   });
-
-  let county = "";
 
   // Add county but check if it exists first to stop duplicste county entries
   async function createCounty() {
@@ -27,19 +31,23 @@
         try {
             const existingCounty = await countyFirestoreStore.getCheckForCounty(county, user.user_id);
             if (existingCounty) {
-                showError('County already exists!');
+                messageActions.showError('County already exists!');
             } else {
                 const newCounty = {
                     county: county,
                 };
                 const createdCounty = await countyFirestoreStore.addCounty(newCounty, user.user_id);
-                showSuccess('County successfully added!');
+                messageActions.showSuccess('County successfully added!');
+                county = ""; // Reset the form
                 dispatch('add');
             }
-        } catch (error) {
-            showError('Error adding county!');
+          } catch (error) {
+            console.error('Error adding county:', error);
+            messageActions.showError('Error adding county!');
+          }
+        } else {
+          messageActions.showError('Please select a county!');
         }
-    }
   }
 </script>
 
