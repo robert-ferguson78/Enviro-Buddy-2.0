@@ -5,23 +5,32 @@
   import authStore from '$lib/stores/auth.store';
   import { createEventDispatcher } from 'svelte';
 
-  let user;
-  let carName = '';
-  let carRange = '';
-  let carType = '';
-  let image;
+  // Use $state for reactive variables
+  let user = $state(null);
+  let carName = $state('');
+  let carRange = $state('');
+  let carType = $state('');
+  let image = $state(null);
+
 
   let defaultImage = '/images/enviro-buddy-image-preview.jpg';
-  let additionalImages = [];
+  let additionalImages = $state([]);
+  let additionalImagePreviews = $state([]);
 
   const dispatch = createEventDispatcher();
 
-  const unsubscribe = authStore.subscribe(async value => {
-    if (value && value.isLoggedIn && value.userId) {
-      user = await userFirestoreStore.getUser(value.userId);
-    } else {
-      user = null;
-    }
+  // Use $effect for subscription
+  $effect(() => {
+    const unsubscribe = authStore.subscribe(async value => {
+      if (value && value.isLoggedIn && value.userId) {
+        user = await userFirestoreStore.getUser(value.userId);
+      } else {
+        user = null;
+      }
+    });
+    
+    // Return cleanup function
+    return unsubscribe;
   });
 
   async function uploadVehicle(event) {
@@ -45,36 +54,43 @@
     // Add the car type to the Firestore database
     try {
       await carTypeFirestoreStore.createCarType(carTypeObject);
-      showSuccess('Car added sucessfully!');
-      dispatch('add'); // Dispatch 'add' event here
-    } catch (error) {
-      console.error('Error adding car type:', error);
-      showError('Car not added, please contact support!');
-    }
+        messageActions.showSuccess('Car added sucessfully!');
+        // console.log('Dispatching add event');
+        dispatch('add'); // Dispatch 'add' event here
+        
+        // Reset form fields after successful upload
+        carName = '';
+        carRange = '';
+        carType = '';
+        image = null;
+        additionalImages = [];
+        additionalImagePreviews = [];
+      } catch (error) {
+        console.error('Error adding car type:', error);
+        messageActions.showError('Car not added, please contact support!');
+      }
 
-    console.log({ carName, carRange, carType, image, additionalImages, userId: user.user_id });
+    // console.log({ carName, carRange, carType, image, additionalImages, userId: user.user_id });
   }
 
   // Function to handle the change event of the main image file input
   function handleFileChange(event) {
-    image = event.target.files[0]; // Get the first file from the file input and assign it to the image variable
-    let preview = document.getElementById('preview'); // Get the image element for previewing the main image
-    preview.src = URL.createObjectURL(image); // Create a URL representing the selected file and assign it to the src attribute of the preview image
+    image = event.target.files[0]; // Get the first file from the file input
   }
 
   // Function to handle the change event of the additional images file input
   function handleAdditionalFilesChange(event) {
-    additionalImages = []; // Reset the additionalImages array
-    additionalImages = Array.from(event.target.files); // Get all files from the file input and assign them to the additionalImages array
-    additionalImages.forEach((image, index) => { // For each additional image
-      let preview = document.getElementById(`additional-preview-${index}`); // Get the image element for previewing the additional image
-      preview.src = URL.createObjectURL(image); // Create a URL representing the selected file and assign it to the src attribute of the preview image
-    });
+    // Get all files from the file input
+    additionalImages = Array.from(event.target.files);
+    
+    // Create preview URLs for each image
+    additionalImagePreviews = additionalImages.map(file => URL.createObjectURL(file));
   }
 </script>
 
+<!-- refcatored from 'on:submit|preventDefault' to 'onsubmit' with preventDefault in the handler and similar -->
 <h1 class="title">Upload Electric Vehicle</h1>
-<form id="upload-form" on:submit|preventDefault={uploadVehicle}>
+<form id="upload-form" onsubmit={uploadVehicle}>
   <div class="columns">
     <div class="column is-two-third">
       <div class="control">
@@ -101,7 +117,7 @@
       <div class="control pt-5">
         <div class="file has-name">
           <label class="file-label">
-            <input class="file-input" type="file" name="image" on:change={handleFileChange}>
+            <input class="file-input" type="file" name="image" onchange={handleFileChange}>
             <span class="file-cta">
               <span class="file-icon">
                 <i class="fas fa-upload"></i>
@@ -127,7 +143,7 @@
   <div class="control pt-5">
     <div class="file has-name">
       <label class="file-label">
-        <input class="file-input" type="file" name="additionalImages" on:change={handleAdditionalFilesChange} multiple>
+        <input class="file-input" type="file" name="additionalImages" onchange={handleAdditionalFilesChange} multiple>
         <span class="file-cta">
           <span class="file-icon">
             <i class="fas fa-upload"></i>

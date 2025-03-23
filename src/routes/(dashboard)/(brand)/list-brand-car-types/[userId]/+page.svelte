@@ -2,29 +2,82 @@
   import UpdateHead from '$lib/UpdateHead.svelte';
   import AddCarType from './addCarType.svelte';
   import { carTypeFirestoreStore } from '$lib/firebase/models/car-type-firestore-store';
-  export let data;
-  let carTypes = data?.props?.carTypes || [];
+  import { messageActions } from '$lib/stores/messages.store.svelte';
 
-  carTypes = carTypes.map(carType => ({
-    ...carType, 
-    isEditing: false, 
-    imageFile: null, 
-    additionalImagesFiles: [], 
-    additionalImagesPreviews: carType.additionalImages || [] // Initialize with original images
-  }));
-  
-  function addCarType() {
-      // console.log('addCarType function called');
-      setTimeout(() => {
-          location.reload();
-      }, 1000);
+  // Convert to props
+  let { data } = $props();
+
+  // Use state for carTypes
+  let carTypes = $state([]);
+
+// Function to load car types
+async function loadCarTypes() {
+  // console.log('loadCarTypes function called');
+  try {
+    // Assuming data.props.userId is available
+    const userId = data?.props?.userId;
+    // console.log('User ID for loading car types:', userId);
+    if (userId) {
+      // console.log('Fetching car types for user ID:', userId);
+      const fetchedCarTypes = await carTypeFirestoreStore.getCarTypesByBrandId(userId);
+      // console.log('Fetched car types:', fetchedCarTypes);
+
+      // Map the fetched car types to include UI state properties
+      const mappedCarTypes = fetchedCarTypes.map(carType => ({
+        ...carType,
+        isEditing: false,
+        imageFile: null,
+        additionalImagesFiles: [],
+        additionalImagesPreviews: carType.additionalImages || []
+      }));
+
+      // console.log('Mapped car types:', mappedCarTypes);
+      
+      // Update the reactive state variable
+      carTypes = mappedCarTypes;
+      // console.log('carTypes state updated:', carTypes);
+    } else {
+      console.error('No user ID available for loading car types');
+    }
+  } catch (error) {
+    // console.error('Error loading car types:', error);
+    throw error; // Re-throw to be caught by the caller
   }
+}
+
+// Initialize carTypes with data
+$effect(() => {
+  // First create the array without $state
+  const mappedCarTypes = (data?.props?.carTypes || []).map(carType => ({
+    ...carType,
+    isEditing: false,
+    imageFile: null,
+    additionalImagesFiles: [],
+    additionalImagesPreviews: carType.additionalImages || []
+  }));
+
+  // Then assign to the reactive state variable
+  carTypes = mappedCarTypes;
+});
+
+// Function called when a new car type is added
+async function addCarType() {
+  // changed reloading the page with fetching the updated car types instead
+  await loadCarTypes();
+  messageActions.showSuccess('Car added successfully!');
+}
 
   async function deleteCarType(id) {
-      // console.log('deleteCarType function called with id:', id);
-      await carTypeFirestoreStore.deleteCarTypeById(id);
-      // console.log('Car type deleted');
-      location.reload();
+      try {
+        // console.log('deleteCarType function called with id:', id);
+        await carTypeFirestoreStore.deleteCarTypeById(id);
+        // Instead of reloading the page, fetch the updated car types
+        await loadCarTypes();
+        messageActions.showSuccess('Car type deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting car type:', error);
+        messageActions.showError('Failed to delete car type: ' + error.message);
+      }
   }
 
   async function saveCarType(id, updatedCarType) {
@@ -32,7 +85,8 @@
       const imageFile = updatedCarType.imageFile;
       const additionalImagesFiles = updatedCarType.additionalImagesFiles;
 
-      // Remove the imageFile, additionalImagesFiles and isEditing properties
+      // Create a clean copy without UI state properties
+      const cleanCarType = { ...updatedCarType };
       delete updatedCarType.imageFile;
       delete updatedCarType.additionalImagesFiles;
       delete updatedCarType.isEditing;
@@ -44,13 +98,15 @@
       const additionalImageFiles = Array.isArray(additionalImagesFiles) ? [...additionalImagesFiles] : [];
 
       // Update the car type in Firestore
-      await carTypeFirestoreStore.updateCarType(id, updatedCarType, imageFiles, additionalImageFiles);
-      location.reload();
-  }
+      await carTypeFirestoreStore.updateCarType(id, cleanCarType, imageFiles, additionalImageFiles);
+      
+      // Instead of reloading the page, fetch the updated car types
+      await loadCarTypes();
+      messageActions.showSuccess('Car type updated successfully!');
+}
 
   function toggleEdit(carType) {
       carType.isEditing = !carType.isEditing;
-      carTypes = carTypes.slice();
   }
 
   function handleImageChange(event, carType) {
@@ -65,8 +121,8 @@
   function handleAdditionalFilesChange(event, carType) {
     // Replace old image files with new ones
     carType.additionalImagesFiles = Array.from(event.target.files);
-    carType.additionalImagesPreviews = carType.additionalImagesFiles.map(file => URL.createObjectURL(file));
-    carTypes = carTypes.slice(); // Add this line to trigger reactivity
+    carType.additionalImagesPreviews = carType.additionalImagesFiles.map((file) => URL.createObjectURL(file));
+    // No need for carTypes = carTypes.slice() in Svelte 5
   }
 </script>
 
@@ -85,14 +141,14 @@
           <h5>Edit Car Type<br/><input bind:value={carType.carType} /></h5>
           <h5>Edit Car Range<br/><input bind:value={carType.carRange} /></h5>
           <h6>Edit Image</h6>
-          <input type="file" accept="image/*" on:change={(event) => handleImageChange(event, carType)} />
+          <input type="file" accept="image/*" onchange={(event) => handleImageChange(event, carType)} />
           {#if carType.image}
               <img id={`preview-${carType.id}`} src={carType.image}/>
           {/if}
           <div class="control pt-5">
             <div class="file has-name">
               <label class="file-label">
-                <input class="file-input" type="file" name="additionalImages" on:change={(event) => handleAdditionalFilesChange(event, carType)} multiple>
+                <input class="file-input" type="file" name="additionalImages" onchange={(event) => handleAdditionalFilesChange(event, carType)} multiple/>
                 <span class="file-cta">
                   <span class="file-icon">
                     <i class="fas fa-upload"></i>
@@ -116,8 +172,8 @@
               </div>
             </div>
           </div>
-          <button class="button is-fullwidth has-brand-green-background" on:click={() => saveCarType(carType.id, carType)}>Save</button>
-          <button class="button is-fullwidth info" on:click={() => toggleEdit(carType)}>Cancel</button>
+          <button class="button is-fullwidth has-brand-green-background" onclick={() => saveCarType(carType.id, carType)}>Save</button>
+          <button class="button is-fullwidth info" onclick={() => toggleEdit(carType)}>Cancel</button>
       </div>
     </div>
       {:else}
@@ -126,15 +182,15 @@
               <h2 class="title">
                   {carType.carName}
               </h2>
-              <img src={carType.image} alt={carType.carName}>
+              <img src={carType.image} alt={carType.carName}/>
               <h3 class="subtitle">
                   Car Type: {carType.carType}<br/>
                   Car Range: {carType.carRange}
               </h3>
-              <button class="button is-fullwidth has-brand-green-background" on:click={() => toggleEdit(carType)}>
+              <button class="button is-fullwidth has-brand-green-background" onclick={() => toggleEdit(carType)}>
                 <i class="fa-sharp fa-solid fa-location-pen"></i><span class="pl-3">Edit</span>
               </button>
-              <button class="button is-fullwidth has-deep-red-background" on:click={() => deleteCarType(carType.id)}>
+              <button class="button is-fullwidth has-deep-red-background" onclick={() => deleteCarType(carType.id)}>
                   <i class="fa-solid fa-trash-xmark"></i><span class="pl-3">Delete</span>
               </button>
           </div>

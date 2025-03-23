@@ -1,13 +1,19 @@
 <script>
   import UpdateHead from '$lib/UpdateHead.svelte';
   import authStore from '$lib/stores/auth.store';
-
-  let userId;
-
-  // Subscribe to the authStore
-  // When the authStore's value changes, update the userId variable
-  const unsubscribe = authStore.subscribe(value => {
-    userId = value.userId;
+  
+  // Use $state for reactive variables
+  let userId = $state(null);
+  
+  // Convert subscription to $effect
+  $effect(() => {
+    // Subscribe to the authStore
+    const unsubscribe = authStore.subscribe(value => {
+      userId = value.userId;
+    });
+    
+    // Return cleanup function
+    return unsubscribe;
   });
 </script>
 
