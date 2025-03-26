@@ -56,7 +56,7 @@
             "wltp_range_km": 404.76,
             "weather_ranges": {
                 "cold": 313.72,
-                "mild": 403.8,
+                "mild": 402.84,
                 "warm": 376.83
             },
             "total_charge_time_minutes": 25.03,
@@ -118,7 +118,7 @@
             "wltp_range_km": 420.79,
             "weather_ranges": {
                 "cold": 325.95,
-                "mild": 419.75,
+                "mild": 418.72,
                 "warm": 391.57
             },
             "total_charge_time_minutes": 25.03,
@@ -180,7 +180,7 @@
             "wltp_range_km": 295.45,
             "weather_ranges": {
                 "cold": 228.33,
-                "mild": 294.62,
+                "mild": 293.79,
                 "warm": 274.46
             },
             "total_charge_time_minutes": 40.58,
@@ -250,7 +250,7 @@
             "wltp_range_km": 405.26,
             "weather_ranges": {
                 "cold": 313.61,
-                "mild": 404.2,
+                "mild": 403.14,
                 "warm": 376.84
             },
             "total_charge_time_minutes": 60.63,
@@ -312,7 +312,7 @@
             "wltp_range_km": 285.71,
             "weather_ranges": {
                 "cold": 220.93,
-                "mild": 284.93,
+                "mild": 284.15,
                 "warm": 265.53
             },
             "total_charge_time_minutes": 40.58,
@@ -386,7 +386,7 @@
             "wltp_range_km": 409.57,
             "weather_ranges": {
                 "cold": 316.89,
-                "mild": 408.49,
+                "mild": 407.41,
                 "warm": 380.8
             },
             "total_charge_time_minutes": 65.9,
@@ -448,7 +448,7 @@
             "wltp_range_km": 420.77,
             "weather_ranges": {
                 "cold": 325.4,
-                "mild": 419.62,
+                "mild": 418.48,
                 "warm": 391.07
             },
             "total_charge_time_minutes": 44.36,
@@ -522,7 +522,7 @@
             "wltp_range_km": 390.86,
             "weather_ranges": {
                 "cold": 302.64,
-                "mild": 389.87,
+                "mild": 388.89,
                 "warm": 363.61
             },
             "total_charge_time_minutes": 64.95,
@@ -584,7 +584,7 @@
             "wltp_range_km": 479.29,
             "weather_ranges": {
                 "cold": 371.15,
-                "mild": 478.09,
+                "mild": 476.88,
                 "warm": 445.91
             },
             "total_charge_time_minutes": 28.79,
@@ -646,7 +646,7 @@
             "wltp_range_km": 460.68,
             "weather_ranges": {
                 "cold": 356.96,
-                "mild": 459.56,
+                "mild": 458.45,
                 "warm": 428.79
             },
             "total_charge_time_minutes": 27.74,
@@ -708,7 +708,7 @@
             "wltp_range_km": 425.84,
             "weather_ranges": {
                 "cold": 330.03,
-                "mild": 424.82,
+                "mild": 423.81,
                 "warm": 396.43
             },
             "total_charge_time_minutes": 44.82,
@@ -770,7 +770,7 @@
             "wltp_range_km": 504.76,
             "weather_ranges": {
                 "cold": 391.23,
-                "mild": 503.56,
+                "mild": 502.37,
                 "warm": 469.93
             },
             "total_charge_time_minutes": 49.35,
@@ -832,7 +832,7 @@
             "wltp_range_km": 524.75,
             "weather_ranges": {
                 "cold": 406.48,
-                "mild": 523.46,
+                "mild": 522.17,
                 "warm": 488.32
             },
             "total_charge_time_minutes": 49.35,
@@ -894,7 +894,7 @@
             "wltp_range_km": 445.54,
             "weather_ranges": {
                 "cold": 345.4,
-                "mild": 444.5,
+                "mild": 443.46,
                 "warm": 414.86
             },
             "total_charge_time_minutes": 27.74,
@@ -972,7 +972,7 @@
             "wltp_range_km": 286.34,
             "weather_ranges": {
                 "cold": 222.19,
-                "mild": 285.71,
+                "mild": 285.09,
                 "warm": 266.81
             },
             "total_charge_time_minutes": 45.07,
@@ -1050,7 +1050,7 @@
             "wltp_range_km": 286.34,
             "weather_ranges": {
                 "cold": 222.19,
-                "mild": 285.71,
+                "mild": 285.09,
                 "warm": 266.81
             },
             "total_charge_time_minutes": 45.07,
@@ -1124,7 +1124,7 @@
             "wltp_range_km": 369.66,
             "weather_ranges": {
                 "cold": 286.96,
-                "mild": 368.87,
+                "mild": 368.09,
                 "warm": 344.55
             },
             "total_charge_time_minutes": 43.97,
@@ -1198,7 +1198,7 @@
             "wltp_range_km": 369.66,
             "weather_ranges": {
                 "cold": 286.96,
-                "mild": 368.87,
+                "mild": 368.09,
                 "warm": 344.55
             },
             "total_charge_time_minutes": 43.97,
@@ -1276,7 +1276,7 @@
             "wltp_range_km": 351.85,
             "weather_ranges": {
                 "cold": 273.64,
-                "mild": 351.2,
+                "mild": 350.55,
                 "warm": 328.4
             },
             "total_charge_time_minutes": 69.14,
@@ -1350,7 +1350,7 @@
             "wltp_range_km": 320.37,
             "weather_ranges": {
                 "cold": 249.15,
-                "mild": 319.78,
+                "mild": 319.19,
                 "warm": 299.02
             },
             "total_charge_time_minutes": 57.81,
@@ -1436,7 +1436,7 @@
             "wltp_range_km": 246.1,
             "weather_ranges": {
                 "cold": 189.7,
-                "mild": 245.31,
+                "mild": 244.52,
                 "warm": 228.17
             },
             "total_charge_time_minutes": 57.44,
@@ -1498,7 +1498,7 @@
             "wltp_range_km": 235.4,
             "weather_ranges": {
                 "cold": 181.62,
-                "mild": 234.67,
+                "mild": 233.95,
                 "warm": 218.4
             },
             "total_charge_time_minutes": 56.84,
@@ -1568,7 +1568,7 @@
             "wltp_range_km": 129.66,
             "weather_ranges": {
                 "cold": 99.81,
-                "mild": 129.21,
+                "mild": 128.77,
                 "warm": 120.09
             },
             "total_charge_time_minutes": 35.72,
@@ -1634,7 +1634,7 @@
             "wltp_range_km": 170.0,
             "weather_ranges": {
                 "cold": 131.14,
-                "mild": 169.47,
+                "mild": 168.94,
                 "warm": 157.7
             },
             "total_charge_time_minutes": 43.03,
@@ -1704,7 +1704,7 @@
             "wltp_range_km": 235.4,
             "weather_ranges": {
                 "cold": 181.62,
-                "mild": 234.67,
+                "mild": 233.95,
                 "warm": 218.4
             },
             "total_charge_time_minutes": 68.67,
@@ -1766,7 +1766,7 @@
             "wltp_range_km": 233.95,
             "weather_ranges": {
                 "cold": 180.52,
-                "mild": 233.23,
+                "mild": 232.52,
                 "warm": 217.07
             },
             "total_charge_time_minutes": 56.45,
@@ -1836,7 +1836,7 @@
             "wltp_range_km": 168.94,
             "weather_ranges": {
                 "cold": 130.34,
-                "mild": 168.42,
+                "mild": 167.9,
                 "warm": 156.74
             },
             "total_charge_time_minutes": 49.28,
@@ -1906,7 +1906,7 @@
             "wltp_range_km": 168.94,
             "weather_ranges": {
                 "cold": 130.34,
-                "mild": 168.42,
+                "mild": 167.9,
                 "warm": 156.74
             },
             "total_charge_time_minutes": 49.28,
@@ -1968,7 +1968,7 @@
             "wltp_range_km": 398.81,
             "weather_ranges": {
                 "cold": 307.94,
-                "mild": 397.63,
+                "mild": 396.45,
                 "warm": 370.23
             },
             "total_charge_time_minutes": 29.16,
@@ -2030,7 +2030,7 @@
             "wltp_range_km": 469.19,
             "weather_ranges": {
                 "cold": 362.44,
-                "mild": 467.83,
+                "mild": 466.47,
                 "warm": 435.71
             },
             "total_charge_time_minutes": 30.63,
@@ -2092,7 +2092,7 @@
             "wltp_range_km": 511.06,
             "weather_ranges": {
                 "cold": 395.77,
-                "mild": 509.77,
+                "mild": 508.5,
                 "warm": 475.49
             },
             "total_charge_time_minutes": 40.92,
@@ -2154,7 +2154,7 @@
             "wltp_range_km": 355.49,
             "weather_ranges": {
                 "cold": 274.89,
-                "mild": 354.52,
+                "mild": 353.55,
                 "warm": 330.38
             },
             "total_charge_time_minutes": 38.67,
@@ -2224,7 +2224,7 @@
             "wltp_range_km": 400.0,
             "weather_ranges": {
                 "cold": 309.39,
-                "mild": 398.92,
+                "mild": 397.85,
                 "warm": 371.82
             },
             "total_charge_time_minutes": 44.76,
@@ -2286,7 +2286,7 @@
             "wltp_range_km": 396.77,
             "weather_ranges": {
                 "cold": 306.93,
-                "mild": 395.71,
+                "mild": 394.65,
                 "warm": 368.85
             },
             "total_charge_time_minutes": 38.38,
@@ -2348,7 +2348,7 @@
             "wltp_range_km": 319.15,
             "weather_ranges": {
                 "cold": 246.93,
-                "mild": 318.3,
+                "mild": 317.46,
                 "warm": 296.73
             },
             "total_charge_time_minutes": 52.26,
@@ -2410,7 +2410,7 @@
             "wltp_range_km": 339.89,
             "weather_ranges": {
                 "cold": 262.72,
-                "mild": 338.94,
+                "mild": 337.99,
                 "warm": 315.78
             },
             "total_charge_time_minutes": 52.7,
@@ -2472,7 +2472,7 @@
             "wltp_range_km": 255.11,
             "weather_ranges": {
                 "cold": 197.15,
-                "mild": 254.39,
+                "mild": 253.67,
                 "warm": 236.98
             },
             "total_charge_time_minutes": 57.39,
@@ -2534,7 +2534,7 @@
             "wltp_range_km": 255.11,
             "weather_ranges": {
                 "cold": 197.15,
-                "mild": 254.39,
+                "mild": 253.67,
                 "warm": 236.98
             },
             "total_charge_time_minutes": 57.39,
@@ -2596,7 +2596,7 @@
             "wltp_range_km": 466.29,
             "weather_ranges": {
                 "cold": 360.43,
-                "mild": 464.99,
+                "mild": 463.69,
                 "warm": 433.22
             },
             "total_charge_time_minutes": 53.61,
@@ -2658,7 +2658,7 @@
             "wltp_range_km": 491.07,
             "weather_ranges": {
                 "cold": 379.18,
-                "mild": 489.61,
+                "mild": 488.17,
                 "warm": 455.88
             },
             "total_charge_time_minutes": 42.9,
@@ -2720,7 +2720,7 @@
             "wltp_range_km": 500.0,
             "weather_ranges": {
                 "cold": 385.94,
-                "mild": 498.49,
+                "mild": 496.99,
                 "warm": 464.05
             },
             "total_charge_time_minutes": 42.9,
@@ -2782,7 +2782,7 @@
             "wltp_range_km": 350.0,
             "weather_ranges": {
                 "cold": 271.79,
-                "mild": 349.27,
+                "mild": 348.55,
                 "warm": 326.31
             },
             "total_charge_time_minutes": 54.83,
@@ -2844,7 +2844,7 @@
             "wltp_range_km": 274.39,
             "weather_ranges": {
                 "cold": 211.77,
-                "mild": 273.56,
+                "mild": 272.73,
                 "warm": 254.64
             },
             "total_charge_time_minutes": 35.12,
@@ -2914,7 +2914,7 @@
             "wltp_range_km": 349.4,
             "weather_ranges": {
                 "cold": 269.72,
-                "mild": 348.35,
+                "mild": 347.31,
                 "warm": 324.3
             },
             "total_charge_time_minutes": 57.39,
@@ -2984,7 +2984,7 @@
             "wltp_range_km": 345.24,
             "weather_ranges": {
                 "cold": 266.57,
-                "mild": 344.21,
+                "mild": 343.2,
                 "warm": 320.5
             },
             "total_charge_time_minutes": 57.39,
@@ -3054,7 +3054,7 @@
             "wltp_range_km": 450.29,
             "weather_ranges": {
                 "cold": 347.81,
-                "mild": 448.98,
+                "mild": 447.67,
                 "warm": 418.13
             },
             "total_charge_time_minutes": 60.63,
@@ -3116,7 +3116,7 @@
             "wltp_range_km": 450.29,
             "weather_ranges": {
                 "cold": 347.81,
-                "mild": 448.98,
+                "mild": 447.67,
                 "warm": 418.13
             },
             "total_charge_time_minutes": 44.36,
@@ -3178,7 +3178,7 @@
             "wltp_range_km": 430.17,
             "weather_ranges": {
                 "cold": 332.54,
-                "mild": 428.97,
+                "mild": 427.78,
                 "warm": 399.69
             },
             "total_charge_time_minutes": 34.45,
@@ -3272,7 +3272,7 @@
             "wltp_range_km": 250.0,
             "weather_ranges": {
                 "cold": 193.35,
-                "mild": 249.32,
+                "mild": 248.65,
                 "warm": 232.37
             },
             "total_charge_time_minutes": 56.77,
@@ -3334,7 +3334,7 @@
             "wltp_range_km": 250.0,
             "weather_ranges": {
                 "cold": 193.35,
-                "mild": 249.32,
+                "mild": 248.65,
                 "warm": 232.37
             },
             "total_charge_time_minutes": 35.87,
@@ -3412,7 +3412,7 @@
             "wltp_range_km": 169.62,
             "weather_ranges": {
                 "cold": 130.81,
-                "mild": 169.09,
+                "mild": 168.55,
                 "warm": 157.32
             },
             "total_charge_time_minutes": 73.72,
@@ -3474,7 +3474,7 @@
             "wltp_range_km": 157.78,
             "weather_ranges": {
                 "cold": 121.27,
-                "mild": 157.2,
+                "mild": 156.62,
                 "warm": 145.96
             },
             "total_charge_time_minutes": 40.3,
@@ -3540,7 +3540,7 @@
             "wltp_range_km": 134.81,
             "weather_ranges": {
                 "cold": 103.97,
-                "mild": 134.38,
+                "mild": 133.96,
                 "warm": 125.04
             },
             "total_charge_time_minutes": 31.7,
@@ -3630,7 +3630,7 @@
             "wltp_range_km": 234.59,
             "weather_ranges": {
                 "cold": 180.94,
-                "mild": 233.86,
+                "mild": 233.12,
                 "warm": 217.6
             },
             "total_charge_time_minutes": 56.81,
@@ -3692,7 +3692,7 @@
             "wltp_range_km": 304.19,
             "weather_ranges": {
                 "cold": 234.85,
-                "mild": 303.28,
+                "mild": 302.38,
                 "warm": 282.37
             },
             "total_charge_time_minutes": 39.13,
@@ -3754,7 +3754,7 @@
             "wltp_range_km": 204.27,
             "weather_ranges": {
                 "cold": 157.65,
-                "mild": 203.65,
+                "mild": 203.03,
                 "warm": 189.56
             },
             "total_charge_time_minutes": 51.24,
@@ -3796,7 +3796,7 @@
             "wltp_range_km": 140.24,
             "weather_ranges": {
                 "cold": 108.24,
-                "mild": 139.82,
+                "mild": 139.39,
                 "warm": 130.15
             }
         },
@@ -3864,7 +3864,7 @@
             "wltp_range_km": 391.06,
             "weather_ranges": {
                 "cold": 302.31,
-                "mild": 389.97,
+                "mild": 388.89,
                 "warm": 363.35
             },
             "total_charge_time_minutes": 74.21,
@@ -3934,7 +3934,7 @@
             "wltp_range_km": 486.19,
             "weather_ranges": {
                 "cold": 375.92,
-                "mild": 484.85,
+                "mild": 483.52,
                 "warm": 451.81
             },
             "total_charge_time_minutes": 57.55,
@@ -4004,7 +4004,7 @@
             "wltp_range_km": 440.0,
             "weather_ranges": {
                 "cold": 340.77,
-                "mild": 438.9,
+                "mild": 437.81,
                 "warm": 409.4
             },
             "total_charge_time_minutes": 57.55,
@@ -4074,7 +4074,7 @@
             "wltp_range_km": 424.24,
             "weather_ranges": {
                 "cold": 327.46,
-                "mild": 422.96,
+                "mild": 421.69,
                 "warm": 393.74
             },
             "total_charge_time_minutes": 74.21,
@@ -4144,7 +4144,7 @@
             "wltp_range_km": 533.33,
             "weather_ranges": {
                 "cold": 411.67,
-                "mild": 531.72,
+                "mild": 530.12,
                 "warm": 494.98
             },
             "total_charge_time_minutes": 57.55,
@@ -4230,7 +4230,7 @@
             "wltp_range_km": 400.0,
             "weather_ranges": {
                 "cold": 309.39,
-                "mild": 398.92,
+                "mild": 397.85,
                 "warm": 371.82
             },
             "total_charge_time_minutes": 34.56,
@@ -4316,7 +4316,7 @@
             "wltp_range_km": 374.23,
             "weather_ranges": {
                 "cold": 289.69,
-                "mild": 373.26,
+                "mild": 372.31,
                 "warm": 348.07
             },
             "total_charge_time_minutes": 34.41,
@@ -4378,7 +4378,7 @@
             "wltp_range_km": 295.08,
             "weather_ranges": {
                 "cold": 228.2,
-                "mild": 294.28,
+                "mild": 293.48,
                 "warm": 274.26
             },
             "total_charge_time_minutes": 24.16,
@@ -4448,7 +4448,7 @@
             "wltp_range_km": 194.44,
             "weather_ranges": {
                 "cold": 149.67,
-                "mild": 193.77,
+                "mild": 193.1,
                 "warm": 180.08
             },
             "total_charge_time_minutes": 38.64,
@@ -4534,7 +4534,7 @@
             "wltp_range_km": 250.33,
             "weather_ranges": {
                 "cold": 192.93,
-                "mild": 249.51,
+                "mild": 248.7,
                 "warm": 232.06
             },
             "total_charge_time_minutes": 92.18,
@@ -4596,7 +4596,7 @@
             "wltp_range_km": 254.55,
             "weather_ranges": {
                 "cold": 196.21,
-                "mild": 253.72,
+                "mild": 252.9,
                 "warm": 236.0
             },
             "total_charge_time_minutes": 58.38,
@@ -4658,7 +4658,7 @@
             "wltp_range_km": 254.55,
             "weather_ranges": {
                 "cold": 196.21,
-                "mild": 253.72,
+                "mild": 252.9,
                 "warm": 236.0
             },
             "total_charge_time_minutes": 59.73,
@@ -4752,7 +4752,7 @@
             "wltp_range_km": 405.06,
             "weather_ranges": {
                 "cold": 312.39,
-                "mild": 403.79,
+                "mild": 402.52,
                 "warm": 375.7
             },
             "total_charge_time_minutes": 95.14,
@@ -4846,7 +4846,7 @@
             "wltp_range_km": 405.06,
             "weather_ranges": {
                 "cold": 312.39,
-                "mild": 403.79,
+                "mild": 402.52,
                 "warm": 375.7
             },
             "total_charge_time_minutes": 95.14,
@@ -4908,7 +4908,7 @@
             "wltp_range_km": 295.35,
             "weather_ranges": {
                 "cold": 228.15,
-                "mild": 294.49,
+                "mild": 293.64,
                 "warm": 274.27
             },
             "total_charge_time_minutes": 39.13,
@@ -4970,7 +4970,7 @@
             "wltp_range_km": 418.38,
             "weather_ranges": {
                 "cold": 323.61,
-                "mild": 417.25,
+                "mild": 416.13,
                 "warm": 388.9
             },
             "total_charge_time_minutes": 24.41,
@@ -5032,7 +5032,7 @@
             "wltp_range_km": 335.26,
             "weather_ranges": {
                 "cold": 259.01,
-                "mild": 334.29,
+                "mild": 333.33,
                 "warm": 311.36
             },
             "total_charge_time_minutes": 25.95,
@@ -5094,7 +5094,7 @@
             "wltp_range_km": 424.78,
             "weather_ranges": {
                 "cold": 329.59,
-                "mild": 423.84,
+                "mild": 422.91,
                 "warm": 395.78
             },
             "total_charge_time_minutes": 35.93,
@@ -5156,7 +5156,7 @@
             "wltp_range_km": 450.7,
             "weather_ranges": {
                 "cold": 349.4,
-                "mild": 449.65,
+                "mild": 448.6,
                 "warm": 419.67
             },
             "total_charge_time_minutes": 35.93,
@@ -5218,7 +5218,7 @@
             "wltp_range_km": 414.85,
             "weather_ranges": {
                 "cold": 321.94,
-                "mild": 413.94,
+                "mild": 413.04,
                 "warm": 386.58
             },
             "total_charge_time_minutes": 31.18,
@@ -5280,7 +5280,7 @@
             "wltp_range_km": 400.0,
             "weather_ranges": {
                 "cold": 308.96,
-                "mild": 398.83,
+                "mild": 397.67,
                 "warm": 371.43
             },
             "total_charge_time_minutes": 65.27,
@@ -5342,7 +5342,7 @@
             "wltp_range_km": 153.41,
             "weather_ranges": {
                 "cold": 118.56,
-                "mild": 152.97,
+                "mild": 152.54,
                 "warm": 142.51
             },
             "total_charge_time_minutes": 41.3,
@@ -5404,7 +5404,7 @@
             "wltp_range_km": 170.45,
             "weather_ranges": {
                 "cold": 131.73,
-                "mild": 169.97,
+                "mild": 169.49,
                 "warm": 158.34
             },
             "total_charge_time_minutes": 45.89,
@@ -5466,7 +5466,7 @@
             "wltp_range_km": 239.26,
             "weather_ranges": {
                 "cold": 184.64,
-                "mild": 238.53,
+                "mild": 237.8,
                 "warm": 222.02
             },
             "total_charge_time_minutes": 59.43,
@@ -5528,7 +5528,7 @@
             "wltp_range_km": 239.26,
             "weather_ranges": {
                 "cold": 184.64,
-                "mild": 238.53,
+                "mild": 237.8,
                 "warm": 222.02
             },
             "total_charge_time_minutes": 58.08,
@@ -5622,7 +5622,7 @@
             "wltp_range_km": 369.94,
             "weather_ranges": {
                 "cold": 285.8,
-                "mild": 368.88,
+                "mild": 367.82,
                 "warm": 343.57
             },
             "total_charge_time_minutes": 95.14,
@@ -5716,7 +5716,7 @@
             "wltp_range_km": 369.94,
             "weather_ranges": {
                 "cold": 285.8,
-                "mild": 368.88,
+                "mild": 367.82,
                 "warm": 343.57
             },
             "total_charge_time_minutes": 95.14,
@@ -5778,7 +5778,7 @@
             "wltp_range_km": 229.41,
             "weather_ranges": {
                 "cold": 177.18,
-                "mild": 228.74,
+                "mild": 228.07,
                 "warm": 213.01
             },
             "total_charge_time_minutes": 59.43,
@@ -5840,7 +5840,7 @@
             "wltp_range_km": 229.41,
             "weather_ranges": {
                 "cold": 177.18,
-                "mild": 228.74,
+                "mild": 228.07,
                 "warm": 213.01
             },
             "total_charge_time_minutes": 58.08,
@@ -5934,7 +5934,7 @@
             "wltp_range_km": 365.71,
             "weather_ranges": {
                 "cold": 282.6,
-                "mild": 364.67,
+                "mild": 363.64,
                 "warm": 339.7
             },
             "total_charge_time_minutes": 95.14,
@@ -5996,7 +5996,7 @@
             "wltp_range_km": 365.71,
             "weather_ranges": {
                 "cold": 282.6,
-                "mild": 364.67,
+                "mild": 363.64,
                 "warm": 339.7
             },
             "total_charge_time_minutes": 63.36,
@@ -6066,7 +6066,7 @@
             "wltp_range_km": 179.78,
             "weather_ranges": {
                 "cold": 138.96,
-                "mild": 179.27,
+                "mild": 178.77,
                 "warm": 167.03
             },
             "total_charge_time_minutes": 71.93,
@@ -6128,7 +6128,7 @@
             "wltp_range_km": 179.5,
             "weather_ranges": {
                 "cold": 138.49,
-                "mild": 178.95,
+                "mild": 178.4,
                 "warm": 166.54
             },
             "total_charge_time_minutes": 43.04,
@@ -6190,7 +6190,7 @@
             "wltp_range_km": 112.4,
             "weather_ranges": {
                 "cold": 86.3,
-                "mild": 111.97,
+                "mild": 111.54,
                 "warm": 103.9
             },
             "total_charge_time_minutes": 22.63,
@@ -6252,7 +6252,7 @@
             "wltp_range_km": 335.11,
             "weather_ranges": {
                 "cold": 259.27,
-                "mild": 334.22,
+                "mild": 333.33,
                 "warm": 311.56
             },
             "total_charge_time_minutes": 38.02,
@@ -6314,7 +6314,7 @@
             "wltp_range_km": 443.88,
             "weather_ranges": {
                 "cold": 343.67,
-                "mild": 442.75,
+                "mild": 441.62,
                 "warm": 412.91
             },
             "total_charge_time_minutes": 50.59,
@@ -6376,7 +6376,7 @@
             "wltp_range_km": 420.29,
             "weather_ranges": {
                 "cold": 325.68,
-                "mild": 419.28,
+                "mild": 418.27,
                 "warm": 391.22
             },
             "total_charge_time_minutes": 50.59,
@@ -6438,7 +6438,7 @@
             "wltp_range_km": 384.96,
             "weather_ranges": {
                 "cold": 298.69,
-                "mild": 384.11,
+                "mild": 383.26,
                 "warm": 358.68
             },
             "total_charge_time_minutes": 50.59,
@@ -6500,7 +6500,7 @@
             "wltp_range_km": 142.01,
             "weather_ranges": {
                 "cold": 109.67,
-                "mild": 141.59,
+                "mild": 141.18,
                 "warm": 131.85
             },
             "total_charge_time_minutes": 49.98,
@@ -6562,7 +6562,7 @@
             "wltp_range_km": 142.01,
             "weather_ranges": {
                 "cold": 109.67,
-                "mild": 141.59,
+                "mild": 141.18,
                 "warm": 131.85
             },
             "total_charge_time_minutes": 49.98,
@@ -6628,7 +6628,7 @@
             "wltp_range_km": 181.82,
             "weather_ranges": {
                 "cold": 140.34,
-                "mild": 181.27,
+                "mild": 180.72,
                 "warm": 168.74
             },
             "total_charge_time_minutes": 48.84,
@@ -6694,7 +6694,7 @@
             "wltp_range_km": 181.82,
             "weather_ranges": {
                 "cold": 140.34,
-                "mild": 181.27,
+                "mild": 180.72,
                 "warm": 168.74
             },
             "total_charge_time_minutes": 48.84,
@@ -6760,7 +6760,7 @@
             "wltp_range_km": 231.71,
             "weather_ranges": {
                 "cold": 178.83,
-                "mild": 231.0,
+                "mild": 230.3,
                 "warm": 215.03
             },
             "total_charge_time_minutes": 69.32,
@@ -6822,7 +6822,7 @@
             "wltp_range_km": 360.47,
             "weather_ranges": {
                 "cold": 278.45,
-                "mild": 359.42,
+                "mild": 358.38,
                 "warm": 334.74
             },
             "total_charge_time_minutes": 48.49,
@@ -6892,7 +6892,7 @@
             "wltp_range_km": 120.0,
             "weather_ranges": {
                 "cold": 92.94,
-                "mild": 119.7,
+                "mild": 119.4,
                 "warm": 111.65
             },
             "total_charge_time_minutes": 49.56,
@@ -6962,7 +6962,7 @@
             "wltp_range_km": 120.0,
             "weather_ranges": {
                 "cold": 92.94,
-                "mild": 119.7,
+                "mild": 119.4,
                 "warm": 111.65
             },
             "total_charge_time_minutes": 49.56,
@@ -7028,7 +7028,7 @@
             "wltp_range_km": 190.0,
             "weather_ranges": {
                 "cold": 147.15,
-                "mild": 189.53,
+                "mild": 189.05,
                 "warm": 176.79
             },
             "total_charge_time_minutes": 66.24,
@@ -7110,7 +7110,7 @@
             "wltp_range_km": 277.78,
             "weather_ranges": {
                 "cold": 216.03,
-                "mild": 277.26,
+                "mild": 276.75,
                 "warm": 259.27
             },
             "total_charge_time_minutes": 81.52,
@@ -7208,7 +7208,7 @@
             "wltp_range_km": 185.19,
             "weather_ranges": {
                 "cold": 143.83,
-                "mild": 184.8,
+                "mild": 184.43,
                 "warm": 172.67
             },
             "total_charge_time_minutes": 78.66,
@@ -7306,7 +7306,7 @@
             "wltp_range_km": 185.19,
             "weather_ranges": {
                 "cold": 143.83,
-                "mild": 184.8,
+                "mild": 184.43,
                 "warm": 172.67
             },
             "total_charge_time_minutes": 78.66,
@@ -7368,7 +7368,7 @@
             "wltp_range_km": 112.4,
             "weather_ranges": {
                 "cold": 86.3,
-                "mild": 111.97,
+                "mild": 111.54,
                 "warm": 103.9
             },
             "total_charge_time_minutes": 22.63,
@@ -7430,7 +7430,7 @@
             "wltp_range_km": 109.76,
             "weather_ranges": {
                 "cold": 85.04,
-                "mild": 109.49,
+                "mild": 109.22,
                 "warm": 102.15
             },
             "total_charge_time_minutes": 35.22,
@@ -7524,7 +7524,7 @@
             "wltp_range_km": 263.89,
             "weather_ranges": {
                 "cold": 204.02,
-                "mild": 263.16,
+                "mild": 262.43,
                 "warm": 245.21
             },
             "total_charge_time_minutes": 58.62,
@@ -7586,7 +7586,7 @@
             "wltp_range_km": 270.76,
             "weather_ranges": {
                 "cold": 209.13,
-                "mild": 269.97,
+                "mild": 269.19,
                 "warm": 251.42
             },
             "total_charge_time_minutes": 35.33,
@@ -7680,7 +7680,7 @@
             "wltp_range_km": 263.89,
             "weather_ranges": {
                 "cold": 204.02,
-                "mild": 263.16,
+                "mild": 262.43,
                 "warm": 245.21
             },
             "total_charge_time_minutes": 58.62,
@@ -7774,7 +7774,7 @@
             "wltp_range_km": 279.5,
             "weather_ranges": {
                 "cold": 215.64,
-                "mild": 278.64,
+                "mild": 277.78,
                 "warm": 259.31
             },
             "total_charge_time_minutes": 55.53,
@@ -7836,7 +7836,7 @@
             "wltp_range_km": 289.38,
             "weather_ranges": {
                 "cold": 223.23,
-                "mild": 288.47,
+                "mild": 287.58,
                 "warm": 268.45
             },
             "total_charge_time_minutes": 35.33,
@@ -7930,7 +7930,7 @@
             "wltp_range_km": 279.5,
             "weather_ranges": {
                 "cold": 215.64,
-                "mild": 278.64,
+                "mild": 277.78,
                 "warm": 259.31
             },
             "total_charge_time_minutes": 55.53,
@@ -7992,7 +7992,7 @@
             "wltp_range_km": 370.56,
             "weather_ranges": {
                 "cold": 286.92,
-                "mild": 369.62,
+                "mild": 368.69,
                 "warm": 344.73
             },
             "total_charge_time_minutes": 35.65,
@@ -8054,7 +8054,7 @@
             "wltp_range_km": 505.15,
             "weather_ranges": {
                 "cold": 391.04,
-                "mild": 503.86,
+                "mild": 502.56,
                 "warm": 469.85
             },
             "total_charge_time_minutes": 47.85,
@@ -8148,7 +8148,7 @@
             "wltp_range_km": 200.0,
             "weather_ranges": {
                 "cold": 155.17,
-                "mild": 199.56,
+                "mild": 199.12,
                 "warm": 186.34
             },
             "total_charge_time_minutes": 55.53,
@@ -8238,7 +8238,7 @@
             "wltp_range_km": 394.74,
             "weather_ranges": {
                 "cold": 305.46,
-                "mild": 393.7,
+                "mild": 392.67,
                 "warm": 367.05
             },
             "total_charge_time_minutes": 90.65,
@@ -8328,7 +8328,7 @@
             "wltp_range_km": 426.14,
             "weather_ranges": {
                 "cold": 329.32,
-                "mild": 424.93,
+                "mild": 423.73,
                 "warm": 395.85
             },
             "total_charge_time_minutes": 90.65,
@@ -8390,7 +8390,7 @@
             "wltp_range_km": 385.06,
             "weather_ranges": {
                 "cold": 297.51,
-                "mild": 383.95,
+                "mild": 382.86,
                 "warm": 357.64
             },
             "total_charge_time_minutes": 39.16,
@@ -8452,7 +8452,7 @@
             "wltp_range_km": 465.35,
             "weather_ranges": {
                 "cold": 360.46,
-                "mild": 464.2,
+                "mild": 463.05,
                 "warm": 433.04
             },
             "total_charge_time_minutes": 36.21,
@@ -8514,7 +8514,7 @@
             "wltp_range_km": 494.74,
             "weather_ranges": {
                 "cold": 382.85,
-                "mild": 493.44,
+                "mild": 492.15,
                 "warm": 460.04
             },
             "total_charge_time_minutes": 36.21,
@@ -8556,7 +8556,7 @@
             "wltp_range_km": 170.1,
             "weather_ranges": {
                 "cold": 131.68,
-                "mild": 169.67,
+                "mild": 169.23,
                 "warm": 158.21
             }
         },
@@ -8616,7 +8616,7 @@
             "wltp_range_km": 245.4,
             "weather_ranges": {
                 "cold": 189.37,
-                "mild": 244.65,
+                "mild": 243.9,
                 "warm": 227.71
             },
             "total_charge_time_minutes": 34.66,
@@ -8678,7 +8678,7 @@
             "wltp_range_km": 350.88,
             "weather_ranges": {
                 "cold": 271.02,
-                "mild": 349.85,
+                "mild": 348.84,
                 "warm": 325.81
             },
             "total_charge_time_minutes": 34.89,
@@ -8740,7 +8740,7 @@
             "wltp_range_km": 340.91,
             "weather_ranges": {
                 "cold": 263.46,
-                "mild": 339.94,
+                "mild": 338.98,
                 "warm": 316.68
             },
             "total_charge_time_minutes": 34.89,
@@ -8802,7 +8802,7 @@
             "wltp_range_km": 486.03,
             "weather_ranges": {
                 "cold": 375.72,
-                "mild": 484.68,
+                "mild": 483.33,
                 "warm": 451.6
             },
             "total_charge_time_minutes": 44.15,
@@ -8844,7 +8844,7 @@
             "wltp_range_km": 130.67,
             "weather_ranges": {
                 "cold": 100.84,
-                "mild": 130.28,
+                "mild": 129.88,
                 "warm": 121.26
             }
         },
@@ -8884,7 +8884,7 @@
             "wltp_range_km": 141.94,
             "weather_ranges": {
                 "cold": 109.42,
-                "mild": 141.48,
+                "mild": 141.03,
                 "warm": 131.61
             }
         },
@@ -8924,7 +8924,7 @@
             "wltp_range_km": 250.0,
             "weather_ranges": {
                 "cold": 192.95,
-                "mild": 249.24,
+                "mild": 248.48,
                 "warm": 232.0
             }
         },
@@ -8964,7 +8964,7 @@
             "wltp_range_km": 141.94,
             "weather_ranges": {
                 "cold": 109.42,
-                "mild": 141.48,
+                "mild": 141.03,
                 "warm": 131.61
             }
         },
@@ -9004,7 +9004,7 @@
             "wltp_range_km": 254.66,
             "weather_ranges": {
                 "cold": 196.47,
-                "mild": 253.87,
+                "mild": 253.09,
                 "warm": 236.26
             }
         },
@@ -9068,7 +9068,7 @@
             "wltp_range_km": 254.66,
             "weather_ranges": {
                 "cold": 196.47,
-                "mild": 253.87,
+                "mild": 253.09,
                 "warm": 236.26
             },
             "total_charge_time_minutes": 71.96,
@@ -9134,7 +9134,7 @@
             "wltp_range_km": 315.15,
             "weather_ranges": {
                 "cold": 243.26,
-                "mild": 314.2,
+                "mild": 313.25,
                 "warm": 292.49
             },
             "total_charge_time_minutes": 91.26,
@@ -9200,7 +9200,7 @@
             "wltp_range_km": 298.85,
             "weather_ranges": {
                 "cold": 230.91,
-                "mild": 297.99,
+                "mild": 297.14,
                 "warm": 277.57
             },
             "total_charge_time_minutes": 91.26,
@@ -9266,7 +9266,7 @@
             "wltp_range_km": 194.58,
             "weather_ranges": {
                 "cold": 150.21,
-                "mild": 193.99,
+                "mild": 193.41,
                 "warm": 180.6
             },
             "total_charge_time_minutes": 100.6,
@@ -9332,7 +9332,7 @@
             "wltp_range_km": 194.58,
             "weather_ranges": {
                 "cold": 150.21,
-                "mild": 193.99,
+                "mild": 193.41,
                 "warm": 180.6
             },
             "total_charge_time_minutes": 100.6,
@@ -9394,7 +9394,7 @@
             "wltp_range_km": 278.07,
             "weather_ranges": {
                 "cold": 215.13,
-                "mild": 277.33,
+                "mild": 276.6,
                 "warm": 258.52
             },
             "total_charge_time_minutes": 79.23,
@@ -9476,7 +9476,7 @@
             "wltp_range_km": 310.16,
             "weather_ranges": {
                 "cold": 239.95,
-                "mild": 309.33,
+                "mild": 308.51,
                 "warm": 288.35
             },
             "total_charge_time_minutes": 69.21,
@@ -9542,7 +9542,7 @@
             "wltp_range_km": 310.16,
             "weather_ranges": {
                 "cold": 239.95,
-                "mild": 309.33,
+                "mild": 308.51,
                 "warm": 288.35
             },
             "total_charge_time_minutes": 89.31,
@@ -9620,7 +9620,7 @@
             "wltp_range_km": 405.26,
             "weather_ranges": {
                 "cold": 313.61,
-                "mild": 404.2,
+                "mild": 403.14,
                 "warm": 376.84
             },
             "total_charge_time_minutes": 63.27,
@@ -9686,7 +9686,7 @@
             "wltp_range_km": 405.26,
             "weather_ranges": {
                 "cold": 313.61,
-                "mild": 404.2,
+                "mild": 403.14,
                 "warm": 376.84
             },
             "total_charge_time_minutes": 118.57,
@@ -9768,7 +9768,7 @@
             "wltp_range_km": 419.71,
             "weather_ranges": {
                 "cold": 322.69,
-                "mild": 418.18,
+                "mild": 416.67,
                 "warm": 388.38
             },
             "total_charge_time_minutes": 33.88,
@@ -9835,7 +9835,7 @@
             "wltp_range_km": 459.63,
             "weather_ranges": {
                 "cold": 354.61,
-                "mild": 458.2,
+                "mild": 456.79,
                 "warm": 426.42
             },
             "total_charge_time_minutes": 46.75,
@@ -9914,7 +9914,7 @@
             "wltp_range_km": 472.05,
             "weather_ranges": {
                 "cold": 364.19,
-                "mild": 470.59,
+                "mild": 469.14,
                 "warm": 437.95
             },
             "total_charge_time_minutes": 48.86,
@@ -10000,7 +10000,7 @@
             "wltp_range_km": 503.36,
             "weather_ranges": {
                 "cold": 387.73,
-                "mild": 501.67,
+                "mild": 500.0,
                 "warm": 466.44
             },
             "total_charge_time_minutes": 35.98,
@@ -10067,7 +10067,7 @@
             "wltp_range_km": 434.13,
             "weather_ranges": {
                 "cold": 335.17,
-                "mild": 432.84,
+                "mild": 431.55,
                 "warm": 402.99
             },
             "total_charge_time_minutes": 45.8,
@@ -10126,7 +10126,7 @@
             "wltp_range_km": 401.94,
             "weather_ranges": {
                 "cold": 309.86,
-                "mild": 400.64,
+                "mild": 399.36,
                 "warm": 372.69
             },
             "total_charge_time_minutes": 40.36,
@@ -10185,7 +10185,7 @@
             "wltp_range_km": 380.79,
             "weather_ranges": {
                 "cold": 293.4,
-                "mild": 379.54,
+                "mild": 378.29,
                 "warm": 352.94
             },
             "total_charge_time_minutes": 37.25,
@@ -10252,7 +10252,7 @@
             "wltp_range_km": 326.8,
             "weather_ranges": {
                 "cold": 251.87,
-                "mild": 325.73,
+                "mild": 324.68,
                 "warm": 302.95
             },
             "total_charge_time_minutes": 34.43,
@@ -10339,7 +10339,7 @@
             "wltp_range_km": 485.21,
             "weather_ranges": {
                 "cold": 374.69,
-                "mild": 483.78,
+                "mild": 482.35,
                 "warm": 450.47
             },
             "total_charge_time_minutes": 41.64,
@@ -10407,7 +10407,7 @@
             "wltp_range_km": 516.3,
             "weather_ranges": {
                 "cold": 399.32,
-                "mild": 514.91,
+                "mild": 513.51,
                 "warm": 479.9
             },
             "total_charge_time_minutes": 93.54,
@@ -10479,7 +10479,7 @@
             "wltp_range_km": 518.52,
             "weather_ranges": {
                 "cold": 401.21,
-                "mild": 517.15,
+                "mild": 515.79,
                 "warm": 482.12
             },
             "total_charge_time_minutes": 67.37,
@@ -10543,7 +10543,7 @@
             "wltp_range_km": 344.44,
             "weather_ranges": {
                 "cold": 266.3,
-                "mild": 343.49,
+                "mild": 342.54,
                 "warm": 320.06
             },
             "total_charge_time_minutes": 39.44,
@@ -10607,7 +10607,7 @@
             "wltp_range_km": 350.28,
             "weather_ranges": {
                 "cold": 270.73,
-                "mild": 349.3,
+                "mild": 348.31,
                 "warm": 325.42
             },
             "total_charge_time_minutes": 39.44,
@@ -10671,7 +10671,7 @@
             "wltp_range_km": 362.16,
             "weather_ranges": {
                 "cold": 280.13,
-                "mild": 361.19,
+                "mild": 360.22,
                 "warm": 336.65
             },
             "total_charge_time_minutes": 51.61,
@@ -10735,7 +10735,7 @@
             "wltp_range_km": 362.16,
             "weather_ranges": {
                 "cold": 280.13,
-                "mild": 361.19,
+                "mild": 360.22,
                 "warm": 336.65
             },
             "total_charge_time_minutes": 49.89,
@@ -10799,7 +10799,7 @@
             "wltp_range_km": 353.72,
             "weather_ranges": {
                 "cold": 273.68,
-                "mild": 352.79,
+                "mild": 351.85,
                 "warm": 328.87
             },
             "total_charge_time_minutes": 42.95,
@@ -10863,7 +10863,7 @@
             "wltp_range_km": 353.72,
             "weather_ranges": {
                 "cold": 273.68,
-                "mild": 352.79,
+                "mild": 351.85,
                 "warm": 328.87
             },
             "total_charge_time_minutes": 41.71,
@@ -10927,7 +10927,7 @@
             "wltp_range_km": 391.89,
             "weather_ranges": {
                 "cold": 303.12,
-                "mild": 390.84,
+                "mild": 389.78,
                 "warm": 364.28
             },
             "total_charge_time_minutes": 46.12,
@@ -10991,7 +10991,7 @@
             "wltp_range_km": 379.58,
             "weather_ranges": {
                 "cold": 293.76,
-                "mild": 378.59,
+                "mild": 377.6,
                 "warm": 352.98
             },
             "total_charge_time_minutes": 46.12,
@@ -11059,7 +11059,7 @@
             "wltp_range_km": 397.91,
             "weather_ranges": {
                 "cold": 307.94,
-                "mild": 396.87,
+                "mild": 395.83,
                 "warm": 370.02
             },
             "total_charge_time_minutes": 74.83,
@@ -11131,7 +11131,7 @@
             "wltp_range_km": 405.76,
             "weather_ranges": {
                 "cold": 314.02,
-                "mild": 404.7,
+                "mild": 403.65,
                 "warm": 377.33
             },
             "total_charge_time_minutes": 53.28,
@@ -11199,7 +11199,7 @@
             "wltp_range_km": 445.05,
             "weather_ranges": {
                 "cold": 344.15,
-                "mild": 443.84,
+                "mild": 442.62,
                 "warm": 413.61
             },
             "total_charge_time_minutes": 79.75,
@@ -11263,7 +11263,7 @@
             "wltp_range_km": 458.79,
             "weather_ranges": {
                 "cold": 354.77,
-                "mild": 457.53,
+                "mild": 456.28,
                 "warm": 426.38
             },
             "total_charge_time_minutes": 53.12,
@@ -11335,7 +11335,7 @@
             "wltp_range_km": 348.56,
             "weather_ranges": {
                 "cold": 270.12,
-                "mild": 347.72,
+                "mild": 346.89,
                 "warm": 324.47
             },
             "total_charge_time_minutes": 49.84,
@@ -11399,7 +11399,7 @@
             "wltp_range_km": 586.42,
             "weather_ranges": {
                 "cold": 452.48,
-                "mild": 584.62,
+                "mild": 582.82,
                 "warm": 544.11
             },
             "total_charge_time_minutes": 29.72,
@@ -11471,7 +11471,7 @@
             "wltp_range_km": 500.0,
             "weather_ranges": {
                 "cold": 386.92,
-                "mild": 498.69,
+                "mild": 497.38,
                 "warm": 464.93
             },
             "total_charge_time_minutes": 65.31,
@@ -11543,7 +11543,7 @@
             "wltp_range_km": 490.0,
             "weather_ranges": {
                 "cold": 379.5,
-                "mild": 488.78,
+                "mild": 487.56,
                 "warm": 455.92
             },
             "total_charge_time_minutes": 67.37,
@@ -11607,7 +11607,7 @@
             "wltp_range_km": 423.04,
             "weather_ranges": {
                 "cold": 327.39,
-                "mild": 421.93,
+                "mild": 420.83,
                 "warm": 393.39
             },
             "total_charge_time_minutes": 52.19,
@@ -11671,7 +11671,7 @@
             "wltp_range_km": 423.04,
             "weather_ranges": {
                 "cold": 327.39,
-                "mild": 421.93,
+                "mild": 420.83,
                 "warm": 393.39
             },
             "total_charge_time_minutes": 50.68,
@@ -11743,7 +11743,7 @@
             "wltp_range_km": 450.55,
             "weather_ranges": {
                 "cold": 348.4,
-                "mild": 449.32,
+                "mild": 448.09,
                 "warm": 418.72
             },
             "total_charge_time_minutes": 56.37,
@@ -11815,7 +11815,7 @@
             "wltp_range_km": 492.23,
             "weather_ranges": {
                 "cold": 381.0,
-                "mild": 490.96,
+                "mild": 489.69,
                 "warm": 457.8
             },
             "total_charge_time_minutes": 65.31,
@@ -11879,7 +11879,7 @@
             "wltp_range_km": 558.82,
             "weather_ranges": {
                 "cold": 431.59,
-                "mild": 557.18,
+                "mild": 555.56,
                 "warm": 518.86
             },
             "total_charge_time_minutes": 29.72,
@@ -11951,7 +11951,7 @@
             "wltp_range_km": 394.02,
             "weather_ranges": {
                 "cold": 304.74,
-                "mild": 392.95,
+                "mild": 391.89,
                 "warm": 366.24
             },
             "total_charge_time_minutes": 49.84,
@@ -12019,7 +12019,7 @@
             "wltp_range_km": 500.0,
             "weather_ranges": {
                 "cold": 387.24,
-                "mild": 498.75,
+                "mild": 497.51,
                 "warm": 465.23
             },
             "total_charge_time_minutes": 98.46,
@@ -12087,7 +12087,7 @@
             "wltp_range_km": 375.0,
             "weather_ranges": {
                 "cold": 289.28,
-                "mild": 373.83,
+                "mild": 372.67,
                 "warm": 347.88
             },
             "total_charge_time_minutes": 59.08,
@@ -12155,7 +12155,7 @@
             "wltp_range_km": 375.0,
             "weather_ranges": {
                 "cold": 290.43,
-                "mild": 374.06,
+                "mild": 373.13,
                 "warm": 348.92
             },
             "total_charge_time_minutes": 73.84,
@@ -12223,7 +12223,7 @@
             "wltp_range_km": 450.0,
             "weather_ranges": {
                 "cold": 348.52,
-                "mild": 448.88,
+                "mild": 447.76,
                 "warm": 418.71
             },
             "total_charge_time_minutes": 88.61,
@@ -12291,7 +12291,7 @@
             "wltp_range_km": 500.0,
             "weather_ranges": {
                 "cold": 387.24,
-                "mild": 498.75,
+                "mild": 497.51,
                 "warm": 465.23
             },
             "total_charge_time_minutes": 98.46,
@@ -12359,7 +12359,7 @@
             "wltp_range_km": 454.55,
             "weather_ranges": {
                 "cold": 352.55,
-                "mild": 453.51,
+                "mild": 452.49,
                 "warm": 423.4
             },
             "total_charge_time_minutes": 98.46,
@@ -12427,7 +12427,7 @@
             "wltp_range_km": 428.57,
             "weather_ranges": {
                 "cold": 332.18,
-                "mild": 427.55,
+                "mild": 426.54,
                 "warm": 398.99
             },
             "total_charge_time_minutes": 88.61,
@@ -12495,7 +12495,7 @@
             "wltp_range_km": 454.55,
             "weather_ranges": {
                 "cold": 352.55,
-                "mild": 453.51,
+                "mild": 452.49,
                 "warm": 423.4
             },
             "total_charge_time_minutes": 98.46,
@@ -12566,7 +12566,7 @@
             "wltp_range_km": 402.54,
             "weather_ranges": {
                 "cold": 312.52,
-                "mild": 401.69,
+                "mild": 400.84,
                 "warm": 375.23
             },
             "total_charge_time_minutes": 70.5,
@@ -12634,7 +12634,7 @@
             "wltp_range_km": 375.0,
             "weather_ranges": {
                 "cold": 290.43,
-                "mild": 374.06,
+                "mild": 373.13,
                 "warm": 348.92
             },
             "total_charge_time_minutes": 73.84,
@@ -12705,7 +12705,7 @@
             "wltp_range_km": 335.65,
             "weather_ranges": {
                 "cold": 260.26,
-                "mild": 334.87,
+                "mild": 334.1,
                 "warm": 312.58
             },
             "total_charge_time_minutes": 53.81,
@@ -12776,7 +12776,7 @@
             "wltp_range_km": 420.35,
             "weather_ranges": {
                 "cold": 326.16,
-                "mild": 419.43,
+                "mild": 418.5,
                 "warm": 391.66
             },
             "total_charge_time_minutes": 70.5,
@@ -12838,7 +12838,7 @@
             "wltp_range_km": 350.61,
             "weather_ranges": {
                 "cold": 270.6,
-                "mild": 349.54,
+                "mild": 348.48,
                 "warm": 325.37
             },
             "total_charge_time_minutes": 26.46,
@@ -12906,7 +12906,7 @@
             "wltp_range_km": 503.47,
             "weather_ranges": {
                 "cold": 387.53,
-                "mild": 501.73,
+                "mild": 500.0,
                 "warm": 466.28
             },
             "total_charge_time_minutes": 37.06,
@@ -12974,7 +12974,7 @@
             "wltp_range_km": 419.89,
             "weather_ranges": {
                 "cold": 324.66,
-                "mild": 418.73,
+                "mild": 417.58,
                 "warm": 390.2
             },
             "total_charge_time_minutes": 38.85,
@@ -13037,7 +13037,7 @@
             "wltp_range_km": 970.87,
             "weather_ranges": {
                 "cold": 752.28,
-                "mild": 968.52,
+                "mild": 966.18,
                 "warm": 903.67
             },
             "total_charge_time_minutes": 62.09,
@@ -13131,7 +13131,7 @@
             "wltp_range_km": 200.0,
             "weather_ranges": {
                 "cold": 155.17,
-                "mild": 199.56,
+                "mild": 199.12,
                 "warm": 186.34
             },
             "total_charge_time_minutes": 55.53,
@@ -13225,7 +13225,7 @@
             "wltp_range_km": 204.55,
             "weather_ranges": {
                 "cold": 158.65,
-                "mild": 204.08,
+                "mild": 203.62,
                 "warm": 190.53
             },
             "total_charge_time_minutes": 55.53,
@@ -13287,7 +13287,7 @@
             "wltp_range_km": 274.39,
             "weather_ranges": {
                 "cold": 211.77,
-                "mild": 273.56,
+                "mild": 272.73,
                 "warm": 254.64
             },
             "total_charge_time_minutes": 68.57,
@@ -13361,7 +13361,7 @@
             "wltp_range_km": 349.4,
             "weather_ranges": {
                 "cold": 269.72,
-                "mild": 348.35,
+                "mild": 347.31,
                 "warm": 324.3
             },
             "total_charge_time_minutes": 56.05,
@@ -13435,7 +13435,7 @@
             "wltp_range_km": 450.29,
             "weather_ranges": {
                 "cold": 347.81,
-                "mild": 448.98,
+                "mild": 447.67,
                 "warm": 418.13
             },
             "total_charge_time_minutes": 63.8,
@@ -13513,7 +13513,7 @@
             "wltp_range_km": 349.4,
             "weather_ranges": {
                 "cold": 269.72,
-                "mild": 348.35,
+                "mild": 347.31,
                 "warm": 324.3
             },
             "total_charge_time_minutes": 52.57,
@@ -13575,7 +13575,7 @@
             "wltp_range_km": 455.62,
             "weather_ranges": {
                 "cold": 351.84,
-                "mild": 454.28,
+                "mild": 452.94,
                 "warm": 423.01
             },
             "total_charge_time_minutes": 35.44,
@@ -13649,7 +13649,7 @@
             "wltp_range_km": 398.96,
             "weather_ranges": {
                 "cold": 308.81,
-                "mild": 397.93,
+                "mild": 396.91,
                 "warm": 371.06
             },
             "total_charge_time_minutes": 57.64,
@@ -13708,10 +13708,10 @@
             },
             "charging_voltage": 400,
             "body_type": "SUV",
-            "wltp_range_km": 43.5,
+            "wltp_range_km": 435.03,
             "weather_ranges": {
                 "cold": 34.18,
-                "mild": 43.49,
+                "mild": 43.48,
                 "warm": 40.91
             },
             "total_charge_time_minutes": 44.36,
@@ -13789,7 +13789,7 @@
             "wltp_range_km": 425.41,
             "weather_ranges": {
                 "cold": 328.93,
-                "mild": 424.24,
+                "mild": 423.08,
                 "warm": 395.33
             },
             "total_charge_time_minutes": 64.03,
@@ -13851,7 +13851,7 @@
             "wltp_range_km": 285.71,
             "weather_ranges": {
                 "cold": 220.93,
-                "mild": 284.93,
+                "mild": 284.15,
                 "warm": 265.53
             },
             "total_charge_time_minutes": 34.53,
@@ -13913,7 +13913,7 @@
             "wltp_range_km": 285.71,
             "weather_ranges": {
                 "cold": 220.93,
-                "mild": 284.93,
+                "mild": 284.15,
                 "warm": 265.53
             },
             "total_charge_time_minutes": 34.53,
@@ -13987,7 +13987,7 @@
             "wltp_range_km": 405.26,
             "weather_ranges": {
                 "cold": 313.61,
-                "mild": 404.2,
+                "mild": 403.14,
                 "warm": 376.84
             },
             "total_charge_time_minutes": 57.64,
@@ -14061,7 +14061,7 @@
             "wltp_range_km": 430.17,
             "weather_ranges": {
                 "cold": 332.54,
-                "mild": 428.97,
+                "mild": 427.78,
                 "warm": 399.69
             },
             "total_charge_time_minutes": 57.64,
@@ -14135,7 +14135,7 @@
             "wltp_range_km": 430.17,
             "weather_ranges": {
                 "cold": 332.54,
-                "mild": 428.97,
+                "mild": 427.78,
                 "warm": 399.69
             },
             "total_charge_time_minutes": 57.64,
@@ -14225,7 +14225,7 @@
             "wltp_range_km": 475.31,
             "weather_ranges": {
                 "cold": 366.75,
-                "mild": 473.85,
+                "mild": 472.39,
                 "warm": 441.01
             },
             "total_charge_time_minutes": 42.31,
@@ -14287,7 +14287,7 @@
             "wltp_range_km": 521.21,
             "weather_ranges": {
                 "cold": 402.31,
-                "mild": 519.64,
+                "mild": 518.07,
                 "warm": 483.73
             },
             "total_charge_time_minutes": 33.76,
@@ -14365,7 +14365,7 @@
             "wltp_range_km": 345.29,
             "weather_ranges": {
                 "cold": 267.86,
-                "mild": 344.52,
+                "mild": 343.75,
                 "warm": 321.68
             },
             "total_charge_time_minutes": 50.05,
@@ -14431,7 +14431,7 @@
             "wltp_range_km": 205.88,
             "weather_ranges": {
                 "cold": 158.68,
-                "mild": 205.21,
+                "mild": 204.55,
                 "warm": 190.86
             },
             "total_charge_time_minutes": 68.13,
@@ -14473,7 +14473,7 @@
             "wltp_range_km": 192.07,
             "weather_ranges": {
                 "cold": 148.24,
-                "mild": 191.49,
+                "mild": 190.91,
                 "warm": 178.25
             }
         },
@@ -14513,7 +14513,7 @@
             "wltp_range_km": 134.18,
             "weather_ranges": {
                 "cold": 103.48,
-                "mild": 133.75,
+                "mild": 133.33,
                 "warm": 124.45
             }
         },
@@ -14581,7 +14581,7 @@
             "wltp_range_km": 134.18,
             "weather_ranges": {
                 "cold": 103.48,
-                "mild": 133.75,
+                "mild": 133.33,
                 "warm": 124.45
             },
             "total_charge_time_minutes": 41.82,
@@ -14647,7 +14647,7 @@
             "wltp_range_km": 192.07,
             "weather_ranges": {
                 "cold": 148.24,
-                "mild": 191.49,
+                "mild": 190.91,
                 "warm": 178.25
             },
             "total_charge_time_minutes": 57.49,
@@ -14689,7 +14689,7 @@
             "wltp_range_km": 98.21,
             "weather_ranges": {
                 "cold": 75.84,
-                "mild": 97.92,
+                "mild": 97.63,
                 "warm": 91.18
             }
         },
@@ -14729,7 +14729,7 @@
             "wltp_range_km": 194.58,
             "weather_ranges": {
                 "cold": 150.21,
-                "mild": 193.99,
+                "mild": 193.41,
                 "warm": 180.6
             }
         },
@@ -14797,7 +14797,7 @@
             "wltp_range_km": 98.21,
             "weather_ranges": {
                 "cold": 75.84,
-                "mild": 97.92,
+                "mild": 97.63,
                 "warm": 91.18
             },
             "total_charge_time_minutes": 32.55,
@@ -14863,7 +14863,7 @@
             "wltp_range_km": 194.58,
             "weather_ranges": {
                 "cold": 150.21,
-                "mild": 193.99,
+                "mild": 193.41,
                 "warm": 180.6
             },
             "total_charge_time_minutes": 100.6,
@@ -14925,7 +14925,7 @@
             "wltp_range_km": 345.36,
             "weather_ranges": {
                 "cold": 267.35,
-                "mild": 344.47,
+                "mild": 343.59,
                 "warm": 321.22
             },
             "total_charge_time_minutes": 34.84,
@@ -14987,7 +14987,7 @@
             "wltp_range_km": 400.0,
             "weather_ranges": {
                 "cold": 309.67,
-                "mild": 398.98,
+                "mild": 397.96,
                 "warm": 372.07
             },
             "total_charge_time_minutes": 30.62,
@@ -15049,7 +15049,7 @@
             "wltp_range_km": 390.0,
             "weather_ranges": {
                 "cold": 302.05,
-                "mild": 389.03,
+                "mild": 388.06,
                 "warm": 362.88
             },
             "total_charge_time_minutes": 30.62,
@@ -15135,7 +15135,7 @@
             "wltp_range_km": 280.0,
             "weather_ranges": {
                 "cold": 216.36,
-                "mild": 279.2,
+                "mild": 278.41,
                 "warm": 260.08
             },
             "total_charge_time_minutes": 37.04,
@@ -15197,7 +15197,7 @@
             "wltp_range_km": 365.71,
             "weather_ranges": {
                 "cold": 282.6,
-                "mild": 364.67,
+                "mild": 363.64,
                 "warm": 339.7
             },
             "total_charge_time_minutes": 37.14,
@@ -15259,7 +15259,7 @@
             "wltp_range_km": 365.71,
             "weather_ranges": {
                 "cold": 282.6,
-                "mild": 364.67,
+                "mild": 363.64,
                 "warm": 339.7
             },
             "total_charge_time_minutes": 37.14,
@@ -15321,7 +15321,7 @@
             "wltp_range_km": 459.09,
             "weather_ranges": {
                 "cold": 356.08,
-                "mild": 458.05,
+                "mild": 457.01,
                 "warm": 427.63
             },
             "total_charge_time_minutes": 31.85,
@@ -15391,7 +15391,7 @@
             "wltp_range_km": 443.18,
             "weather_ranges": {
                 "cold": 342.49,
-                "mild": 441.93,
+                "mild": 440.68,
                 "warm": 411.69
             },
             "total_charge_time_minutes": 56.6,
@@ -15453,7 +15453,7 @@
             "wltp_range_km": 384.62,
             "weather_ranges": {
                 "cold": 296.55,
-                "mild": 383.39,
+                "mild": 382.17,
                 "warm": 356.66
             },
             "total_charge_time_minutes": 57.26,
@@ -15515,7 +15515,7 @@
             "wltp_range_km": 250.0,
             "weather_ranges": {
                 "cold": 193.43,
-                "mild": 249.34,
+                "mild": 248.68,
                 "warm": 232.44
             },
             "total_charge_time_minutes": 28.37,
@@ -15577,7 +15577,7 @@
             "wltp_range_km": 336.96,
             "weather_ranges": {
                 "cold": 260.61,
-                "mild": 336.04,
+                "mild": 335.14,
                 "warm": 313.2
             },
             "total_charge_time_minutes": 31.46,
@@ -15639,7 +15639,7 @@
             "wltp_range_km": 329.79,
             "weather_ranges": {
                 "cold": 255.16,
-                "mild": 328.91,
+                "mild": 328.04,
                 "warm": 306.62
             },
             "total_charge_time_minutes": 31.46,
@@ -15701,7 +15701,7 @@
             "wltp_range_km": 265.54,
             "weather_ranges": {
                 "cold": 205.23,
-                "mild": 264.79,
+                "mild": 264.04,
                 "warm": 246.69
             },
             "total_charge_time_minutes": 28.37,
@@ -15763,7 +15763,7 @@
             "wltp_range_km": 354.29,
             "weather_ranges": {
                 "cold": 273.77,
-                "mild": 353.28,
+                "mild": 352.27,
                 "warm": 329.08
             },
             "total_charge_time_minutes": 31.46,
@@ -15805,7 +15805,7 @@
             "wltp_range_km": 100.0,
             "weather_ranges": {
                 "cold": 77.28,
-                "mild": 99.72,
+                "mild": 99.44,
                 "warm": 92.89
             }
         },
@@ -15845,7 +15845,7 @@
             "wltp_range_km": 100.0,
             "weather_ranges": {
                 "cold": 77.28,
-                "mild": 99.72,
+                "mild": 99.44,
                 "warm": 92.89
             }
         },
@@ -15885,7 +15885,7 @@
             "wltp_range_km": 105.39,
             "weather_ranges": {
                 "cold": 81.37,
-                "mild": 105.07,
+                "mild": 104.76,
                 "warm": 97.83
             }
         },
@@ -15925,7 +15925,7 @@
             "wltp_range_km": 105.39,
             "weather_ranges": {
                 "cold": 81.37,
-                "mild": 105.07,
+                "mild": 104.76,
                 "warm": 97.83
             }
         },
@@ -15965,7 +15965,7 @@
             "wltp_range_km": 105.39,
             "weather_ranges": {
                 "cold": 81.37,
-                "mild": 105.07,
+                "mild": 104.76,
                 "warm": 97.83
             }
         },
@@ -16025,7 +16025,7 @@
             "wltp_range_km": 469.36,
             "weather_ranges": {
                 "cold": 362.61,
-                "mild": 468.01,
+                "mild": 466.67,
                 "warm": 435.91
             },
             "total_charge_time_minutes": 30.97,
@@ -16087,7 +16087,7 @@
             "wltp_range_km": 456.18,
             "weather_ranges": {
                 "cold": 352.61,
-                "mild": 454.9,
+                "mild": 453.63,
                 "warm": 423.83
             },
             "total_charge_time_minutes": 30.97,
@@ -16149,7 +16149,7 @@
             "wltp_range_km": 420.73,
             "weather_ranges": {
                 "cold": 325.66,
-                "mild": 419.64,
+                "mild": 418.56,
                 "warm": 391.3
             },
             "total_charge_time_minutes": 30.97,
@@ -16211,7 +16211,7 @@
             "wltp_range_km": 420.73,
             "weather_ranges": {
                 "cold": 325.66,
-                "mild": 419.64,
+                "mild": 418.56,
                 "warm": 391.3
             },
             "total_charge_time_minutes": 30.97,
@@ -16273,7 +16273,7 @@
             "wltp_range_km": 414.29,
             "weather_ranges": {
                 "cold": 320.75,
-                "mild": 413.23,
+                "mild": 412.18,
                 "warm": 385.38
             },
             "total_charge_time_minutes": 30.97,
@@ -16335,7 +16335,7 @@
             "wltp_range_km": 456.18,
             "weather_ranges": {
                 "cold": 352.61,
-                "mild": 454.9,
+                "mild": 453.63,
                 "warm": 423.83
             },
             "total_charge_time_minutes": 30.97,
@@ -16374,7 +16374,7 @@
             "wltp_range_km": 100.0,
             "weather_ranges": {
                 "cold": 74.73,
-                "mild": 99.19,
+                "mild": 98.39,
                 "warm": 90.57
             }
         },
@@ -16438,7 +16438,7 @@
             "wltp_range_km": 360.41,
             "weather_ranges": {
                 "cold": 279.06,
-                "mild": 359.49,
+                "mild": 358.59,
                 "warm": 335.28
             },
             "total_charge_time_minutes": 44.97,
@@ -16504,7 +16504,7 @@
             "wltp_range_km": 505.77,
             "weather_ranges": {
                 "cold": 391.95,
-                "mild": 504.56,
+                "mild": 503.35,
                 "warm": 470.81
             },
             "total_charge_time_minutes": 50.57,
@@ -16570,7 +16570,7 @@
             "wltp_range_km": 484.79,
             "weather_ranges": {
                 "cold": 375.94,
-                "mild": 483.68,
+                "mild": 482.57,
                 "warm": 451.5
             },
             "total_charge_time_minutes": 50.57,
@@ -16636,7 +16636,7 @@
             "wltp_range_km": 319.02,
             "weather_ranges": {
                 "cold": 246.18,
-                "mild": 318.04,
+                "mild": 317.07,
                 "warm": 296.03
             },
             "total_charge_time_minutes": 48.75,
@@ -16702,7 +16702,7 @@
             "wltp_range_km": 254.78,
             "weather_ranges": {
                 "cold": 196.46,
-                "mild": 253.97,
+                "mild": 253.16,
                 "warm": 236.28
             },
             "total_charge_time_minutes": 46.87,
@@ -16768,7 +16768,7 @@
             "wltp_range_km": 254.78,
             "weather_ranges": {
                 "cold": 196.46,
-                "mild": 253.97,
+                "mild": 253.16,
                 "warm": 236.28
             },
             "total_charge_time_minutes": 46.87,
@@ -16850,7 +16850,7 @@
             "wltp_range_km": 330.2,
             "weather_ranges": {
                 "cold": 254.35,
-                "mild": 329.1,
+                "mild": 328.0,
                 "warm": 305.98
             },
             "total_charge_time_minutes": 58.74,
@@ -16914,7 +16914,7 @@
             "wltp_range_km": 250.68,
             "weather_ranges": {
                 "cold": 193.01,
-                "mild": 249.83,
+                "mild": 248.98,
                 "warm": 232.22
             },
             "total_charge_time_minutes": 49.01,
@@ -16980,7 +16980,7 @@
             "wltp_range_km": 380.0,
             "weather_ranges": {
                 "cold": 293.48,
-                "mild": 378.89,
+                "mild": 377.78,
                 "warm": 352.83
             },
             "total_charge_time_minutes": 47.31,
@@ -17062,7 +17062,7 @@
             "wltp_range_km": 289.41,
             "weather_ranges": {
                 "cold": 223.52,
-                "mild": 288.56,
+                "mild": 287.72,
                 "warm": 268.72
             },
             "total_charge_time_minutes": 58.74,
@@ -17136,7 +17136,7 @@
             "wltp_range_km": 364.97,
             "weather_ranges": {
                 "cold": 282.08,
-                "mild": 363.94,
+                "mild": 362.92,
                 "warm": 339.06
             },
             "total_charge_time_minutes": 56.5,
@@ -17202,7 +17202,7 @@
             "wltp_range_km": 289.41,
             "weather_ranges": {
                 "cold": 223.52,
-                "mild": 288.56,
+                "mild": 287.72,
                 "warm": 268.72
             },
             "total_charge_time_minutes": 48.55,
@@ -17268,7 +17268,7 @@
             "wltp_range_km": 230.54,
             "weather_ranges": {
                 "cold": 177.99,
-                "mild": 229.85,
+                "mild": 229.17,
                 "warm": 214.0
             },
             "total_charge_time_minutes": 51.56,
@@ -17334,7 +17334,7 @@
             "wltp_range_km": 279.55,
             "weather_ranges": {
                 "cold": 216.03,
-                "mild": 278.75,
+                "mild": 277.97,
                 "warm": 259.68
             },
             "total_charge_time_minutes": 48.55,
@@ -17402,7 +17402,7 @@
             "wltp_range_km": 450.29,
             "weather_ranges": {
                 "cold": 347.81,
-                "mild": 448.98,
+                "mild": 447.67,
                 "warm": 418.13
             },
             "total_charge_time_minutes": 53.06,
@@ -17472,7 +17472,7 @@
             "wltp_range_km": 450.29,
             "weather_ranges": {
                 "cold": 347.81,
-                "mild": 448.98,
+                "mild": 447.67,
                 "warm": 418.13
             },
             "total_charge_time_minutes": 40.93,
@@ -17542,7 +17542,7 @@
             "wltp_range_km": 345.03,
             "weather_ranges": {
                 "cold": 266.5,
-                "mild": 344.02,
+                "mild": 343.02,
                 "warm": 320.38
             },
             "total_charge_time_minutes": 33.26,
@@ -17610,7 +17610,7 @@
             "wltp_range_km": 481.25,
             "weather_ranges": {
                 "cold": 371.24,
-                "mild": 479.75,
+                "mild": 478.26,
                 "warm": 446.44
             },
             "total_charge_time_minutes": 53.06,
@@ -17678,7 +17678,7 @@
             "wltp_range_km": 315.15,
             "weather_ranges": {
                 "cold": 243.26,
-                "mild": 314.2,
+                "mild": 313.25,
                 "warm": 292.49
             },
             "total_charge_time_minutes": 33.36,
@@ -17746,7 +17746,7 @@
             "wltp_range_km": 440.0,
             "weather_ranges": {
                 "cold": 340.0,
-                "mild": 438.75,
+                "mild": 437.5,
                 "warm": 408.7
             },
             "total_charge_time_minutes": 40.93,
@@ -17816,7 +17816,7 @@
             "wltp_range_km": 475.31,
             "weather_ranges": {
                 "cold": 366.75,
-                "mild": 473.85,
+                "mild": 472.39,
                 "warm": 441.01
             },
             "total_charge_time_minutes": 40.93,
@@ -17886,7 +17886,7 @@
             "wltp_range_km": 461.08,
             "weather_ranges": {
                 "cold": 355.98,
-                "mild": 459.7,
+                "mild": 458.33,
                 "warm": 428.0
             },
             "total_charge_time_minutes": 40.93,
@@ -17956,7 +17956,7 @@
             "wltp_range_km": 309.52,
             "weather_ranges": {
                 "cold": 239.0,
-                "mild": 308.61,
+                "mild": 307.69,
                 "warm": 287.34
             },
             "total_charge_time_minutes": 33.36,
@@ -18026,7 +18026,7 @@
             "wltp_range_km": 435.03,
             "weather_ranges": {
                 "cold": 336.23,
-                "mild": 433.8,
+                "mild": 432.58,
                 "warm": 404.14
             },
             "total_charge_time_minutes": 40.93,

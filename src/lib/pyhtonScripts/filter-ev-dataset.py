@@ -182,10 +182,24 @@ def get_body_type(brand, model, variant=""):
     return "Unknown"
 
 def calculate_wltp_range(battery_size, energy_consumption):
-    """Calculate WLTP range in kilometers"""
+    """Calculate WLTP range in kilometers with correct unit handling"""
     if battery_size <= 0 or energy_consumption <= 0:
         return 0
-    return (battery_size / energy_consumption) * 100
+    
+    # All consumption values in the dataset are in kWh/100km
+    # Convert to kWh/km for range calculation
+    consumption_kwh_per_km = energy_consumption / 100
+    
+    # Calculate range
+    range_km = battery_size / consumption_kwh_per_km
+    
+    # Add a sanity check
+    if range_km > 1000:
+        print(f"WARNING: Calculated range seems too high: {range_km} km with "
+              f"battery {battery_size} kWh and consumption {energy_consumption} kWh/100km")
+    
+    return range_km
+
 
 def calculate_weather_ranges(battery_size, energy_consumption):
     """
