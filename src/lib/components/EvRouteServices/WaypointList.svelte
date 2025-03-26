@@ -21,17 +21,21 @@
 
     // location search handler
     async function handleLocationSearch() {
+        console.log('Searching for location:', searchText);
         loading = true;
         try {
             const result = await orsService.geocodeAddress(searchText);
+            console.log('Geocoding result:', result);
+
             addWaypoint({
                 lat: result.coordinates[1],
                 lng: result.coordinates[0],
                 address: result.properties.label
             });
+            console.log('Waypoint added from search');
             searchText = ''; // Clear search after successful add
         } catch (error) {
-            // console.error('Search error:', error);
+            console.error('Search error:', error);
         } finally {
             loading = false;
         }
@@ -44,6 +48,7 @@
 
     // Handle waypoint coordinate editing with validation
     async function editWaypoint(index, field, value) {
+        console.log(`Editing waypoint ${index}, field ${field}, value ${value}`);
         const parsedValue = parseFloat(value);
         // Validate latitude range
         if (field === 'lat' && (parsedValue < -90 || parsedValue > 90)) {
@@ -60,25 +65,29 @@
         // Update waypoint with new value
         const updatedWaypoint = { ...routeStore.routes[activeDay].waypoints[index], [field]: parsedValue };
         await routeActions.updateWaypoint(index, updatedWaypoint);
-        // console.log('Waypoint edited:', { index, field, value });
+        console.log('Waypoint edited:', { index, field, value });
 
         // Recalculate route if we have at least 2 waypoints
             if (routeStore.routes[activeDay].waypoints.length >= 2) {
+                console.log('Recalculating route after waypoint edit');
                 const newRoute = await OpenRouteService.calculateRoute(routeStore.routes[activeDay].waypoints);
                 routeStore.routes[activeDay].route = newRoute;
+                console.log('Route recalculated');
             }
         } catch (error) {
-            // console.error('Error updating waypoint:', error);
+            console.error('Error updating waypoint:', error);
         }
     }
 
     // Clear all waypoints and route (no confirmation pop up)
     function clearWaypoints() {
+        console.log('Clearing all waypoints');
         clearRoute();
-        // console.log('All waypoints cleared');
+        console.log('All waypoints cleared');
     }
 
     function moveWaypoint(index, direction) {
+        console.log(`Moving waypoint ${index} ${direction}`);
         const newWaypoints = [...activeRouteData.waypoints];
         const newIndex = direction === 'up' ? index - 1 : index + 1;
         [newWaypoints[index], newWaypoints[newIndex]] = [newWaypoints[newIndex], newWaypoints[index]];
@@ -87,11 +96,13 @@
     
         // Recalculate route and save
         if (newWaypoints.length >= 2) {
+            console.log('Recalculating route after waypoint reorder');
             OpenRouteService.calculateRoute(newWaypoints)
                 .then(newRoute => {
                     routeStore.routes[activeDay].route = newRoute;
                     // Call reorderWaypoints to ensure proper saving
                     routeActions.reorderWaypoints(newWaypoints);
+                    console.log('Route recalculated after reorder');
                 });
         } else {
             routeActions.reorderWaypoints(newWaypoints);

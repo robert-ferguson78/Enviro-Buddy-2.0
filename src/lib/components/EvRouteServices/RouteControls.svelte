@@ -1,25 +1,41 @@
 <script>
-    import { routeStore, routeActions } from '../../stores/routeStore.svelte.js';
+    import { routeStore, routeActions } from '../../stores/routeStore.svelte';
     import { OpenRouteService } from '$lib/routeServices/openRouteService';
     import { messageActions } from '$lib/stores/messages.store.svelte';
 
-    // Update props to match parent component
-    let { activeRouteData, activeDay, setRoute, toggleEditing, handleClearRoute, isEditing, totalWeeklyDistance, totalWeeklyDuration } = $props();
+    // Update props to include EV Results related props
+    let { 
+        activeRouteData, 
+        activeDay, 
+        setRoute, 
+        toggleEditing, 
+        handleClearRoute, 
+        isEditing, 
+        totalWeeklyDistance, 
+        totalWeeklyDuration,
+        showEvResults,
+        toggleEvResults,
+        hasRoutes
+    } = $props();
 
     // State for confirmation dialog using Svelte 5 runes
     let showConfirmClear = $state(false);
 
     // Calculate route using activeRouteData
     async function calculateRoute() {
+        console.log('Calculate Route button clicked');
         if (activeRouteData.waypoints.length >= 2) {
             try {
                 // Clear any previous problematic waypoints
                 routeStore.problematicWaypoints = [];
                 
+                console.log('Calculating route with waypoints:', activeRouteData.waypoints);
                 const result = await OpenRouteService.calculateRoute(activeRouteData.waypoints);
+                console.log('Route calculation result:', result);
+                
                 setRoute(result);
             } catch (error) {
-                // console.error('Route calculation error:', error);
+                console.error('Route calculation error:', error);
                 
                 // Handle specific error for waypoints not near roads
                 if (error.type === 'WAYPOINTS_NOT_NEAR_ROAD') {
@@ -44,22 +60,26 @@
                 }
             }
         } else {
+            console.log('Not enough waypoints to calculate route');
             messageActions.showError("At least 2 waypoints are required to calculate a route.");
         }
     }
-    
+
     // Show confirmation dialog for route clearing
     function confirmClear() {
+        console.log('Clear Route button clicked, showing confirmation');
         showConfirmClear = true;
     }
 
     // Hide confirmation dialog
     function cancelClear() {
+        console.log('Clear Route cancelled');
         showConfirmClear = false;
     }
 
     // Clear route and hide confirmation dialog
     function clearRoute() {
+        console.log('Clearing route confirmed');
         handleClearRoute();
         showConfirmClear = false;
         routeStore.problematicWaypoints = []; // Clear problematic waypoints
@@ -71,10 +91,17 @@
         const mins = minutes % 60;
         return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
     }
+
+    // Handle EV Results button click
+    function handleEvResultsClick() {
+        console.log('View EV Results button clicked');
+        toggleEvResults();
+    }
 </script>
 
 <div class="route-controls">
     <button onclick={calculateRoute}>Calculate Route</button>
+    
     <button 
         class="edit-btn" 
         class:active={isEditing}
@@ -84,6 +111,16 @@
     </button>
 
     <button onclick={confirmClear}>Clear Route</button>
+    
+    <!-- Add EV Results Button -->
+    <button 
+        class="ev-results-btn"
+        class:active={showEvResults}
+        onclick={handleEvResultsClick}
+        disabled={!hasRoutes}
+    >
+        {showEvResults ? 'Hide EV Results' : 'View EV Results'}
+    </button>
 
     <div class="route-totals">
         <div class="total-item">
@@ -100,7 +137,7 @@
         <div class="confirm-dialog">
             <p>Are you sure you want to clear the route?</p>
             <button class="confirm-btn" onclick={clearRoute}>Yes</button>
-            <button class= "clear-btn" onclick={cancelClear}>No</button>
+            <button class="clear-btn" onclick={cancelClear}>No</button>
         </div>
     {/if}
 </div>
@@ -113,6 +150,7 @@
         background: #f5f5f5;
         border-radius: 8px;
         margin-bottom: 1rem;
+        flex-wrap: wrap;
     }
 
     button {
@@ -135,6 +173,24 @@
 
     .edit-btn.active {
         background: #28a745;
+    }
+    
+    .ev-results-btn {
+        background: #28a745;
+        color: white;
+    }
+    
+    .ev-results-btn:hover {
+        background: #218838;
+    }
+    
+    .ev-results-btn.active {
+        background: #dc3545;
+    }
+    
+    .ev-results-btn:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
     }
 
     .clear-btn {
@@ -204,5 +260,18 @@
     .total-value {
         font-weight: bold;
         color: #333;
+    }
+    
+    @media (max-width: 768px) {
+        .route-controls {
+            flex-direction: column;
+        }
+        
+        .route-totals {
+            margin-left: 0;
+            margin-top: 1rem;
+            flex-direction: column;
+            align-items: flex-start;
+        }
     }
 </style>

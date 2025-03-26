@@ -25,16 +25,23 @@ let problematicWaypoints = $state([]);
 if (browser) {
     const savedData = localStorage.getItem('routes');
     if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        // Merge saved data with default structure to preserve colors
-        routes = Object.keys(defaultRoutes).reduce((acc, day) => ({
-            ...acc,
-            [day]: {
-                ...defaultRoutes[day],
-                ...(parsedData.routes[day] || {})
-            }
-        }), {});
-        activeDay = parsedData.activeDay || 'monday';
+        try {
+            console.log('Loading saved routes from localStorage');
+            const parsedData = JSON.parse(savedData);
+            // Merge saved data with default structure to preserve colors
+            routes = Object.keys(defaultRoutes).reduce((acc, day) => ({
+                ...acc,
+                [day]: {
+                    ...defaultRoutes[day],
+                    ...(parsedData.routes[day] || {})
+                }
+            }), {});
+            activeDay = parsedData.activeDay || 'monday';
+            console.log('Routes loaded successfully');
+        } catch (error) {
+            console.error('Error loading saved routes:', error);
+            messageActions.showError('Failed to load saved routes. Using defaults.');
+        }
     }
 }
 
