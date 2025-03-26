@@ -4,15 +4,16 @@
     import authStore from '$lib/stores/auth.store';
     import { userFirestoreStore } from '$lib/firebase/models/user-firestore-store';
     
-    // Get data from the server
-    export let data;
+    // Get data from the server using $props() instead of export let
+    const { isAdmin: serverIsAdmin } = $props();
     
-    let isLoading = true;
-    let result = null;
-    let error = null;
-    let currentUser = null;
-    let userType = null;
-    let isAdmin = false;
+    // Use $state for reactive variables
+    let isLoading = $state(true);
+    let result = $state(null);
+    let error = $state(null);
+    let currentUser = $state(null);
+    let userType = $state(null);
+    let isAdmin = $state(false);
     
     // Get the API key from environment variables
     const API_KEY = import.meta.env.VITE_IMPORT_API_KEY;
@@ -59,15 +60,15 @@
         return unsubscribe;
     });
     
-    // Subscribe to the authStore to see changes
-    $: {
+    // Use $effect instead of $: for reactivity
+    $effect(() => {
         console.log("Auth store updated:", $authStore);
         
         // If authStore shows logged in but we don't have currentUser yet
         if ($authStore.isLoggedIn && !currentUser && !isLoading) {
             console.log("Auth store shows logged in but currentUser not set yet");
         }
-    }
+    });
     
     async function importVehicles() {
         isLoading = true;
@@ -133,10 +134,10 @@
             <p><strong>Note:</strong> You need to be logged in to access this page.</p>
             <a href="/login" class="underline">Go to login page</a>
         </div>
-    {:else if !isAdmin && !data.isAdmin}
+    {:else if !isAdmin && !serverIsAdmin}
         <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
             <p><strong>Note:</strong> You need admin privileges to import vehicles.</p>
-            <p class="text-sm mt-2">Debug info: User type: {userType}, isAdmin: {isAdmin}, data.isAdmin: {data.isAdmin}</p>
+            <p class="text-sm mt-2">Debug info: User type: {userType}, isAdmin: {isAdmin}, serverIsAdmin: {serverIsAdmin}</p>
         </div>
     {:else}
         <div class="mb-6">
@@ -144,14 +145,14 @@
             <p class="mb-4">Existing vehicles with the same ID will be updated.</p>
             
             <button 
-                on:click={importVehicles} 
+                onclick={importVehicles}
                 disabled={isLoading}
                 class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
             >
                 {isLoading ? 'Importing...' : 'Import Vehicles'}
             </button>
         </div>
-        
+      
         {#if error}
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                 <p><strong>Error:</strong> {error}</p>
