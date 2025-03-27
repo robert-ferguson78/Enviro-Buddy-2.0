@@ -12,6 +12,10 @@
     let activeTab = $state('all');
     let debugInfo = $state(false);
     
+    // Filter state
+    let selectedBodyTypes = $state([]);
+    let availableBodyTypes = $state([]);
+    
     // Get routes from store
     let routes = $derived(routeStore.routes);
 
@@ -39,10 +43,15 @@
             
             console.log('Vehicles data:', vehicles.slice(0, 3)); // Log first 3 vehicles to check data
             
+            // Extract unique body types
+            availableBodyTypes = [...new Set(vehicles.map(v => v.body_type).filter(Boolean))].sort();
+            console.log('Available body types:', availableBodyTypes);
+            
             // If no vehicles found, create some dummy data for testing
             if (vehicles.length === 0) {
                 console.log('No vehicles found, creating dummy data');
                 vehicles = createDummyVehicles();
+                availableBodyTypes = [...new Set(vehicles.map(v => v.body_type).filter(Boolean))].sort();
             }
             
             // Filter vehicles for each day
@@ -57,6 +66,7 @@
             // Try to create dummy data as fallback
             console.log('Creating dummy vehicles as fallback');
             vehicles = createDummyVehicles();
+            availableBodyTypes = [...new Set(vehicles.map(v => v.body_type).filter(Boolean))].sort();
             filterVehiclesForRoutes();
         }
     }
@@ -118,6 +128,17 @@
         ];
     }
 
+    // Toggle body type selection
+    function toggleBodyType(bodyType) {
+        if (selectedBodyTypes.includes(bodyType)) {
+            selectedBodyTypes = selectedBodyTypes.filter(type => type !== bodyType);
+        } else {
+            selectedBodyTypes = [...selectedBodyTypes, bodyType];
+        }
+        // Re-filter vehicles when body type selection changes
+        filterVehiclesForRoutes();
+    }
+    
     // Calculate total weekly distance
     function calculateTotalWeeklyDistance() {
         return Object.values(routes)
@@ -128,7 +149,7 @@
             .toFixed(1); // Format to 1 decimal place
     }
     
-    // Filter vehicles based on route distances
+    // Filter vehicles based on route distances and body types
     function filterVehiclesForRoutes() {
         console.log('Starting to filter vehicles for routes');
         // Create a string representation of the current routes for comparison
@@ -141,16 +162,19 @@
                 }))
         );
         
-        // If we've already processed these exact routes, skip processing
-        if (lastProcessedRoutes === routesSnapshot) {
-            console.log('Routes unchanged, skipping re-filtering');
+        // If we've already processed these exact routes, skip processing, added boduy type also
+        const bodyTypesSnapshot = JSON.stringify(selectedBodyTypes.sort());
+        const currentSnapshot = routesSnapshot + bodyTypesSnapshot;
+        
+        if (lastProcessedRoutes === currentSnapshot) {
+            console.log('Routes and filters unchanged, skipping re-filtering');
             return;
         }
         
-        // Update the last processed routes
-        lastProcessedRoutes = routesSnapshot;
-        
+        // Update the last processed routes and filters
+        lastProcessedRoutes = currentSnapshot;
         console.log('Routes data:', routes);
+        console.log('Selected body types:', selectedBodyTypes);
         
         // Initialize filtered vehicles object
         filteredVehicles = {};
@@ -168,11 +192,16 @@
             // Get the day's distance
             const dayDistance = parseFloat(dayData.route.distanceKm);
             
-            // Filter vehicles that can handle this day's distance
+            // Filter vehicles that can handle this day's distance and match selected body types
             filteredVehicles[day] = vehicles.filter(vehicle => {
                 // Check if vehicle has wltp_range_km and it's greater than the day's distance
-                const canHandle = vehicle.wltp_range_km && vehicle.wltp_range_km > dayDistance;
-                return canHandle;
+                const meetsRangeRequirement = vehicle.wltp_range_km && vehicle.wltp_range_km > dayDistance;
+                
+                // Check if vehicle matches body type filter (if any are selected)
+                const meetsBodyTypeRequirement = selectedBodyTypes.length === 0 || 
+                    selectedBodyTypes.includes(vehicle.body_type);
+                
+                return meetsRangeRequirement && meetsBodyTypeRequirement;
             }).sort((a, b) => {
                 // Sort by range efficiency (range divided by battery size)
                 const efficiencyA = a.wltp_range_km / (a.usable_battery_size || 1);
@@ -195,9 +224,13 @@
             const totalWeeklyDistance = parseFloat(calculateTotalWeeklyDistance());
             console.log(`Total weekly distance: ${totalWeeklyDistance} km`);
             
-            // Filter vehicles that can handle the total weekly distance
+            // Filter vehicles that can handle the total weekly distance and match body type
             filteredVehicles.all = vehicles.filter(vehicle => {
-                return vehicle.wltp_range_km && vehicle.wltp_range_km > totalWeeklyDistance;
+                const meetsRangeRequirement = vehicle.wltp_range_km && vehicle.wltp_range_km > totalWeeklyDistance;
+                const meetsBodyTypeRequirement = selectedBodyTypes.length === 0 || 
+                    selectedBodyTypes.includes(vehicle.body_type);
+                
+                return meetsRangeRequirement && meetsBodyTypeRequirement;
             }).sort((a, b) => {
                 // Sort by range efficiency (range divided by battery size)
                 const efficiencyA = a.wltp_range_km / (a.usable_battery_size || 1);
@@ -229,6 +262,12 @@
     // Toggle debug info
     function toggleDebugInfo() {
         debugInfo = !debugInfo;
+    }
+    
+    // Clear all body type filters
+    function clearBodyTypeFilters() {
+        selectedBodyTypes = [];
+        filterVehiclesForRoutes();
     }
     
     // Load vehicles when component mounts
@@ -274,6 +313,8 @@
                     </li>
                 {/each}
             </ul>
+            <p>Total weekly distance: {calculateTotalWeeklyDistance()} km</p>
+            <p>Selected body types: {selectedBodyTypes.length ? selectedBodyTypes.join(', ') : 'None'}</p>
             <p>Filtered vehicles:</p>
             <ul>
                 {#each Object.entries(filteredVehicles) as [day, dayVehicles]}
@@ -288,6 +329,25 @@
     {:else if error}
         <div class="error">{error}</div>
     {:else}
+        <div class="filter-section">
+            <h3>Filter by Body Type</h3>
+            <div class="body-type-filters">
+                {#each availableBodyTypes as bodyType}
+                    <button 
+                        class:active={selectedBodyTypes.includes(bodyType)}
+                        onclick={() => toggleBodyType(bodyType)}
+                    >
+                        {bodyType}
+                    </button>
+                {/each}
+                {#if selectedBodyTypes.length > 0}
+                    <button class="clear-filters" onclick={clearBodyTypeFilters}>
+                        Clear Filters
+                    </button>
+                {/if}
+            </div>
+        </div>
+        
         <div class="tabs">
             <button
                 class:active={activeTab === 'all'}
@@ -306,53 +366,76 @@
                     <span class="day-distance">({dayData.route.distanceKm} km)</span>
                 </button>
             {/each}
+            </div>
+            
+            <div class="results-container">
+                {#if activeTab === 'all'}
+                    <h3>
+                        Vehicles Suitable for All Routes (Total: {calculateTotalWeeklyDistance()} km)
+                        {#if selectedBodyTypes.length > 0}
+                            <span class="filter-tag">Filtered by: {selectedBodyTypes.join(', ')}</span>
+                        {/if}
+                    </h3>
+                    {#if filteredVehicles.all && filteredVehicles.all.length > 0}
+                        <div class="vehicles-grid">
+                            {#each filteredVehicles.all as vehicle}
+        <div class="vehicle-card">
+            <h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
+            <div class="vehicle-details">
+                <p><strong>Range:</strong> {formatRange(vehicle.wltp_range_km)} km</p>
+                <p><strong>Battery:</strong> {vehicle.usable_battery_size} kWh</p>
+                <p><strong>Efficiency:</strong> {calculateEfficiency(vehicle.wltp_range_km, vehicle.usable_battery_size)} km/kWh</p>
+                <p><strong>Body Type:</strong> {vehicle.body_type}</p>
+                <p><strong>Year:</strong> {vehicle.release_year}</p>
+            </div>
         </div>
-        <div class="results-container">
-            {#if activeTab === 'all'}
-                <h3>Vehicles Suitable for All Routes</h3>
-                {#if filteredVehicles.all && filteredVehicles.all.length > 0}
-                    <div class="vehicles-grid">
-                        {#each filteredVehicles.all as vehicle}
-                            <div class="vehicle-card">
-                                <h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
-                                <div class="vehicle-details">
-                                    <p><strong>Range:</strong> {formatRange(vehicle.wltp_range_km)} km</p>
-                                    <p><strong>Battery:</strong> {vehicle.usable_battery_size} kWh</p>
-                                    <p><strong>Efficiency:</strong> {calculateEfficiency(vehicle.wltp_range_km, vehicle.usable_battery_size)} km/kWh</p>
-                                    <p><strong>Body Type:</strong> {vehicle.body_type}</p>
-                                    <p><strong>Year:</strong> {vehicle.release_year}</p>
-                                </div>
-                            </div>
-                        {/each}
-                    </div>
-                {:else}
-                    <p class="no-results">No vehicles found that can handle all routes. Try viewing individual days.</p>
-                {/if}
-            {:else}
-                <h3>Vehicles Suitable for {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}'s Route ({routes[activeTab].route.distanceKm} km)</h3>
-                {#if filteredVehicles[activeTab] && filteredVehicles[activeTab].length > 0}
-                    <div class="vehicles-grid">
-                        {#each filteredVehicles[activeTab] as vehicle}
-                            <div class="vehicle-card">
-                                <h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
-                                <div class="vehicle-details">
-                                    <p><strong>Range:</strong> {formatRange(vehicle.wltp_range_km)} km</p>
-                                    <p><strong>Battery:</strong> {vehicle.usable_battery_size} kWh</p>
-                                    <p><strong>Efficiency:</strong> {calculateEfficiency(vehicle.wltp_range_km, vehicle.usable_battery_size)} km/kWh</p>
-                                    <p><strong>Body Type:</strong> {vehicle.body_type}</p>
-                                    <p><strong>Year:</strong> {vehicle.release_year}</p>
-                                </div>
-                            </div>
-                        {/each}
-                    </div>
-                {:else}
-                    <p class="no-results">No vehicles found for this route.</p>
-                {/if}
-            {/if}
-        </div>
-    {/if}
+    {/each}
 </div>
-    
+{:else}
+<p class="no-results">
+    No vehicles found that can handle the total weekly distance
+    {#if selectedBodyTypes.length > 0}
+        with the selected body type(s)
+    {/if}.
+    Try viewing individual days or adjusting your filters.
+</p>
+{/if}
+{:else}
+<h3>
+Vehicles Suitable for {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}'s Route ({routes[activeTab].route.distanceKm} km)
+{#if selectedBodyTypes.length > 0}
+    <span class="filter-tag">Filtered by: {selectedBodyTypes.join(', ')}</span>
+{/if}
+</h3>
+{#if filteredVehicles[activeTab] && filteredVehicles[activeTab].length > 0}
+<div class="vehicles-grid">
+    {#each filteredVehicles[activeTab] as vehicle}
+        <div class="vehicle-card">
+            <h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
+            <div class="vehicle-details">
+                <p><strong>Range:</strong> {formatRange(vehicle.wltp_range_km)} km</p>
+                <p><strong>Battery:</strong> {vehicle.usable_battery_size} kWh</p>
+                <p><strong>Efficiency:</strong> {calculateEfficiency(vehicle.wltp_range_km, vehicle.usable_battery_size)} km/kWh</p>
+                <p><strong>Body Type:</strong> {vehicle.body_type}</p>
+                <p><strong>Year:</strong> {vehicle.release_year}</p>
+            </div>
+        </div>
+    {/each}
+</div>
+{:else}
+<p class="no-results">
+    No vehicles found for this route
+    {#if selectedBodyTypes.length > 0}
+        with the selected body type(s)
+    {/if}.
+    Try adjusting your filters.
+</p>
+{/if}
+{/if}
+</div>
+{/if}
+</div>
+
 <style>
     .ev-results-section {
         margin-top: 2rem;
@@ -361,7 +444,7 @@
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    
+        
     h2 {
         margin-top: 0;
         margin-bottom: 1.5rem;
@@ -371,6 +454,19 @@
     
     h3 {
         margin-bottom: 1rem;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .filter-tag {
+        font-size: 0.8rem;
+        font-weight: normal;
+        background: #e9ecef;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
         color: #495057;
     }
     
@@ -384,6 +480,50 @@
         color: #dc3545;
     }
     
+    .filter-section {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: #e9ecef;
+        border-radius: 8px;
+    }
+    
+    .filter-section h3 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+    
+    .body-type-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .body-type-filters button {
+        padding: 0.3rem 0.8rem;
+        background: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+    }
+    
+    .body-type-filters button.active {
+        background: #007bff;
+        color: white;
+        border-color: #0056b3;
+    }
+    
+    .body-type-filters button:hover:not(.active) {
+        background: #e2e6ea;
+    }
+    
+    .clear-filters {
+        background: #6c757d !important;
+        color: white !important;
+    }
+    
     .tabs {
         display: flex;
         flex-wrap: wrap;
@@ -392,6 +532,8 @@
     }
     
     .tabs button {
+        flex: 1 1 0; /* This makes all buttons grow equally */
+        min-width: 120px; /* Minimum width to prevent too narrow buttons */
         padding: 0.5rem 1rem;
         background: #e9ecef;
         border: none;
@@ -399,6 +541,14 @@
         cursor: pointer;
         font-size: 0.9rem;
         border-left: 4px solid var(--day-color, #6c757d);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
     
     .tabs button.active {
@@ -429,9 +579,9 @@
         transform: translateY(-3px);
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-        
-        .vehicle-card h4 {
-        margin-top:0;    
+    
+    .vehicle-card h4 {
+        margin-top: 0;
         margin-bottom: 0.75rem;
         color: #343a40;
         font-size: 1.1rem;
@@ -472,12 +622,24 @@
     }
     
     @media (max-width: 768px) {
+        .tabs button {
+        flex: 1 1 calc(50% - 0.5rem); /* Two buttons per row on smaller screens */
+    }
         .vehicles-grid {
-            grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
         }
-        
+
         .tabs {
-            flex-direction: column;
+        flex-direction: column;
         }
+
+        .body-type-filters {
+        flex-direction: column;
+        }
+    }
+    @media (max-width: 480px) {
+    .tabs button {
+        flex: 1 1 100%; /* Full width on very small screens */
+    }
     }
 </style>
