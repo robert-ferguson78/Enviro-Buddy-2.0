@@ -8,6 +8,7 @@
     import { reviewIdStore } from '$lib/stores/reviewIdStore';
     import { getWeatherForecast } from '$lib/utils/weather';
     import Reviews from '$lib/components/partials/chat/Reviews.svelte';
+    import EvDetailView from '$lib/components/EvRouteServices/EvDetailView.svelte';
     
     // Using Svelte 5's $props() rune to access data from the load function
     const { data } = $props();
@@ -34,6 +35,12 @@
     let map = $state(null);
     let customIcon = $state(null);
     let forecast = $state([]);
+
+    // Store the vehicles that match the dealer's brand
+    let vehicles = $state(data?.props?.vehicles || []);
+    
+    // State to track the currently selected vehicle for detail view
+    let selectedVehicle = $state(null);
     
     // Derived values for dealer coordinates
     let dealerLat = $derived(dealer.latitude || 0);
@@ -106,6 +113,16 @@
         // console.log('Navigating to:', url);
         goto(url);
     };
+
+    // Function to show vehicle details when a vehicle card is clicked
+    function showVehicleDetails(vehicle) {
+        selectedVehicle = vehicle;
+    }
+    
+    // Function to close the vehicle details modal
+    function closeVehicleDetails() {
+        selectedVehicle = null;
+    }
 </script>
 
 <UpdateHead title="Electric Car Dealer {dealer.name}" description="Driving your Electric Dreams Today" />
@@ -151,3 +168,59 @@
         </div>
     {/each}
 </div>
+
+<!-- New section: Display vehicles from the dealer's brand -->
+<section class="section">
+    <h2 class="title has-text-centered">{dealer.brand} Electric Vehicles Available</h2>
+    
+    {#if vehicles.length > 0}
+        <div class="columns is-multiline">
+            {#each vehicles as vehicle (vehicle.id)}
+                <div class="column is-one-third">
+                    <!-- Vehicle card with click handler to show details -->
+                    <div class="card vehicle-card" onclick={() => showVehicleDetails(vehicle)}>
+                        <div class="card-content">
+                            <p class="title is-4">{vehicle.brand} {vehicle.model}</p>
+                            <p class="subtitle is-6">{vehicle.variant || ''} ({vehicle.release_year})</p>
+                            
+                            <div class="content">
+                                <ul>
+                                    <li><strong>Range:</strong> {vehicle.wltp_range_km} km</li>
+                                    <li><strong>Battery:</strong> {vehicle.usable_battery_size} kWh</li>
+                                    <li><strong>Body Type:</strong> {vehicle.body_type}</li>
+                                </ul>
+                                <button class="button is-primary is-fullwidth">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {/each}
+        </div>
+    {:else}
+        <p class="has-text-centered">No {dealer.brand} electric vehicles available at the moment.</p>
+    {/if}
+</section>
+
+<!-- Vehicle detail modal -->
+{#if selectedVehicle}
+    <EvDetailView vehicle={selectedVehicle} onClose={closeVehicleDetails} />
+{/if}
+
+<style>
+    .vehicle-card {
+        height: 100%;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .vehicle-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .vehicle-card img {
+        object-fit: cover;
+        width: 100%;
+        height: 200px;
+    }
+</style>
