@@ -105,9 +105,8 @@
                     let popupHtml = `
                         <strong>Brand:</strong> ${user.brand}<br>
                         <strong>Dealer Name:</strong> ${dealer.name}<br>
-                        <strong>Contact Number:</strong> ${dealer.contactNumber}<br>
+                        <strong>Contact Number:</strong> ${dealer.phone}<br>
                         <strong>Email:</strong> ${dealer.email}<br>
-                        <strong>Phone Number:</strong> ${dealer.phoneNumber}<br>
                         <strong>Website:</strong> <a href="${dealer.website}" target="_blank">${dealer.website}</a>
                     `;
 
