@@ -123,6 +123,25 @@
     function closeVehicleDetails() {
         selectedVehicle = null;
     }
+
+	// Assign body types to icon images
+	function getBodyTypeImage(bodyType) {
+	const bodyTypeMap = {
+		'City Car': '/images/city-car.png',
+		'Convertible': '/images/convertible.png',
+		'Crossover': '/images/crossover.png',
+		'Fastback': '/images/fastback.png',
+		'Hatchback': '/images/hatchback.png',
+		'Quadricycle': '/images/quadricycle.png',
+		'SUV': '/images/suv.png',
+		'SUV Coupe': '/images/suv-coupe.png',
+		'Saloon': '/images/saloon.png',
+		'Sedan': '/images/saloon.png', // Adding Sedan as an alias for Saloon
+		'Van': '/images/van.png'
+	};
+	
+	return bodyTypeMap[bodyType] || '/images/default-image-car.png'; // Default image if body type not found
+	}
 </script>
 
 <UpdateHead title="Electric Car Dealer {dealer.name}" description="Driving your Electric Dreams Today" />
@@ -180,7 +199,12 @@
                     <!-- Vehicle card with click handler to show details -->
                     <div class="card vehicle-card" onclick={() => showVehicleDetails(vehicle)}>
                         <div class="card-content">
-                            <p class="title is-4">{vehicle.brand} {vehicle.model}</p>
+                            <div class="card-header">
+                                <p class="title is-4">{vehicle.brand} {vehicle.model}</p>
+                                <div class="body-type-image">
+                                    <img src={getBodyTypeImage(vehicle.body_type)} alt={vehicle.body_type} />
+                                </div>
+                            </div>
                             <p class="subtitle is-6">{vehicle.variant || ''} ({vehicle.release_year})</p>
                             
                             <div class="content">
@@ -222,5 +246,41 @@
         object-fit: cover;
         width: 100%;
         height: 200px;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        box-shadow: none;
+        border-bottom: solid grey .5px;
+    }
+    
+    .card-header .title {
+        margin: 0;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .body-type-image {
+        width: 160px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 10px;
+        flex-shrink: 0;
+    }
+    
+    .body-type-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        height: auto;
     }
 </style>
