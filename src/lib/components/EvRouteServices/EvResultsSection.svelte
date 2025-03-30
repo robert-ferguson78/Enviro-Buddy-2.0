@@ -310,6 +310,26 @@
 	function closeVehicleDetails() {
 		selectedVehicle = null;
 	}
+
+	// Assign body types to icon images
+	function getBodyTypeImage(bodyType) {
+	const bodyTypeMap = {
+		'City Car': '/images/city-car.png',
+		'Convertible': '/images/convertible.png',
+		'Crossover': '/images/crossover.png',
+		'Fastback': '/images/fastback.png',
+		'Hatchback': '/images/hatchback.png',
+		'Quadricycle': '/images/quadricycle.png',
+		'SUV': '/images/suv.png',
+		'SUV Coupe': '/images/suv-coupe.png',
+		'Saloon': '/images/saloon.png',
+		'Sedan': '/images/saloon.png', // Adding Sedan as an alias for Saloon
+		'Van': '/images/van.png'
+	};
+	
+	return bodyTypeMap[bodyType] || '/images/default-image-car.png'; // Default image if body type not found
+	}
+
 </script>
 
 {#if selectedVehicle}
@@ -360,7 +380,10 @@
 						class:active={selectedBodyTypes.includes(bodyType)}
 						onclick={() => toggleBodyType(bodyType)}
 					>
-						{bodyType}
+						<div class="filter-image">
+							<img src={getBodyTypeImage(bodyType)} alt={bodyType} />
+						</div>
+						<span>{bodyType}</span>
 					</button>
 				{/each}
 				{#if selectedBodyTypes.length > 0}
@@ -398,7 +421,12 @@
 					<div class="vehicles-grid">
 						{#each filteredVehicles.all as vehicle}
 							<div class="vehicle-card" onclick={() => showVehicleDetails(vehicle)}>
-								<h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
+								<div class="card-header">
+									<h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
+									<div class="body-type-image">
+										<img src={getBodyTypeImage(vehicle.body_type)} alt={vehicle.body_type} />
+									</div>
+								</div>
 								<div class="vehicle-details">
 									<p><strong>Range:</strong> {formatRange(vehicle.wltp_range_km)} km</p>
 									<p><strong>Battery:</strong> {vehicle.usable_battery_size} kWh</p>
@@ -434,7 +462,12 @@
 					<div class="vehicles-grid">
 						{#each filteredVehicles[activeTab] as vehicle}
 							<div class="vehicle-card" onclick={() => showVehicleDetails(vehicle)}>
-								<h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
+								<div class="card-header">
+									<h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
+									<div class="body-type-image">
+										<img src={getBodyTypeImage(vehicle.body_type)} alt={vehicle.body_type} />
+									</div>
+								</div>
 								<div class="vehicle-details">
 									<p><strong>Range:</strong> {formatRange(vehicle.wltp_range_km)} km</p>
 									<p><strong>Battery:</strong> {vehicle.usable_battery_size} kWh</p>
@@ -528,13 +561,17 @@
 	}
 
 	.body-type-filters button {
-		padding: 0.3rem 0.8rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 0.5rem;
 		background: #f8f9fa;
 		border: 1px solid #ced4da;
-		border-radius: 4px;
+		border-radius: 8px;
 		cursor: pointer;
 		font-size: 0.9rem;
 		transition: all 0.2s ease;
+		min-width: 130px;
 	}
 
 	.body-type-filters button.active {
@@ -547,9 +584,32 @@
 		background: #e2e6ea;
 	}
 
+	.filter-image {
+		width: 130px;
+		height: 60px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 0.3rem;
+	}
+
+	.filter-image img {
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+	}
+
+	.body-type-filters button.active .filter-image img {
+		/* Optional: Apply a filter to make the image white when button is active */
+		filter: brightness(0) invert(1);
+	}
+
 	.clear-filters {
 		background: #6c757d !important;
 		color: white !important;
+		/* Make the clear filters button different */
+		flex-direction: row !important;
+		min-width: 100px !important;
 	}
 
 	.tabs {
@@ -649,27 +709,37 @@
 		font-size: 0.9rem;
 	}
 
-	@media (max-width: 768px) {
-		.tabs button {
-			flex: 1 1 calc(50% - 0.5rem); /* Two buttons per row on smaller screens */
-		}
-		.vehicles-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.tabs {
-			flex-direction: column;
-		}
-
-		.body-type-filters {
-			flex-direction: column;
-		}
+	.card-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.75rem;
+		border-bottom: 1px solid #eee;
+		padding-bottom: 0;
 	}
-	@media (max-width: 480px) {
-		.tabs button {
-			flex: 1 1 100%; /* Full width on very small screens */
-		}
+
+	.card-header h4 {
+		margin: 0;
+		flex: 1;
+		font-size: 1.1rem;
+		color: #343a40;
 	}
+
+	.body-type-image {
+		width: 140px;
+		height: 55px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-left: 10px;
+	}
+
+	.body-type-image img {
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+	}
+
 	.vehicle-card {
 		cursor: pointer;
 		position: relative;
@@ -696,5 +766,27 @@
 
 	.vehicle-card:hover .view-details {
 		transform: translateY(0);
+	}
+
+	@media (max-width: 768px) {
+		.tabs button {
+			flex: 1 1 calc(50% - 0.5rem); /* Two buttons per row on smaller screens */
+		}
+		.vehicles-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.tabs {
+			flex-direction: column;
+		}
+
+		.body-type-filters {
+			flex-direction: column;
+		}
+	}
+	@media (max-width: 480px) {
+		.tabs button {
+			flex: 1 1 100%; /* Full width on very small screens */
+		}
 	}
 </style>
