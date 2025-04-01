@@ -68,7 +68,7 @@ async function handleRefreshUserData() {
             <div class="buttons">
               <!-- Navigation buttons -->
               <a id="envirobuddy" class="button" href="/">Enviro-Buddy</a>
-            
+              <a id="route-planner" class="button" href="/route-planner">Route Planner</a>
               <!-- Show admin menu item if user is an admin -->
               {#if $authStore.userType === 'admin'}
                 <a class="button" href="/import-vehicles">Update EV Database</a>

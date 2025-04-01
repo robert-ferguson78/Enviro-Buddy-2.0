@@ -339,7 +339,7 @@
 <div id="ev-results-section" class="ev-results-section">
 	<h2>Electric Vehicles for Your Routes</h2>
 
-	<button class="debug-button" onclick={toggleDebugInfo}>
+	<!-- <button class="debug-button" onclick={toggleDebugInfo}>
 		{debugInfo ? 'Hide Debug Info' : 'Show Debug Info'}
 	</button>
 
@@ -365,7 +365,7 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
+	{/if} -->
 
 	{#if isLoading}
 		<div class="loading">Loading vehicle data...</div>
