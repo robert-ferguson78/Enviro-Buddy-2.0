@@ -33,6 +33,61 @@
         { key: 'warm', label: 'Warm Weather Range' }
     ];
 
+	// Calculate remaining battery percentage
+	function calculateRemainingBattery(vehicle, distance, weatherType, include15MinCharge) {
+		// console.log(`--- Battery Calculation for ${vehicle.brand} ${vehicle.model} ---`);
+		// console.log(`Distance: ${distance} km`);
+		// console.log(`Weather Type: ${weatherType}`);
+		// console.log(`Include 15-min Charge: ${include15MinCharge}`);
+  
+		// Get range based on weather conditions
+		let effectiveRange = vehicle.wltp_range_km;
+		
+		if (weatherType === 'wltp_range_km') {
+			effectiveRange = vehicle.wltp_range_km;
+		} else {
+			// Extract the actual weather type (cold, mild, warm)
+			const actualWeatherType = weatherType.includes('.')
+			? weatherType.split('.')[1]
+			: weatherType;
+			
+			// Access the weather range through the weather_ranges object
+			effectiveRange = vehicle.weather_ranges?.[actualWeatherType] || vehicle.wltp_range_km * 0.8;
+		}
+		
+		// console.log(`Effective Range (without 15-min charge): ${effectiveRange} km`);
+		
+		// Calculate total range including 15-min charge if enabled
+		let totalRange = effectiveRange;
+		if (include15MinCharge) {
+			// get15MinChargeRange
+			const chargeRange = get15MinChargeRange(vehicle);
+			// console.log(`15-min Charge Range: ${chargeRange} km`);
+			totalRange = effectiveRange + chargeRange;
+			// console.log(`Total Range (with 15-min charge): ${totalRange} km`);
+		}
+		
+		// Calculate battery percentage based on the total range
+		const batteryUsedPercent = (distance / totalRange) * 100;
+		// console.log(`Battery Used %: ${batteryUsedPercent.toFixed(1)}%`);
+		
+		// Calculate remaining battery percentage
+		let remainingBatteryPercent = 100 - batteryUsedPercent;
+		// console.log(`Remaining Battery % (before clamping): ${remainingBatteryPercent.toFixed(1)}%`);
+		
+		// Ensure the percentage is between 0 and 100 to stop over 100% values eg 122%
+		remainingBatteryPercent = Math.max(0, Math.min(100, remainingBatteryPercent));
+		// console.log(`Final Remaining Battery % (after clamping): ${remainingBatteryPercent.toFixed(1)}%`);
+		
+		// Return formatted to 1 decimal place
+		return remainingBatteryPercent.toFixed(1);
+	}
+
+	// Function to check if battery is unhealthy/low (below 20%)
+	function isBatteryCritical(remainingPercent) {
+		return parseFloat(remainingPercent) < 20;
+	}
+
 	// Fetch vehicles from Firestore
 	async function fetchVehicles() {
 		// console.log('Fetching vehicles from Firestore...');
@@ -170,40 +225,62 @@
 	
 	// Get 15-minute charge range from vehicle data
 	function get15MinChargeRange(vehicle) {
+		// console.log(`Calculating 15-min charge range for ${vehicle.brand} ${vehicle.model}`);
+		
 		// Use the pre-calculated value if available
-		if (vehicle.range_added_15min_charge_km) {
-			return vehicle.range_added_15min_charge_km;
+		if (vehicle.fast_charge_range_15min) {
+			// console.log(`Using pre-calculated value: ${vehicle.fast_charge_range_15min} km`);
+			return vehicle.fast_charge_range_15min;
 		}
 		
 		// Fallback calculation if the pre-calculated value is not available
 		const efficiency = vehicle.wltp_range_km / (vehicle.usable_battery_size || 1);
-		const typicalChargingRate = Math.min(150, (vehicle.usable_battery_size || 60) * 2);
-		const chargeAdded = typicalChargingRate * 0.25 * 0.8; // kWh added in 15 minutes at 80% efficiency
+		// console.log(`Efficiency: ${efficiency.toFixed(2)} km/kWh`);
 		
-		return chargeAdded * efficiency;
+		const typicalChargingRate = Math.min(150, (vehicle.usable_battery_size || 60) * 2);
+		// console.log(`Typical charging rate: ${typicalChargingRate} kW`);
+		
+		const chargeAdded = typicalChargingRate * 0.25 * 0.9; // kWh added in 15 minutes at 90% efficiency
+		// console.log(`Charge added in 15 min: ${chargeAdded.toFixed(2)} kWh`);
+		
+		const rangeAdded = chargeAdded * efficiency;
+		// console.log(`Range added in 15 min: ${rangeAdded.toFixed(2)} km`);
+	
+		return rangeAdded;
 	}
+
 	
 	// Get total range including 15-minute charge
 	function getTotalRange(vehicle, rangeType = 'wltp_range_km') {
-		let baseRange;
+		// console.log(`Getting total range for ${vehicle.brand} ${vehicle.model}`);
+		// console.log(`Range type: ${rangeType}`);
 		
-		// Extract the actual range key if it's a fully qualified path
+		let baseRange;
+		// Extract the actual range key
 		const actualRangeType = rangeType.includes('.') ? rangeType.split('.')[1] : rangeType;
+		// console.log(`Actual range type: ${actualRangeType}`);
 		
 		if (actualRangeType === 'wltp_range_km') {
 			baseRange = vehicle.wltp_range_km;
 		} else {
-			// Access the weather range data
 			baseRange = vehicle.weather_ranges?.[actualRangeType] || vehicle.wltp_range_km;
 		}
+		// console.log(`Base range: ${baseRange} km`);
 		
 		if (!include15MinCharge) {
+			// console.log(`15-min charge not included, returning base range: ${baseRange} km`);
 			return baseRange;
 		}
 		
 		const chargeRange = get15MinChargeRange(vehicle);
-		return baseRange + chargeRange;
+		// console.log(`15-min charge range: ${chargeRange} km`);
+		
+		const totalRange = baseRange + chargeRange;
+		// console.log(`Total range (with 15-min charge): ${totalRange} km`);
+		
+		return totalRange;
 	}
+
 	
 	// Filter vehicles based on route distances and body types
 	function filterVehiclesForRoutes() {
@@ -548,7 +625,7 @@
 				{#if filteredVehicles.all && filteredVehicles.all.length > 0}
 					<div class="vehicles-grid">
 						{#each filteredVehicles.all as vehicle}
-							<div class="vehicle-card" onclick={() => showVehicleDetails(vehicle)}>
+							<div class="vehicle-card {isBatteryCritical(calculateRemainingBattery(vehicle, parseFloat(calculateTotalWeeklyDistance()), selectedWeatherRange, include15MinCharge)) ? 'low-battery' : ''}" onclick={() => showVehicleDetails(vehicle)}>
 								<div class="card-header">
 									<h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
 									<div class="body-type-image">
@@ -588,6 +665,9 @@
 									</p>
 									<p><strong>Body Type:</strong> {vehicle.body_type}</p>
 									<p><strong>Year:</strong> {vehicle.release_year}</p>
+									<p class="battery-remaining {isBatteryCritical(calculateRemainingBattery(vehicle, parseFloat(calculateTotalWeeklyDistance()), selectedWeatherRange, include15MinCharge)) ? 'critical' : ''}">
+										<strong>Remaining Battery:</strong> {calculateRemainingBattery(vehicle, parseFloat(calculateTotalWeeklyDistance()), selectedWeatherRange, include15MinCharge)}%
+									</p>
 								</div>
 								<div class="view-details">View Details</div>
 							</div>
@@ -613,7 +693,7 @@
 				{#if filteredVehicles[activeTab] && filteredVehicles[activeTab].length > 0}
 					<div class="vehicles-grid">
 						{#each filteredVehicles[activeTab] as vehicle}
-							<div class="vehicle-card" onclick={() => showVehicleDetails(vehicle)}>
+							<div class="vehicle-card {isBatteryCritical(calculateRemainingBattery(vehicle, parseFloat(routes[activeTab].route.distanceKm), selectedWeatherRange, include15MinCharge)) ? 'low-battery' : ''}" onclick={() => showVehicleDetails(vehicle)}>
 								<div class="card-header">
 									<h4>{vehicle.brand} {vehicle.model} {vehicle.variant}</h4>
 									<div class="body-type-image">
@@ -653,6 +733,9 @@
 									</p>
 									<p><strong>Body Type:</strong> {vehicle.body_type}</p>
 									<p><strong>Year:</strong> {vehicle.release_year}</p>
+									<p class="battery-remaining {isBatteryCritical(calculateRemainingBattery(vehicle, parseFloat(routes[activeTab].route.distanceKm), selectedWeatherRange, include15MinCharge)) ? 'critical' : ''}">
+										<strong>Remaining Battery:</strong> {calculateRemainingBattery(vehicle, parseFloat(routes[activeTab].route.distanceKm), selectedWeatherRange, include15MinCharge)}%
+									</p>
 								</div>
 								<div class="view-details">View Details</div>
 							</div>
@@ -1034,6 +1117,36 @@
 	.filter-image.weather-icons {
 			width: 30px;
 			height: 30px;
+	}
+
+	.low-battery {
+		border: 2px solid #dc3545;
+		position: relative;
+	}
+	
+	.low-battery::before {
+		content: "Low Battery Warning";
+		position: absolute;
+		top: 0px;
+		right: -4px;
+		background: #dc3545;
+		color: white;
+		font-size: 0.7rem;
+		padding: 2px 8px;
+		border-radius: 4px;
+		z-index: 1;
+	}
+	
+	.battery-remaining {
+		grid-column: 1 / -1;
+		margin-top: 0.5rem;
+		padding-top: 0.5rem;
+		border-top: 1px dashed #dee2e6;
+	}
+	
+	.battery-remaining.critical {
+		color: #dc3545;
+		font-weight: bold;
 	}
 
 	@media (max-width: 768px) {
