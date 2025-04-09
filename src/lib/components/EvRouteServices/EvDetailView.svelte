@@ -429,24 +429,30 @@ function drawChargingGraph(canvas, chargingCurve) {
             
             <div class="charging-graph-container">
               <h4>DC Fast Charging Curve</h4>
-              <canvas id="charging-graph" width="500" height="300"></canvas>
-              <div class="graph-legend">
-                <div class="legend-item">
-                  <span class="legend-color" style="background: #007bff;"></span>
-                  <span>Charging Power (kW)</span>
+              {#if chargingCurve && chargingCurve.length > 0}
+                <canvas id="charging-graph" width="500" height="300"></canvas>
+                <div class="graph-legend">
+                  <div class="legend-item">
+                    <span class="legend-color" style="background: #007bff;"></span>
+                    <span>Charging Power (kW)</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-color" style="background: rgba(0, 123, 255, 0.1);"></span>
+                    <span>10-80% Charging Zone</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-color" style="background: #e74c3c;"></span>
+                    <span>Time to Reach SOC</span>
+                  </div>
                 </div>
-                <div class="legend-item">
-                  <span class="legend-color" style="background: rgba(0, 123, 255, 0.1);"></span>
-                  <span>10-80% Charging Zone</span>
+                <div class="time-explanation">
+                  <p>Red dots show the time required to reach each State Of Charge (SOC) from 0%.</p>
                 </div>
-                <div class="legend-item">
-                  <span class="legend-color" style="background: #e74c3c;"></span>
-                  <span>Time to Reach SOC</span>
+              {:else}
+                <div class="no-data-message">
+                  <p>No charging curve data has been uploaded for this vehicle, hopefully in a future EV update this will be added. Please contact EV manufacturer to request this directly if needed.</p>
                 </div>
-              </div>
-              <div class="time-explanation">
-                <p>Red dots show the time required to reach each State Of Charge (SOC) from 0%.</p>
-              </div>
+              {/if}
             </div>
           </div> 
         </div>         
@@ -658,6 +664,16 @@ function drawChargingGraph(canvas, chargingCurve) {
     color: #666;
     font-style: italic;
   }
+
+  .no-data-message {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 4px;
+    text-align: center;
+    color: #666;
+    border: 1px dashed #ccc;
+    margin: 1rem 0;
+}
   
   @media (max-width: 768px) {
     .ev-detail-grid {
