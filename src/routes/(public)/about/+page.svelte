@@ -34,3 +34,7 @@
 </ol>
 <p>Enviro-Buddy's commitment to driving electric dreams today is more than just an advocacy for cleaner transportation; it's a call to action for everyone to play a part in securing a sustainable future. By choosing electric cars, individuals can contribute to a significant reduction in global carbon emissions, promote energy independence, and drive forward into a cleaner, greener world. The switch to electric vehicles is not just a trend; it's a vital step towards environmental stewardship and a testament to the power of collective action in combating climate change.</p>
 </section>
+<section class="section pt-1">
+<h2 class="subtitle">EV data set attribution</h2>
+<p>The EV (Electric Vehicle) data in this project was obtained from the Open <a href="https://github.com/KilowattApp/open-ev-data">Ev Data (https://github.com/KilowattApp/open-ev-data) project.</a></p>
+</section>
