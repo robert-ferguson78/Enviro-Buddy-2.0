@@ -36,3 +36,6 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## Attribution
+The EV (Electric Vehicle) data in this project was obtained from the [`Open Ev Data`](https://github.com/KilowattApp/open-ev-data) project.
