@@ -65,7 +65,7 @@ You can preview the production build with `npm run preview`.
 
 ### Development and Deployment
 - [GitHub](https://github.com/): For version control and collaboration.
-- [Firebase Hosting](https://firebase.google.com/docs/hosting): For deploying the application to the web.
+- [Firebase Storage](https://firebase.google.com/docs/storageg): For hosting images.
 
 ## Attribution
 The EV (Electric Vehicle) data in this project was obtained from the [`Open Ev Data`](https://github.com/KilowattApp/open-ev-data) project.
