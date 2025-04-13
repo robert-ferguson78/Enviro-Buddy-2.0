@@ -105,7 +105,7 @@
 
 .car-thumbnail {
   width: 100%;
-  height: 200px;
+  height: auto;
   object-fit: cover;
   border-radius: 4px;
 }
