@@ -104,10 +104,10 @@
     
     <button 
         class="edit-btn" 
-        class:active={isEditing}
-        onclick={toggleEditing}
+        class:active={routeStore.isEditing}
+        onclick={routeActions.toggleEditing}
     >
-        {isEditing ? 'Done Editing' : 'Edit Route'}
+        {routeStore.isEditing ? 'Done Editing' : 'Edit Route'}
     </button>
 
     <button onclick={confirmClear}>Clear Route</button>

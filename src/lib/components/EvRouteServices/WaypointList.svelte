@@ -21,6 +21,9 @@
 
     // location search handler
     async function handleLocationSearch() {
+        // Only allow search when in edit mode
+        if (!routeStore.isEditing) return;
+
         console.log('Searching for location:', searchText);
         loading = true;
         try {
@@ -48,6 +51,8 @@
 
     // Handle waypoint coordinate editing with validation
     async function editWaypoint(index, field, value) {
+        // check again for is editing
+        if (!routeStore.isEditing) return;
         console.log(`Editing waypoint ${index}, field ${field}, value ${value}`);
         const parsedValue = parseFloat(value);
         // Validate latitude range
@@ -87,6 +92,9 @@
     }
 
     function moveWaypoint(index, direction) {
+        // check again for is editing
+        if (!routeStore.isEditing) return;
+
         console.log(`Moving waypoint ${index} ${direction}`);
         const newWaypoints = [...activeRouteData.waypoints];
         const newIndex = direction === 'up' ? index - 1 : index + 1;
@@ -111,6 +119,8 @@
 
     // Added function to handle drag and drop
     function handleDrop(e, targetIndex) {
+        // check again for is editing
+        if (!routeStore.isEditing) return;
         e.preventDefault();
         const sourceIndex = parseInt(e.dataTransfer.getData('text/plain'));
         if (sourceIndex !== targetIndex) {
@@ -141,10 +151,11 @@
             type="text"
             bind:value={searchText}
             placeholder="Search for a location to add"
-            onkeydown={(e) => e.key === 'Enter' && searchText && handleLocationSearch()}
+            onkeydown={(e) => routeStore.isEditing && e.key === 'Enter' && searchText && handleLocationSearch()}
+            disabled={!routeStore.isEditing}
         />
         <!-- refcatored from 'on:click' to 'onclick' attribute -->
-        <button onclick={() => searchText && handleLocationSearch()} disabled={loading || !searchText}>
+        <button onclick={() => searchText && handleLocationSearch()} disabled={loading || !searchText || !routeStore.isEditing}>
             {loading ? 'Adding...' : 'Add Location'}
         </button>
     </div>
@@ -154,20 +165,21 @@
             <button onclick={addWaypoint}>Add a Waypoint</button>
         </p>
     {:else}
-        <ul>
+        <ul class:edit-disable={!routeStore.isEditing}>
             {#each waypoints as waypoint, index}
                 <li 
                     draggable="true" 
-                    ondragstart={(e) => e.dataTransfer.setData('text/plain', index)} 
+                    ondragstart={(e) => routeStore.isEditing && e.dataTransfer.setData('text/plain', index)} 
                     ondrop={(e) => handleDrop(e, index)} 
-                    ondragover={(e) => e.preventDefault()}
+                    ondragover={(e) => routeStore.isEditing && e.preventDefault()}
+                    class:editing={routeStore.isEditing}
                 >
                     <div class="waypoint-info">
                         <div class="reorder-controls">
                             <button 
                                 class="reorder-btn"
                                 onclick={() => moveWaypoint(index, 'up')}
-                                disabled={index === 0}
+                                disabled={!routeStore.isEditing || index === 0}
                                 title="Move up"
                             >
                                 ↑
@@ -175,7 +187,7 @@
                             <button 
                                 class="reorder-btn"
                                 onclick={() => moveWaypoint(index, 'down')}
-                                disabled={index === waypoints.length - 1}
+                                disabled={!routeStore.isEditing || index === waypoints.length - 1}
                                 title="Move down"
                             >
                                 ↓
@@ -189,18 +201,21 @@
                                 step="0.001"
                                 bind:value={waypoint.lat}
                                 oninput={(e) => editWaypoint(index, 'lat', e.target.value)}
+                                disabled={!routeStore.isEditing}
                             />
                             <input
                                 type="number"
                                 step="0.001"
                                 bind:value={waypoint.lng}
                                 oninput={(e) => editWaypoint(index, 'lng', e.target.value)}
+                                disabled={!routeStore.isEditing}
                             />
                         </div>
                     </div>
                     <button
                         class="delete-btn"
                         onclick={() => deleteWaypoint(index)}
+                        disabled={!routeStore.isEditing}
                         title="Delete waypoint"
                     >
                         ×
@@ -208,7 +223,7 @@
                 </li>
             {/each}
         </ul>
-        <button class="clear-btn" onclick={clearWaypoints}>Clear All</button>
+        <button class="clear-btn" onclick={clearWaypoints} disabled={!routeStore.isEditing}>Clear All</button>
         {#if route}
             <div class="route-summary">
                 <p>Total Distance: {route.distanceKm} km</p>
@@ -340,6 +355,13 @@
         margin-top: 1rem;
     }
 
+    .clear-btn:disabled, .clear-btn:hover:disabled {
+        background: #cccccc;
+        color: #666666;
+        cursor: default;
+        box-shadow: none;
+    }
+
     .clear-btn:hover {
         background: #ff0000;
     }
@@ -388,15 +410,23 @@
 
     .search-box button {
         padding: 0.5rem 1rem;
-        background: #007bff;
+        background: #28a745;
         color: white;
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        transition: background-color 0.2s ease;
     }
 
-    .search-box button:disabled {
-        background: #ccc;
+    .search-box button[disabled] {
+        background: #cccccc;
+        color: #666666;
+        cursor: default;
+        box-shadow: none;
+    }
+
+    .search-box button:not([disabled]):hover {
+        background: #218838;
     }
 
     :global(.custom-marker-icon) {
@@ -416,5 +446,14 @@
         font-weight: bold;
         font-size: 0.9rem;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    ul.edit-disable {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    ul.edit-disable li {
+        pointer-events: none;
     }
 </style>
